@@ -1,0 +1,115 @@
+#+TITLE: Machine Learning related notes from books, courses, videos etc.
+
+* Python ML, Learning by Example
++ 9781800209718
++ [[https://www.packtpub.com/product/python-machine-learning-by-example-third-edition/9781800209718][link]]
+
+** Chapter 1
+*** 3 types of ML
+**** Unsupervised
++ find structure in unlabelled, often noisy data
++ often applied in:
+  - fraud detection systems
+  - grouping customers based on behaviour for marketing campaigns
++ related concepts:
+  - data visualisation -> makes data more digestible
+  - dimensionality reduction -> distils only relevant information
+  - clustering -> label/classify data
+
+***** Semi-supervised
++ subdivision of unsupervised learning
++ large portion of available data is unlabelled, but isn't
++ uses unlabelled data for training and labelled for validation
++ applied when:
+  - dataset is incomplete
+  - it is too expensive/inefficient to classify entire dataset
+
+**** Supervised
++ data comes pre-labelled and /often/ clean
++ goal is to find a general rule that maps *input* to *output*
++ labels are often produced through automated event-loggers
++ often applied in:
+  - face & speech recognition
+  - *sales forecasting*
++ can be subdivided into *regression* and *classification*
+
+***** Regression
++ trains on and predicts continuous-valued responses
++ e.g. housing prices
+
+***** Classification
++ attempts to find the appropriate class label
++ e.g. sentiment analysis
+
+**** Reinforcement
++ learning data provides feedback
++ enables system to dynamically adapt to environmental stimuli
++ system evaluates performance based on feedback responses
++ often applied in:
+  - industrial automation
+  - self-driving cars
+  - chess engines
+
+*** 4 types of ML Algorithms
+**** Logic-based
++ learn basic rules specified by human experts
++ use said rules to (try to) reason using formal logic, background knowledge and hypotheses
+
+**** Statistical Learning
++ attempt to find a function to formalize the relationships between variables
+
+**** Artificial Neural Networks (ANNs)
++ consist of interconnected neurons that attempt to imitate brains
++ attempt to model complex relationships between *input* and *output* values and to capture *patterns* in data
+
+**** Genetic Algorithms (GAs)
++ mimic the biological process of evolution and try to find the optimal solutions
++ often use methods like /crossover/ and /mutation/, /epochs/ and /generations/
+
+*** Why are GPUs good at ML?
++ GPUs enabled the breakthrough in deep learning of 2006
+  - deep learning -> ANNs with many layers
++ GPUs are great at handling *specialised* tasks, rather than general tasks (CPU)
+
+*** Supervised Learning Metaphor
++ think of it as studying for an exam
++ past papers = training data
++ exam = test data
++ mock exam = validation data
+
+*** Overfitting
++ overfitting = memorisation
++ model performance is a function where bias and variance are *minimised*
++ low bias and high variance indicate overfitting; good average prediction to true value ratio within the training data but bad generalisation to test data
++ [[./images/overfitting.png][overfitting]]
++ in the above example the regression curve attempts to flawlessly accommodate all observed samples
+
+*** Underfitting
++ model performs badly on both training and testing data
++ it has failed to capture the underlying *trend* of the data
++ happens when:
+  - insufficient data is given to the model
+  - wrong type of model is applied
+
+*** Bias & Variance
+**** Bias
++ the error stemming from incorrect assumptions in the learning algorithm
++ high bias results in underfitting
+
+**** Variance
++ measures how sensitive a model's predictions are to variations in the datasets
+
+**** Bias-variance trade-off
++ bias and variance should ideally be minimised in order to maximise results
++ in practice, the two are correlated in the sense that decreasing one, increases the other
+
+**** Example Scenario
++ you're asked to build a model that predicts the probability of a presidential candidate being elected
++ the available data is phone poll data in the form of zip codes
++ by choosing a random zip code and using that estimate a 61% probability you introduce *high* bias (people in a geographic area tend to share similar demographics)
++ the same method introduces *low* variance
+
+*** Mean Squared Error (MSE)
++ model performance can be scored using various methods
++ one of them is MSE
++ [[./images/mse.png][MSE]]
