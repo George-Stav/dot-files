@@ -98,6 +98,9 @@
 (map! :leader
       :desc "Check word spelling" "\\" #'flyspell-word)
 
+(map! :leader
+      :desc "Pull from upstream branch" "g p" #'magit-pull-from-upstream)
+
 ;; (unless (package-installed-p 'polymode)
 ;;   (package-install 'poly-markdown))
 
@@ -110,10 +113,10 @@
 (map! :leader
       :desc "Save Tex file and export to PDF" "l" #'TeX-command-master)
 
-(defun markdown-html (buffer)
-  (princ (with-current-buffer buffer
-    (format "<!DOCTYPE html><html><title>Impatient Markdown</title><xmp theme=\"united\" style=\"display:none;\"> %s  </xmp><script src=\"http://strapdownjs.com/v/0.2/strapdown.js\"></script></html>" (buffer-substring-no-properties (point-min) (point-max))))
-  (current-buffer)))
+;; (defun markdown-html (buffer)
+;;   (princ (with-current-buffer buffer
+;;     (format "<!DOCTYPE html><html><title>Impatient Markdown</title><xmp theme=\"united\" style=\"display:none;\"> %s  </xmp><script src=\"http://strapdownjs.com/v/0.2/strapdown.js\"></script></html>" (buffer-substring-no-properties (point-min) (point-max))))
+;;   (current-buffer)))
 
 (load! "~/dev/elisp/run-cmd-on-save.el")
 
@@ -130,3 +133,27 @@
 
 ;; hide [*,/,etc.]
 (setq org-hide-emphasis-markers t)
+
+;;; keychain
+;;;autoload
+(defun keychain-refresh-environment ()
+  "Set ssh-agent and gpg-agent environment variables.
+Set the environment variables `SSH_AUTH_SOCK', `SSH_AGENT_PID'
+and `GPG_AGENT' in Emacs' `process-environment' according to
+information retrieved from files created by the keychain script."
+  (interactive)
+  (let* ((ssh (shell-command-to-string "keychain -q --noask --agents ssh --eval"))
+         (gpg (shell-command-to-string "keychain -q --noask --agents gpg --eval")))
+    (list (and ssh
+               (string-match "SSH_AUTH_SOCK[=\s]\\([^\s;\n]*\\)" ssh)
+               (setenv       "SSH_AUTH_SOCK" (match-string 1 ssh)))
+          (and ssh
+               (string-match "SSH_AGENT_PID[=\s]\\([0-9]*\\)?" ssh)
+               (setenv       "SSH_AGENT_PID" (match-string 1 ssh)))
+          (and gpg
+               (string-match "GPG_AGENT_INFO[=\s]\\([^\s;\n]*\\)" gpg)
+               (setenv       "GPG_AGENT_INFO" (match-string 1 gpg))))))
+
+(provide 'keychain-environment)
+
+(keychain-refresh-environment)

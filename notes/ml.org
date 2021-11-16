@@ -76,6 +76,7 @@
 + past papers = training data
 + exam = test data
 + mock exam = validation data
+  - used to evaluate how a model will generalise to independent or unseen datasets in a simulated setting
 
 *** Overfitting
 + overfitting = memorisation
@@ -83,6 +84,23 @@
 + low bias and high variance indicate overfitting; good average prediction to true value ratio within the training data but bad generalisation to test data
 + [[./images/overfitting.png][overfitting]]
 + in the above example the regression curve attempts to flawlessly accommodate all observed samples
++ avoid/combat overfitting with cross-validation
+
+**** Cross-validation
++ method of evaluating a model's performance
+  - tests the model's hyper-parameters mostly
++ exhaustive vs non-exhaustive
++ k-fold is non-exhaustive since it doesn't try out all possible partitions of the given data
+
+***** K-Fold
+1. Shuffle dataset randomly
+2. Split dataset in /k/ groups
+3. For each unique group:
+   1. Take the group as a hold out or test dataset
+   2. Take the remaining groups as a training dataset
+   3. Fit a model on the training set and evaluate it on the test set
+   4. Retain the evaluation score and *discard the model*
+4. Summarise the skill of the model using the sample of model evaluation scores
 
 *** Underfitting
 + model performs badly on both training and testing data
@@ -113,3 +131,6 @@
 + model performance can be scored using various methods
 + one of them is MSE
 + [[./images/mse.png][MSE]]
+
+*** Data Generalisation
++ make a model that is able to *effectively* process data that it has never come across before

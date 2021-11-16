@@ -9,11 +9,15 @@ set VISUAL "emacs"
 set -x TEXMFCNF "~/.config:"
 set fish_cursor_insert underscore
 
-fish_ssh_agent
+keychain --quiet --eval --agents ssh id_ed25519
 
 alias doom="~/.emacs.d/bin/doom"
 alias dc="docker-compose"
 alias warp="warp-cli"
+alias warp-enable="sudo systemctl enable --now warp-svc.service"
+alias warp-disable="sudo systemctl disable --now warp-svc.service"
+alias vpn="nordvpn"
+alias ec="emacsclient -c"
 
 ### ~~~~~~~~~~~~~~~~~~~~~ ###
 set fish_greeting
@@ -168,8 +172,7 @@ alias jctl="journalctl -p 3 -xb"
 # Recent installed packages
 alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
 
-
 ## Run paleofetch if session is interactive
-if status --is-interactive
-   neofetch
-end
+# if status --is-interactive
+#    neofetch
+# end
