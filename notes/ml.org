@@ -84,7 +84,7 @@
 + low bias and high variance indicate overfitting; good average prediction to true value ratio within the training data but bad generalisation to test data
 + [[./images/overfitting.png][overfitting]]
 + in the above example the regression curve attempts to flawlessly accommodate all observed samples
-+ avoid/combat overfitting with cross-validation
++ avoid/combat overfitting one or a combination of the following methods
 
 **** Cross-validation
 + method of evaluating a model's performance
@@ -101,6 +101,19 @@
    3. Fit a model on the training set and evaluate it on the test set
    4. Retain the evaluation score and *discard the model*
 4. Summarise the skill of the model using the sample of model evaluation scores
+
+**** Data Regularisation
++ the principle of Occam's razor applies in ML
++ simpler models are usually better
++ they take less time to train and less resources to run
++ they also overfit data less easily
++ generalising the rules learnt by the model can help it capture a wider range of data in the real world
+
+**** Feature selection & Dimensionality reduction
++ number of columns = dimensionality
++ fitting high-dimensional data can be computationally expensive
++ it is also prone to overfitting due to initial high complexity
++ this method aims to remove unnecessary features that add no value
 
 *** Underfitting
 + model performs badly on both training and testing data
@@ -132,5 +145,28 @@
 + one of them is MSE
 + [[./images/mse.png][MSE]]
 
-*** Data Generalisation
-+ make a model that is able to *effectively* process data that it has never come across before
+*** CRISP-DM
++ Cross-Industry Standard Process for Data Mining
++ created in 1996
++ machine learning / data science inherits its phases and general framework
+  1. Business understanding
+  2. Data understanding AKA exploration phase
+  3. Data preparation AKA preprocessing phase
+  4. Modeling
+  5. Evaluation
+  6. Deployment
+
+*** Label Encoding
++ the process of changing given data types (labels) to numbers
+
+**** One-hot Encoding
++ assigns a True value to the correct label and false to everything else
++ ends up producing a sparse matrix instead of a vector
++ size of matrix is k^2 given that the original number of labels is k
+
+*** Polynomial transformation
++ creates more features out of the existing ones
++ in a dataset of 2 features, a and b, a third one could be a*b or a/b
++ in the case of the ratio a small constant should be added to both the divisor and dividend to avoid dividing by zero
+
+***

@@ -9,7 +9,7 @@
   - people are pessimistic about this move which doesn't affect the fundamentals
   - price should go back to normal
 
-* AJBellmodels/marts/products/fct_products_change_log.sql
+* AJBell
 + put in about £5000
 ** ETFs
 + 80%
@@ -44,9 +44,9 @@
 
 * Crypto
 + £1000
-+ in 3 installments
++ in 3 instalments
   1. 30%: 16/11/21
-  2. 30%:
+  2. 30%: 17/11/21
   3. 40%:
 
 ** The Big Boys
@@ -63,9 +63,12 @@
 + wrapped
 *** MANA - Decentraland
 + 10%
++ requires BTC
 *** AMPL - Ampleforth
 + 10%
 *** ATOM - Cosmos
 + 10%
++ may require BTC
 *** YFI - yearn.finance
 + 5%
++ requires BTC
