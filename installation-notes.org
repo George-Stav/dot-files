@@ -4,7 +4,6 @@
 ** Post-install Utilities
 *** Sym-links
 *** Docks & Panels
-+
 *** Installs
 + firefox
   - themes
@@ -19,12 +18,15 @@
 + docker & docker compose
 + texlive-most
 
+*** Pip
++ pandas
++ dbt & airflow
+
 *** Docker
 + run the daemon
 
 *** Konsole
 + install Azeny theme
-+
 
 *** Uninstalls
 + firedragon
