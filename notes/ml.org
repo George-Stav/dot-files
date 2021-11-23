@@ -151,8 +151,8 @@
 + machine learning / data science inherits its phases and general framework
   1. Business understanding
   2. Data understanding AKA exploration phase
-  3. Data preparation AKA preprocessing phase
-  4. Modeling
+  3. Data preparation AKA pre-processing phase
+  4. Modelling
   5. Evaluation
   6. Deployment
 
@@ -168,5 +168,3 @@
 + creates more features out of the existing ones
 + in a dataset of 2 features, a and b, a third one could be a*b or a/b
 + in the case of the ratio a small constant should be added to both the divisor and dividend to avoid dividing by zero
-
-***

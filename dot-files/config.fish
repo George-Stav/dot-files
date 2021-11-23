@@ -1,6 +1,4 @@
-﻿## Set values
-# Hide welcome message
-### MY STUFF ###
+﻿### MY STUFF ###
 
 # set -x MANPAGER "nvim -c 'set ft=man' -"
 set TERM "xterm-256color"
@@ -9,13 +7,13 @@ set VISUAL "emacs"
 set -x TEXMFCNF "~/.config:"
 set fish_cursor_insert underscore
 
-keychain --quiet --eval --agents ssh id_ed25519
+# keychain --quiet --eval --agents ssh id_ed25519
 
 alias doom="~/.emacs.d/bin/doom"
 alias dc="docker-compose"
 alias warp="warp-cli"
 alias warp-enable="sudo systemctl enable --now warp-svc.service"
-alias warp-disable="sudo systemctl disable --now warp-svc.service"
+alias warp-disable="warp disconnect && sudo systemctl disable --now warp-svc.service"
 alias vpn="nordvpn"
 alias ec="emacsclient -c"
 
@@ -56,16 +54,19 @@ if test -d ~/Applications/depot_tools
     end
 end
 
-
 ## Starship prompt
 if status --is-interactive
-   source ("/usr/bin/starship" init fish --print-full-init | psub)
+	source ("/usr/bin/starship" init fish --print-full-init | psub)
 end
 
 ## Advanced command-not-found hook
 source /usr/share/doc/find-the-command/ftc.fish
 
 ## Functions
+function dir-size
+	du -bd 1 $argv | sort -n | numfmt --to iec
+end
+
 # Functions needed for !! and !$ https://github.com/oh-my-fish/plugin-bang-bang
 function __history_previous_command
   switch (commandline -t)

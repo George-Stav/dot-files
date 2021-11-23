@@ -1,0 +1,30 @@
+#+TITLE: Installation Notes
+
+* Garuda Linux
+** Post-install Utilities
+*** Sym-links
+*** Docks & Panels
++
+*** Installs
++ firefox
+  - themes
++ teams
++ spotify & spotifyd
++ keychain
++ vim
++ jetbrains nerd mono font
++ nordvpn
+  - run the daemon
++ warp-cli
++ docker & docker compose
++ texlive-most
+
+*** Docker
++ run the daemon
+
+*** Konsole
++ install Azeny theme
++
+
+*** Uninstalls
++ firedragon
