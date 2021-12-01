@@ -168,3 +168,28 @@
 + creates more features out of the existing ones
 + in a dataset of 2 features, a and b, a third one could be a*b or a/b
 + in the case of the ratio a small constant should be added to both the divisor and dividend to avoid dividing by zero
+
+*** Combining models
++ models can cooperate with each other using the following strategies
+
+**** Voting & Averaging
++ take final result to be the average between the results of all models
++ possible to apply weights to each model's vote meaning that one model will skew the results in its favour if its more reliable than the rest
+
+**** Bagging
++ AKA Bootstrap aggregating / Bootstrapping
+  1. Generate new training sets from input training data by sampling with replacement
+  2. For each generated training set, fit a new model
+  3. Combine the results of the models by averaging or majority voting
++ all models are trained in parallel
++ this method can reduce the change of overfitting
+
+**** Boosting
++ attempts to combine multiple *weak learners* (models that are slightly better than baseline) into a bigger, better model
++ each model is trained sequentially on the same training data set as all other models
++ weights are reassigned after a model is trained to reflect mispredicted samples
+
+**** Stacking
++ takes the output values of machine learning models and uses them as input values for other algorithms
++ any arbitrary combination of predictors (aka topology) can be used
++ this method is often used in winning models for Kaggle competitions

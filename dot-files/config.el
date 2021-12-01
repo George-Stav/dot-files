@@ -118,14 +118,14 @@
 ;;     (format "<!DOCTYPE html><html><title>Impatient Markdown</title><xmp theme=\"united\" style=\"display:none;\"> %s  </xmp><script src=\"http://strapdownjs.com/v/0.2/strapdown.js\"></script></html>" (buffer-substring-no-properties (point-min) (point-max))))
 ;;   (current-buffer)))
 
-(load! "~/dev/elisp/run-cmd-on-save.el")
+;; (load! "~/dev/elisp/run-cmd-on-save.el")
 
 (setq auth-sources '("~/.authinfo"))
 
 ;; ssh-agent
-(require 'exec-path-from-shell)
-(exec-path-from-shell-copy-env "SSH_AGENT_PID")
-(exec-path-from-shell-copy-env "SSH_AUTH_SOCK")
+;; (require 'exec-path-from-shell)
+;; (exec-path-from-shell-copy-env "SSH_AGENT_PID")
+;; (exec-path-from-shell-copy-env "SSH_AUTH_SOCK")
 
 (blink-cursor-mode)
 
