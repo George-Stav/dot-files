@@ -193,3 +193,23 @@
 + takes the output values of machine learning models and uses them as input values for other algorithms
 + any arbitrary combination of predictors (aka topology) can be used
 + this method is often used in winning models for Kaggle competitions
+
+** Chapter 2
+*** Classification
++ one of the main instance of supervised learning
++ learn a general rule that correctly maps the *observations* (aka features/predictive variables) to the *categories* (aka labels/classes)
++ [[./images/classification.png][diagram]]
+
+**** Binary Classification
++ 2 mutually-exclusive labels
+
+**** Multi-class Classification
++ 3 or more mutually-exclusive labels
+
+**** Multi-label Classification
++ 2 or more labels
++ an observation may belong in more than 1 classes
++ for example, a movie can be part of the adventure and thriller movie genres at the same time
+
+*** Naive Bayes
++
