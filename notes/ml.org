@@ -210,6 +210,12 @@
 + 2 or more labels
 + an observation may belong in more than 1 classes
 + for example, a movie can be part of the adventure and thriller movie genres at the same time
++ a typical approach is to treat an n-label classification problem as a set of n binary classification problems
++ algorithms used to solve this kind of problem also include:
+  - Naive Bayes
+  - Support Vector Machines (SVMs)
+  - Decision Trees
+  - Logistic Regression
 
 *** Naive Bayes
-+
++ probabilistic classifier
