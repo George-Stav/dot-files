@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
-DIR="$HOME/sym-links/dot-files"
+DIR="$HOME/dot-files/$1-dot-files"
 declare -A dotfiles
 
-dotfiles[konsole]="$HOME/.local/share"
+dotfiles[konsole]="$HOME/.local/share/"
 dotfiles[.vimrc]="$HOME/"
 dotfiles[config.el]="$HOME/.doom.d/"
 dotfiles[config.fish]="$HOME/.config/fish/"
-dotfiles[daemon.json]="/etc/docker/"
+# dotfiles[daemon.json]="/etc/docker/"
 dotfiles[kchain.fish]="$HOME/.config/fish/functions/"
 dotfiles[starship.toml]="$HOME/.config/"
 
