@@ -11,7 +11,7 @@ set -x LD_LIBRARY_PATH "$LD_LIBRARY_PATH:/usr/lib/"
 
 # keychain --quiet --eval --agents ssh id_ed25519
 
-alias doom="~/.emacs.d/bin/doom"
+alias doom="$HOME/.emacs.d/bin/doom"
 alias dc="docker-compose"
 alias warp="warp-cli"
 alias warp-enable="sudo systemctl enable --now warp-svc.service"
