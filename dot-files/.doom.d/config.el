@@ -1,4 +1,6 @@
+;;; package --- Summary
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
+;;; Commentary:
 
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
@@ -6,6 +8,7 @@
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets.
+;;; Code:
 (setq user-full-name "George Stavropoulos"
       user-mail-address "georgestavropoulos0@gmail.com")
 
@@ -43,16 +46,15 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 
-(setq doom-theme 'doom-zenburn)
+(setq doom-theme 'doom-nord)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
+;; (setq org-directory "~/org/")
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type 'relative)
-
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
@@ -76,6 +78,17 @@
   (interactive (list (save-excursion (car (ispell-get-word nil)))))
   (browse-url (concat "https://www.thesaurus.com/browse/" syn)))
 
+;; Forge
+(use-package forge
+  :after magit)
+
+;; Macros
+
+(map! :leader
+      (:prefix-map ("\\" . "words")
+      :desc "Check word spelling" "\\" #'flyspell-word
+      :desc "Find word synonym" "s" #'synonym))
+
 (map! :leader
       :desc "pdf-view-mode" "v" #'pdf-view-mode)
 
@@ -96,10 +109,10 @@
       :desc "kill-buffer-and-window" "k" #'kill-buffer-and-window)
 
 (map! :leader
-      :desc "Check word spelling" "\\" #'flyspell-word)
+      :desc "Pull from upstream branch" "g p" #'magit-pull-from-upstream)
 
 (map! :leader
-      :desc "Pull from upstream branch" "g p" #'magit-pull-from-upstream)
+      :desc "Man" "m" #'man)
 
 ;; (unless (package-installed-p 'polymode)
 ;;   (package-install 'poly-markdown))
@@ -128,6 +141,7 @@
 ;; (exec-path-from-shell-copy-env "SSH_AUTH_SOCK")
 
 (blink-cursor-mode)
+(add-hook 'find-file-hook 'recentf-save-list)
 
 ;; org-mode
 
@@ -135,7 +149,7 @@
 (setq org-hide-emphasis-markers t)
 
 ;;; keychain
-;;;autoload
+;;; autoload
 (defun keychain-refresh-environment ()
   "Set ssh-agent and gpg-agent environment variables.
 Set the environment variables `SSH_AUTH_SOCK', `SSH_AGENT_PID'
@@ -157,3 +171,6 @@ information retrieved from files created by the keychain script."
 (provide 'keychain-environment)
 
 (keychain-refresh-environment)
+
+;; (provide 'config)
+;;; config.el ends here

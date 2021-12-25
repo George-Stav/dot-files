@@ -1,10 +1,9 @@
-" REQUIRED {{{
+" REQUIRED
 set nocompatible
 filetype off			" Required for Vundle
 syntax enable
-" }}}
 
-" PLUGINS {{{
+" PLUGINS
 set rtp+=~/.vim/bundle/Vundle.vim 
 call vundle#begin()
 
@@ -25,9 +24,8 @@ Plugin 'ryanoasis/vim-devicons'		" Required for nerd fonts to work
 
 call vundle#end()				" Required for Vundle
 filetype plugin indent off		" Required for Vundle
-" }}}
 
-" BASIC CONFIGURATION {{{
+" BASIC CONFIGURATION
 set number relativenumber
 set path+=**
 set wildmode=longest,list,full
@@ -41,15 +39,14 @@ set clipboard+=unnamedplus	" Use system clipboard. If 'unnamedplus' doesn't work
 set mouse=a			" Enable mouse
 set foldenable
 set foldmethod=marker
-set foldmarker={{{,}}}
+" set foldmarker={{{,}}}
 set tabstop=4
 set shiftwidth=4
 set softtabstop=4
 set spelllang=en_gb		" Default language for spell checker
 set fillchars+=eob:\
-" }}}
 
-" BASIC STYLING {{{
+" BASIC STYLING
 " colorscheme dracula
 
 highlight Normal ctermbg=NONE
@@ -64,9 +61,8 @@ highlight SpellBad ctermbg=Red ctermfg=White
 highlight SpellCap cterm=NONE ctermbg=NONE
 highlight SpellRare cterm=NONE ctermbg=NONE
 highlight SpellLocal cterm=Underline ctermbg=NONE
-" }}}
 
-" BASIC KEY BINDING {{{
+" BASIC KEY BINDING
 " Remap Esc Key
 inoremap ;; <Esc>
 
@@ -87,8 +83,6 @@ map <leader>A :setlocal noautoindent<CR>
 " Enable and disable auto comment
 map <leader>c :setlocal formatoptions-=cro<CR>
 map <leader>C :setlocal formatoptions=cro<CR>
-" }}}
 
-" VIM AIRLINE CONFIG {{{
+" VIM AIRLINE CONFIG
 let g:airline#extensions#tabline#enabled = 1
-" }}}

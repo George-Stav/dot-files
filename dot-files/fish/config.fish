@@ -7,6 +7,8 @@ set VISUAL "emacs"
 set -x TEXMFCNF "~/.config:"
 set fish_cursor_insert underscore
 
+set -x LD_LIBRARY_PATH "$LD_LIBRARY_PATH:/usr/lib/"
+
 # keychain --quiet --eval --agents ssh id_ed25519
 
 alias doom="~/.emacs.d/bin/doom"
@@ -14,8 +16,12 @@ alias dc="docker-compose"
 alias warp="warp-cli"
 alias warp-enable="sudo systemctl enable --now warp-svc.service"
 alias warp-disable="warp disconnect && sudo systemctl disable --now warp-svc.service"
+alias comp-suspend="qdbus org.kde.KWin /Compositor suspend"
+alias comp-resume="qdbus org.kde.KWin /Compositor resume"
 alias vpn="nordvpn"
 alias ec="emacsclient -c"
+alias yt="youtube-dl"
+alias alac-theme="alacritty-colorscheme -c $HOME/.config/alacritty/alacritty.yml -C $HOME/.config/alacritty/themes"
 
 ### ~~~~~~~~~~~~~~~~~~~~~ ###
 set fish_greeting

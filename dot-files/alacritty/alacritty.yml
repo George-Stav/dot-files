@@ -1,0 +1,114 @@
+# ENV
+env:
+  TERM: xterm-256color
+
+# WINDOW
+window:
+  dimensions:
+    columns: 100
+    lines: 30
+
+  padding:
+    x: 3
+    y: 7
+
+  dynamic_padding: true
+
+  # decorations: full
+
+  title: Alacritty
+
+  class:
+    instance: Alacritty
+    general: Alacritty
+
+  gtk_theme_variant: dark
+
+# SCROLLING
+scrolling:
+  history: 10000
+  multiplier: 3
+
+# FONT
+font:
+  size: 12
+  normal:
+    family: Jetbrains Mono
+  bold:
+    family: Jetbrains Mono
+  italic:
+    family: Jetbrains Mono
+  bold_italic:
+    family: Jetbrains Mono
+    size: 12.0
+
+# GENERAL
+draw_bold_text_with_bright_colors: true
+background_opacity: 1
+save_to_clipboard: true
+window.dynamic_title: false
+live_config_reload: true
+
+# CURSOR
+cursor:
+  style: Block
+  vi_mode_style: Block
+  unfocused_hollow: true
+
+# SHELL
+shell:
+  program: /usr/bin/fish
+  args:
+    - --login
+
+# MOUSE
+mouse:
+  hide_when_typing: true
+
+# KEY BINDINGS
+key_bindings:
+  - {key: V, mods: Control|Shift, action: Paste}
+  - {key: C, mods: Control|Shift, action: Copy}
+  - {key: Insert, mods: Shift, action: PasteSelection}
+  - {key: Key0, mods: Control, action: ResetFontSize}
+  - {key: Equals, mods: Control, action: IncreaseFontSize}
+  - {key: Plus, mods: Control, action: IncreaseFontSize}
+  - {key: Minus, mods: Control, action: DecreaseFontSize}
+
+# COLOURS / STYLING
+colors:
+  # COLORSCHEME: moonlight_ii_vscode.yaml
+  primary:
+    background: '#1e2030'
+    foreground: '#7f85a3'
+
+  cursor:
+    text: '#7f85a3'
+    cursor: '#808080'
+
+  normal:
+    black: '#444a73'
+    red: '#ff5370'
+    green: '#4fd6be'
+    yellow: '#ffc777'
+    blue: '#3e68d7'
+    magenta: '#fc7b7b'
+    cyan: '#86e1fc'
+    white: '#d0d0d0'
+
+  bright:
+    black: '#828bb8'
+    red: '#ff98a4'
+    green: '#c3e88d'
+    yellow: '#ffc777'
+    blue: '#82aaff'
+    magenta: '#ff966c'
+    cyan: '#b4f9f8'
+    white: '#5f8787'
+  indexed_colors:
+    - {index: 16, color: '#dfaf8f'}
+    - {index: 17, color: '#000000'}
+    - {index: 18, color: '#404040'}
+    - {index: 19, color: '#606060'}
+    - {index: 20, color: '#808080'}
+    - {index: 21, color: '#c0c0c0'}
