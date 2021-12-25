@@ -72,9 +72,17 @@ function modifiers() {
 # export PS1="\W 🚀 > "
 
 alias ls='exa -al --color=always --group-directories-first --icons' # preferred listing
+alias la='exa -a --color=always --group-directories-first --icons' # all files and dirs
+alias ll='exa -l --color=always --group-directories-first --icons' # long format
+alias lt='exa -aT --color=always --group-directories-first --icons' # tree listing
+alias l.="exa -a | egrep '^\.'" # show only dot-files
 
 # Advanced command-not-found hook
-source /usr/share/doc/find-the-command/ftc.bash
+# source /usr/share/doc/find-the-command/ftc.bash
+
+# My Aliases
+
+alias battery='echo $(cat /sys/class/power_supply/BAT1/capacity)%'
 
 # Aliases
 alias dir='dir --color=auto'

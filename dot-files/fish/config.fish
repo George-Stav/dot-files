@@ -22,6 +22,8 @@ alias vpn="nordvpn"
 alias ec="emacsclient -c"
 alias yt="youtube-dl"
 alias alac-theme="alacritty-colorscheme -c $HOME/.config/alacritty/alacritty.yml -C $HOME/.config/alacritty/themes"
+alias battery="echo (cat /sys/class/power_supply/BAT1/capacity)%"
+alias source-fish="source $HOME/.config/fish/config.fish"
 
 ### ~~~~~~~~~~~~~~~~~~~~~ ###
 set fish_greeting
@@ -66,7 +68,7 @@ if status --is-interactive
 end
 
 ## Advanced command-not-found hook
-source /usr/share/doc/find-the-command/ftc.fish
+# source /usr/share/doc/find-the-command/ftc.fish
 
 ## Functions
 function dir-size

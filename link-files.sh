@@ -17,6 +17,8 @@ dotfiles[.tmux.conf]="$HOME/:tmux"
 dotfiles[.doom.d]="$HOME/:doom"
 dotfiles[starship.toml]="$HOME/.config/:starship"
 dotfiles[.bashrc]="$HOME/:bash"
+dotfiles[qtile]="$HOME/.config/:qtile"
+dotfiles[picom.conf]="$HOME/.config/:picom"
 
 
 for file in ${!dotfiles[@]}; do
