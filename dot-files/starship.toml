@@ -149,6 +149,9 @@ add_newline = true
 success_symbol = "[➜](bold green)"     # The "success_symbol" segment is being set to "➜" with the color "bold green"
 error_symbol  = "[➜](bold red)"
 
+[directory]
+truncation_length = 10
+
 # Disable the package module, hiding it from the prompt completely
 [package]
 disabled = true
@@ -157,4 +160,7 @@ disabled = true
 disabled = true
 
 [python]
+disabled = true
+
+[perl]
 disabled = true

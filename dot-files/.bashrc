@@ -19,63 +19,14 @@ fi
 
 set -o vi
 
-function cwd() {
-    pwd | sed "s/\/home\/$USER/~/"
-}
-
-function prompt() {
-    # find working directory
-    prompt=$(pwd | awk -F/ '{print FS $NF}')
-    if [[ $prompt == "/$USER" ]]; then
-       prompt="~"
-    fi
-
-    # append git symbol if inside git repo
-    if [[ $(git rev-parse --is-inside-work-tree 2>/dev/null) ]]; then
-       prompt=" $prompt"
-       # prompt="$prompt "
-    fi
-
-    # append lock symbol if inside dir that is owned by root
-    if [[ $(stat -c "%U" $(pwd)) == "root" ]]; then
-       prompt="$prompt "
-    fi
-
-    echo "$prompt > "
-}
-
-function modifiers() {
-    mod=""
-    # append git symbol if inside git repo
-    if [[ $(git rev-parse --is-inside-work-tree 2>/dev/null) ]]; then
-       mod=""
-    fi
-
-    # append lock symbol if inside dir that is owned by root
-    if [[ $(stat -c "%U" $(pwd)) == "root" ]]; then
-       if [[ ! mod ]]; then
-          mod=""
-       else
-           mod="$mod|"
-       fi
-    fi
-
-    if [[ ! mod ]]; then
-       echo ""
-    else
-        echo "[$mod]"
-    fi
-}
-
-# export PS1='\n$(cwd)\n$(modifiers)> '
-# export PS1='$(prompt)'
-# export PS1="\W 🚀 > "
-
 alias ls='exa -al --color=always --group-directories-first --icons' # preferred listing
 alias la='exa -a --color=always --group-directories-first --icons' # all files and dirs
 alias ll='exa -l --color=always --group-directories-first --icons' # long format
 alias lt='exa -aT --color=always --group-directories-first --icons' # tree listing
 alias l.="exa -a | egrep '^\.'" # show only dot-files
+
+alias lls='ls'
+alias lss='ls'
 
 # Advanced command-not-found hook
 # source /usr/share/doc/find-the-command/ftc.bash
