@@ -32,8 +32,8 @@ from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 
 # mod = "mod4" # super/windows/command key
-mod = "mod1" # left+right alt
 # mod = "lock" # caps-lock key
+mod = "mod1" # left+right alt
 spc = "space"
 terminal = guess_terminal()
 
@@ -71,21 +71,18 @@ keys = [
     # Split = all windows displayed
     # Unsplit = 1 window displayed, like Max layout, but still with
     # multiple stack panes
-    Key([mod, "shift"], "Return", lazy.layout.toggle_split(),
-        desc="Toggle between split and unsplit sides of stack"),
+    # Key([mod, "shift"], "Return", lazy.layout.toggle_split(), desc="Toggle between split and unsplit sides of stack"),
     Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
-    Key(["control", "shift"], "Return", lazy.spawn(terminal), desc="Launch terminal"),
 
     # Toggle between different layouts as defined below
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
-    Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
+    Key([mod], "q", lazy.window.kill(), desc="Kill focused window"),
 
     Key([mod, "control"], "r", lazy.restart(), desc="Restart Qtile"),
-    Key(["shift", "control"], "r", lazy.restart(), desc="Restart Qtile"),
-    # Key([mod, "control"], "r", lazy.reload_config(), desc="Reload Qtile config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
-    Key([mod], "r", lazy.spawncmd(),
-        desc="Spawn a command using a prompt widget"),
+    Key([mod], "e", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
+    Key([mod], "r", lazy.spawn("rofi -show run")),
+    Key([mod], "w", lazy.spawn("rofi -show window")),
 
     # Toggle float window
     Key([mod, "control"], "f", lazy.window.toggle_floating(), desc="Toggle floating window"),
@@ -117,24 +114,24 @@ layout_theme = {
     "margin": 8,
     "border_focus": "#e6c1de",
     "border_normal": "#301762",
-
+    "border_float": "#849182",
 }
 
 layouts = [
     # layout.Columns(border_focus_stack=['#d75f5f', '#8f3d3d'], border_width=2, margin=8),
     layout.Columns(**layout_theme),
-    layout.Max(),
+    layout.Max(**layout_theme),
     # Try more layouts by unleashing below layouts.
     # layout.Stack(num_stacks=2),
-    # layout.Bsp(),
-    # layout.Matrix(),
-    # layout.MonadTall(),
-    # layout.MonadWide(),
-    # layout.RatioTile(),
-    # layout.Tile(),
-    # layout.TreeTab(),
-    # layout.VerticalTile(),
-    # layout.Zoomy(),
+    layout.Bsp(**layout_theme),
+    layout.Matrix(**layout_theme),
+    layout.MonadTall(**layout_theme),
+    layout.MonadWide(**layout_theme),
+    layout.RatioTile(**layout_theme),
+    layout.Tile(**layout_theme),
+    layout.TreeTab(**layout_theme),
+    layout.VerticalTile(**layout_theme),
+    layout.Zoomy(**layout_theme),
 ]
 
 widget_defaults = dict(
@@ -190,7 +187,7 @@ floating_layout = layout.Floating(float_rules=[
     *layout.Floating.default_float_rules,
     Match(wm_class='confirmreset'),  # gitk
     Match(wm_class='makebranch'),  # gitk
-    
+    Match(wm_class='Steam'),  # Steam
     Match(wm_class='ssh-askpass'),  # ssh-askpass
     Match(title='branchdialog'),  # gitk
     Match(title='pinentry'),  # GPG key password entry

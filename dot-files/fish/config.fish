@@ -24,6 +24,8 @@ alias yt="youtube-dl"
 alias alac-theme="alacritty-colorscheme -c $HOME/.config/alacritty/alacritty.yml -C $HOME/.config/alacritty/themes"
 alias battery="echo (cat /sys/class/power_supply/BAT1/capacity)%"
 alias source-fish="source $HOME/.config/fish/config.fish"
+alias paru="paru --bottomup"
+alias opt-man="prime-offload &> /dev/null && optimus-manager"
 
 ### ~~~~~~~~~~~~~~~~~~~~~ ###
 set fish_greeting

@@ -1,6 +1,8 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+prime-offload &> /dev/null
+
 # Load starship prompt if starship is installed
 if  [ -x /usr/bin/starship ]; then
     __main() {
@@ -27,6 +29,8 @@ alias l.="exa -a | egrep '^\.'" # show only dot-files
 
 alias lls='ls'
 alias lss='ls'
+
+alias paru='paru --bottomup'
 
 # Advanced command-not-found hook
 # source /usr/share/doc/find-the-command/ftc.bash
