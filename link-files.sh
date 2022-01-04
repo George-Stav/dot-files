@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-set -e
+set -xe
 
-DIR="$HOME/dot-files/dot-files"
+DIR="$HOME/dotfiles/dotfiles"
 declare -A dotfiles
 
 # dictionary of dot files
@@ -33,7 +33,7 @@ for file in ${!dotfiles[@]}; do
 
     # if the executable exists in $PATH then proceed
     if [[ $(find ${PATH//:/\/ } -name $executable) ]]; then
-        rm -rf "$path$file"
-        ln -s "$DIR/$file" $path
+        sudo rm -rf "$path$file"
+        sudo ln -s "$DIR/$file" $path
     fi
 done
