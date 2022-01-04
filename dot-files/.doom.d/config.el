@@ -26,7 +26,7 @@
 ;; Monaco
 ;; Jetbrains Mono
 (setq doom-font (font-spec :family "Jetbrains Mono" :size 18))
-      ;; doom-variable-pitch-font (font-spec :family "Ubuntu" :size 15))
+(setq doom-variable-pitch-font (font-spec :family "Jetbrains Mono" :size 18))
 
 (after! doom-themes
   (setq doom-themes-enable-bold t
