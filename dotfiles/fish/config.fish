@@ -2,12 +2,14 @@
 
 # set -x MANPAGER "nvim -c 'set ft=man' -"
 set TERM "xterm-256color"
-set EDITOR "neovim"
+set EDITOR "vim"
 set VISUAL "emacs"
 set -x TEXMFCNF "~/.config:"
 set fish_cursor_insert underscore
 
 set -x LD_LIBRARY_PATH "$LD_LIBRARY_PATH:/usr/lib/"
+
+fish_add_path "$HOME/.emacs.d/bin"
 
 # keychain --quiet --eval --agents ssh id_ed25519
 

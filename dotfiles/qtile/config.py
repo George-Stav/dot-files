@@ -84,6 +84,9 @@ keys = [
     Key([mod], "r", lazy.spawn("rofi -show run")),
     Key([mod], "w", lazy.spawn("rofi -show window")),
 
+    Key([mod], "a", lazy.spawn("emacsclient -c")),
+    Key([mod, "shift"], "a", lazy.spawn("systemctl --user restart emacs")),
+
     # Toggle float window
     Key([mod, "control"], "f", lazy.window.toggle_floating(), desc="Toggle floating window"),
 

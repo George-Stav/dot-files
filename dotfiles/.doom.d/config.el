@@ -100,6 +100,9 @@
        :desc "Run python interpreter" "p" #'run-python))
 
 (map! :leader
+      :desc "Dired" "D" #'dired)
+
+(map! :leader
       (:prefix-map ("d" . "ediff")
        :desc "Quit ediff session" "q" #'ediff-quit
        :desc "Run ediff on two files" "d" #'ediff
