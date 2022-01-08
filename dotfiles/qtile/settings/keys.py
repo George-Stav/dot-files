@@ -33,6 +33,8 @@ keys = [Key(key[0], key[1], *key[2:]) for key in [
     # Move windows up or down in current stack
     ([mod, "shift"], "j", lazy.layout.shuffle_down()),
     ([mod, "shift"], "k", lazy.layout.shuffle_up()),
+    ([mod, "shift"], "l", lazy.layout.shuffle_right()),
+    ([mod, "shift"], "h", lazy.layout.shuffle_left()),
 
     # Toggle between different layouts as defined below
     ([mod], "Tab", lazy.next_layout()),

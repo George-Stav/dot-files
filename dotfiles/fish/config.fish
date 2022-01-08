@@ -28,6 +28,7 @@ alias battery="echo (cat /sys/class/power_supply/BAT1/capacity)%"
 alias source-fish="source $HOME/.config/fish/config.fish"
 alias paru="paru --bottomup"
 alias opt-man="prime-offload &> /dev/null && optimus-manager"
+alias multi-monitor='xrandr --output "eDP-1" --off --output "DP-1" --primary --mode 1920x1080 --rate 144 --output "HDMI-1-0" --mode 1920x1080 --rate 144 --right-of "DP-1"'
 
 ### ~~~~~~~~~~~~~~~~~~~~~ ###
 set fish_greeting

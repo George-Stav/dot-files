@@ -84,8 +84,12 @@ primary_widgets = [
     powerline('color3', 'color4'),
 
     icon(bg="color3", text=' '),  # Icon: nf-fa-feed
-    
+
     widget.Net(**base(bg='color3'), interface='wlan0'),
+
+    icon(bg="color3", text=' '),  # Icon: nf-fa-feed
+
+    widget.Net(**base(bg='color3'), interface='eno1'),
 
     powerline('color2', 'color3'),
 
@@ -123,8 +127,8 @@ secondary_widgets = [
 ]
 
 widget_defaults = {
-    'font': 'UbuntuMono Nerd Font Bold',
+    'font': 'Jetbrains Mono Bold',
     'fontsize': 14,
-    'padding': 1,
+    'padding': 2,
 }
 extension_defaults = widget_defaults.copy()

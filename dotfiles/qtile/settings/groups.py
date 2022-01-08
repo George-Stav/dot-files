@@ -20,8 +20,11 @@ from .keys import mod, keys
 # nf-mdi-image, 
 # nf-mdi-layers
 
+def cycle_groups(qtile):
+    qtile.current_screen.set_group(qtile)
+
 groups = [Group(i) for i in [
-    "   ", "   ", "   ", "   ", "  ", "   ", "   ", "   ", "   ",
+    "   ", "   ", "   ", "   ", "  ", "   ", "   ", "   ", "   ",
 ]]
 
 for i, group in enumerate(groups):
@@ -30,5 +33,7 @@ for i, group in enumerate(groups):
         # Switch to workspace N
         Key([mod], actual_key, lazy.group[group.name].toscreen()),
         # Send window to workspace N
-        Key([mod, "shift"], actual_key, lazy.window.togroup(group.name))
+        Key([mod, "shift"], actual_key, lazy.window.togroup(group.name, switch_group=True)),
+        # Cycle through groups
+        Key([mod], "s", lazy.function(cycle_groups))
     ])
