@@ -33,7 +33,7 @@ for i, group in enumerate(groups):
         # Switch to workspace N
         Key([mod], actual_key, lazy.group[group.name].toscreen()),
         # Send window to workspace N
-        Key([mod, "shift"], actual_key, lazy.window.togroup(group.name, switch_group=True)),
+        Key([mod, "control"], actual_key, lazy.window.togroup(group.name, switch_group=True)),
         # Cycle through groups
         Key([mod], "s", lazy.function(cycle_groups))
     ])

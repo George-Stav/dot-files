@@ -9,6 +9,7 @@ from libqtile.command import lazy
 
 
 mod = "mod1"
+scripts_dir = "/home/george/dev/scripts"
 
 keys = [Key(key[0], key[1], *key[2:]) for key in [
     # ------------ Window Configs ------------
@@ -21,14 +22,14 @@ keys = [Key(key[0], key[1], *key[2:]) for key in [
 
     # Grow windows. If current window is on the edge of screen and direction
     # will be to screen edge - window would shrink.
-    ([mod, "control"], "h", lazy.layout.grow_left()),
-    ([mod, "control"], "l", lazy.layout.grow_right()),
+    ([mod], "comma", lazy.layout.grow_left()),
+    ([mod], "period", lazy.layout.grow_right()),
     ([mod, "control"], "j", lazy.layout.grow_down()),
     ([mod, "control"], "k", lazy.layout.grow_up()),
     ([mod], "n", lazy.layout.normalize()),
 
     # Toggle floating
-    ([mod, "shift"], "f", lazy.window.toggle_floating()),
+    ([mod, "control"], "f", lazy.window.toggle_floating()),
 
     # Move windows up or down in current stack
     ([mod, "shift"], "j", lazy.layout.shuffle_down()),
@@ -44,8 +45,8 @@ keys = [Key(key[0], key[1], *key[2:]) for key in [
     ([mod], "q", lazy.window.kill()),
 
     # Switch focus of monitors
-    ([mod], "period", lazy.next_screen()),
-    ([mod], "comma", lazy.prev_screen()),
+    ([mod, "control"], "l", lazy.next_screen()),
+    ([mod, "control"], "h", lazy.prev_screen()),
 
     # Restart Qtile
     ([mod, "control"], "r", lazy.restart()),
@@ -82,17 +83,30 @@ keys = [Key(key[0], key[1], *key[2:]) for key in [
     ([mod], "s", lazy.spawn("scrot")),
     ([mod, "shift"], "s", lazy.spawn("scrot -s")),
 
+    # ------------ Utility Configs ------------
+
+    ([mod], "space", lazy.spawn(f'{scripts_dir}/cycle-kb-layout.sh')),
+
     # ------------ Hardware Configs ------------
 
     # Volume
     ([], "XF86AudioLowerVolume", lazy.spawn(
-        "pactl set-sink-volume @DEFAULT_SINK@ -2%"
+        f'{scripts_dir}/change-volume.sh -2%'
     )),
     ([], "XF86AudioRaiseVolume", lazy.spawn(
-        "pactl set-sink-volume @DEFAULT_SINK@ +2%"
+        f'{scripts_dir}/change-volume.sh +2%'
     )),
     ([], "XF86AudioMute", lazy.spawn(
         "pactl set-sink-mute @DEFAULT_SINK@ toggle"
+    )),
+    ([], "XF86AudioPlay", lazy.spawn(
+        "playerctl play-pause"
+    )),
+    ([], "XF86AudioPrev", lazy.spawn(
+        "playerctl previous"
+    )),
+    ([], "XF86AudioNext", lazy.spawn(
+        "playerctl next"
     )),
 
     # Brightness

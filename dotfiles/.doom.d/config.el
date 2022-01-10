@@ -125,6 +125,7 @@
 ;; LaTeX
 ;; Skip prompt when pressing C-c C-c and force run LaTeX
 (setq TeX-command-force "LaTeX")
+(setq vterm-shell "/usr/bin/fish")
 
 (map! :leader
       :desc "Save Tex file and export to PDF" "l" #'TeX-command-master)
