@@ -138,6 +138,7 @@
 ;; (load! "~/dev/elisp/run-cmd-on-save.el")
 
 (setq auth-sources '("~/.authinfo"))
+(setq vterm-shell "/usr/bin/fish")
 
 ;; ssh-agent
 ;; (require 'exec-path-from-shell)
@@ -171,6 +172,10 @@ information retrieved from files created by the keychain script."
           (and gpg
                (string-match "GPG_AGENT_INFO[=\s]\\([^\s;\n]*\\)" gpg)
                (setenv       "GPG_AGENT_INFO" (match-string 1 gpg))))))
+
+;; Org-agenda
+(setq org-log-done t
+      org-agenda-files '("~/Packt/agenda.org", "~/Documents/notes/asdf.org"))
 
 (provide 'keychain-environment)
 
