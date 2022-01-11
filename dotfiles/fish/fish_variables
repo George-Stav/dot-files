@@ -2,8 +2,13 @@
 # VERSION: 3.0
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 SETUVAR --export SSH_AGENT_PID:7635
 SETUVAR --export SSH_AUTH_SOCK:/tmp/ssh\x2dXXXXXXdb8HAa/agent\x2e7634
+=======
+SETUVAR --export SSH_AGENT_PID:3194
+SETUVAR --export SSH_AUTH_SOCK:/tmp/ssh\x2dXXXXXXusPLsC/agent\x2e3191
+>>>>>>> Stashed changes
 =======
 SETUVAR --export SSH_AGENT_PID:3194
 SETUVAR --export SSH_AUTH_SOCK:/tmp/ssh\x2dXXXXXXusPLsC/agent\x2e3191
