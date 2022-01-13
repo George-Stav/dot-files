@@ -20,11 +20,12 @@ from .keys import mod, keys
 # nf-mdi-image, 
 # nf-mdi-layers
 
-def cycle_groups(qtile):
-    qtile.current_screen.set_group(qtile)
+# def cycle_groups(qtile, name):
+#     lazy.spawn(f'notify-send "Hey" "{name}"')
+    # qtile.current_screen.set_group(qtile.current_screen.next_group)
 
 groups = [Group(i) for i in [
-    "   ", "   ", "   ", "   ", "  ", "   ", "   ", "   ", "   ",
+    "   ", "   ", "   ", "   ", "  ", "   ", "   ", "   ", "   ",
 ]]
 
 for i, group in enumerate(groups):
@@ -33,7 +34,7 @@ for i, group in enumerate(groups):
         # Switch to workspace N
         Key([mod], actual_key, lazy.group[group.name].toscreen()),
         # Send window to workspace N
-        Key([mod, "control"], actual_key, lazy.window.togroup(group.name, switch_group=True)),
+        Key([mod, "control"], actual_key, lazy.window.togroup(group.name)),
         # Cycle through groups
-        Key([mod], "s", lazy.function(cycle_groups))
+        # Key([mod], "x", lazy.function(cycle_groups, i))
     ])

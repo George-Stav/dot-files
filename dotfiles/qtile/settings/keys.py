@@ -9,9 +9,25 @@ from libqtile.command import lazy
 
 
 mod = "mod1"
-scripts_dir = "/home/george/dev/scripts"
+scripts_dir = "/home/george/dev/scripts/scripts/"
+
+@lazy.function
+def cycle_groups(qtile, key="prev"):
+    if key == "next":
+        group = qtile.current_screen.group.get_next_group()
+    else:
+        group = qtile.current_screen.group.get_previous_group()
+    qtile.current_screen.set_group(group)
+
+def latest_group(qtile):
+    qtile.current_screen.set_group(qtile.current_screen.previous_group)
 
 keys = [Key(key[0], key[1], *key[2:]) for key in [
+    # ------------ Group Configs ------------
+
+    ([mod, "control"], "comma", cycle_groups),
+    ([mod, "control"], "period", cycle_groups("next")),
+
     # ------------ Window Configs ------------
 
     # Switch between windows in current stack pane
@@ -22,8 +38,8 @@ keys = [Key(key[0], key[1], *key[2:]) for key in [
 
     # Grow windows. If current window is on the edge of screen and direction
     # will be to screen edge - window would shrink.
-    ([mod], "comma", lazy.layout.grow_left()),
-    ([mod], "period", lazy.layout.grow_right()),
+    ([mod, "control"], "h", lazy.layout.grow_left()),
+    ([mod, "control"], "l", lazy.layout.grow_right()),
     ([mod, "control"], "j", lazy.layout.grow_down()),
     ([mod, "control"], "k", lazy.layout.grow_up()),
     ([mod], "n", lazy.layout.normalize()),
@@ -45,19 +61,21 @@ keys = [Key(key[0], key[1], *key[2:]) for key in [
     ([mod], "q", lazy.window.kill()),
 
     # Switch focus of monitors
-    ([mod, "control"], "l", lazy.next_screen()),
-    ([mod, "control"], "h", lazy.prev_screen()),
+    ([mod], "comma", lazy.next_screen()),
+    ([mod], "period", lazy.prev_screen()),
+
+    # Groups
+    ([mod], "grave", lazy.function(latest_group)),
 
     # Restart Qtile
     ([mod, "control"], "r", lazy.restart()),
 
     ([mod, "control"], "q", lazy.shutdown()),
-    ([mod], "e", lazy.spawncmd()),
+    # ([mod], "e", lazy.spawncmd()),
 
     # ------------ App Configs ------------
 
     # Rofi
-    ([mod, "shift"], "m", lazy.spawn("rofi -show")),
     ([mod], "m", lazy.spawn("rofi -show drun")),
     ([mod], "r", lazy.spawn("rofi -show run")),
     ([mod], "w", lazy.spawn("rofi -show window")),
@@ -66,11 +84,12 @@ keys = [Key(key[0], key[1], *key[2:]) for key in [
     ([mod], "b", lazy.spawn("firefox")),
 
     # Emacs
-    ([mod], "a", lazy.spawn("emacsclient -c")),
-    ([mod, "shift"], "a", lazy.spawn("systemctl --user restart emacs")),
+    ([mod], "e", lazy.spawn("emacsclient -c")),
+    ([mod, "shift"], "e", lazy.spawn("systemctl --user restart emacs")),
+    ([mod], "d", lazy.spawn("emacsclient -c -a 'emacs' --eval '(dired nil)'")),
 
     # File Explorer
-    ([mod], "e", lazy.spawn("pcmanfm")),
+    # ([mod], "e", lazy.spawn("pcmanfm")),
 
     # Terminal
     ([mod], "Return", lazy.spawn("alacritty")),
@@ -80,8 +99,9 @@ keys = [Key(key[0], key[1], *key[2:]) for key in [
     # ([mod, "shift"], "r", lazy.spawn("redshift -x")),
 
     # Screenshot
-    ([mod], "s", lazy.spawn("scrot")),
-    ([mod, "shift"], "s", lazy.spawn("scrot -s")),
+    # ([mod], "s", lazy.spawn("scrot")),
+    # ([mod, "shift"], "s", lazy.spawn("scrot -s")),
+    ([mod, "shift"], "s", lazy.spawn("flameshot gui")),
 
     # ------------ Utility Configs ------------
 

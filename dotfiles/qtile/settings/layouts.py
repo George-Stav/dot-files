@@ -16,11 +16,11 @@ layout_conf = {
 }
 
 layouts = [
-    layout.Max(),
     layout.Columns(**layout_conf),
-    # layout.MonadTall(**layout_conf),
+    layout.Max(),
     layout.MonadWide(**layout_conf),
     layout.Floating(**layout_conf),
+    # layout.MonadTall(**layout_conf),
     # layout.Bsp(**layout_conf),
     # layout.Matrix(columns=2, **layout_conf),
     # layout.RatioTile(**layout_conf),
@@ -37,7 +37,6 @@ floating_layout = layout.Floating(
         Match(wm_class='makebranch'),
         Match(wm_class='maketag'),
         Match(wm_class='Steam'),
-        Match(wm_class='pavucontrol'),
         Match(wm_class='ssh-askpass'),
         Match(title='branchdialog'),
         Match(title='pinentry'),

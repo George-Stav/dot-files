@@ -87,9 +87,11 @@ primary_widgets = [
 
     widget.Net(**base(bg='color3'), interface='wlan0'),
 
-    icon(bg="color3", text=' '),  # Icon: nf-fa-feed
+    icon(bg="color3", text=' ', fontsize=28),  # Icon: nf-fa-feed
 
-    widget.Net(**base(bg='color3'), interface='eno1'),
+    widget.Memory(**base(bg='color3')),
+
+    # widget.Net(**base(bg='color3'), interface='eno1'),
 
     powerline('color2', 'color3'),
 
@@ -113,7 +115,13 @@ secondary_widgets = [
 
     separator(),
 
-    powerline('color1', 'dark'),
+    powerline('color3', 'dark'),
+
+    icon(bg="color3", text=''),  # Icon: nf-fa-feed
+
+    widget.Net(**base(bg='color3'), interface='eno1'),
+
+    powerline('color1', 'color3'),
 
     widget.CurrentLayoutIcon(**base(bg='color1'), scale=0.65),
 
@@ -124,6 +132,8 @@ secondary_widgets = [
     widget.Clock(**base(bg='color2'), format='%d/%m/%Y - %H:%M '),
 
     powerline('dark', 'color2'),
+
+    widget.Systray(background=colors['dark'], padding=2),
 ]
 
 widget_defaults = {

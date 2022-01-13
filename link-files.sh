@@ -21,6 +21,7 @@ dotfiles[qtile]="$HOME/.config/:qtile"
 dotfiles[picom.conf]="$HOME/.config/:picom"
 dotfiles[pacman.conf]="/etc/:pacman"
 dotfiles[99-libinput-custom-config.conf]="/etc/X11/xorg.conf.d/:Xorg"
+dotfiles[.easystroke]="$HOME/:easystroke"
 
 
 for file in ${!dotfiles[@]}; do
