@@ -1,5 +1,6 @@
 from libqtile import widget
 from .theme import colors
+from .helpers import get_monitor_count
 
 # Get the icons at https://www.nerdfonts.com/cheat-sheet (you need a Nerd Font)
 
@@ -69,7 +70,7 @@ primary_widgets = [
 
     powerline('color4', 'dark'),
 
-    icon(bg="color4", text=' '), # Icon: nf-fa-download
+    icon(bg="color4", text='', fontsize=20), # Icon: nf-fa-download
     
     widget.CheckUpdates(
         background=colors['color4'],
@@ -83,7 +84,7 @@ primary_widgets = [
 
     powerline('color3', 'color4'),
 
-    icon(bg="color3", text=' '),  # Icon: nf-fa-feed
+    icon(bg="color3", text='', fontsize=20),  # Icon: nf-fa-feed
 
     widget.Net(**base(bg='color3'), interface='wlan0'),
 
@@ -97,13 +98,9 @@ primary_widgets = [
 
     powerline('color1', 'color2'),
 
-    icon(bg="color1", fontsize=17, text=' '), # Icon: nf-mdi-calendar_clock
-
     widget.Clock(**base(bg='color1'), format='%d/%m/%Y - %H:%M '),
 
     powerline('dark', 'color1'),
-
-    widget.Systray(background=colors['dark'], padding=5),
 ]
 
 secondary_widgets = [
@@ -111,26 +108,41 @@ secondary_widgets = [
 
     separator(),
 
-    powerline('color3', 'dark'),
+    powerline('color4', 'dark'),
 
-    icon(bg="color3", text='', fontsize=28),  # Icon: nf-fa-feed
+    icon(bg="color4", text='RAM', fontsize=12),
 
-    widget.Memory(**base(bg='color3')),
+    widget.Memory(**base(bg='color4'), format='{MemUsed: .0f}{mm}'),
 
-    powerline('color1', 'color3'),
+    powerline('color3', 'color4'),
 
-    widget.CurrentLayoutIcon(**base(bg='color1'), scale=0.65),
+    icon(bg="color3", text='', fontsize=28),
 
-    widget.CurrentLayout(**base(bg='color1'), padding=5),
+    widget.CPU(**base(bg='color3'), format='{freq_current}GHz {load_percent}%'),
 
-    powerline('color2', 'color1'),
+    powerline('color2', 'color3'),
 
-    widget.Clock(**base(bg='color2'), format='%d/%m/%Y - %H:%M '),
+    icon(bg="color2", text="", fontsize=28),
 
-    powerline('dark', 'color2'),
+    widget.NvidiaSensors(**base(bg='color2'), format='{temp}°C {perf}'),
 
-    widget.Systray(background=colors['dark'], padding=2),
+    powerline('color1_5', 'color2'),
+
+    widget.CurrentLayoutIcon(**base(bg='color1_5'), scale=0.65),
+
+    widget.CurrentLayout(**base(bg='color1_5'), padding=5),
+
+    powerline('color1', 'color1_5'),
+
+    widget.Clock(**base(bg='color1'), format='%d/%m/%Y - %H:%M '),
+
+    powerline('dark', 'color1'),
 ]
+
+if get_monitor_count() > 1:
+    secondary_widgets += [widget.Systray(background=colors['dark'], padding=2)]
+else:
+    primary_widgets += [widget.Systray(background=colors['dark'], padding=2)]
 
 widget_defaults = {
     'font': 'Jetbrains Mono Bold',
