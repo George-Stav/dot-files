@@ -20,7 +20,7 @@ alias warp-enable="sudo systemctl enable --now warp-svc.service"
 alias warp-disable="warp disconnect && sudo systemctl disable --now warp-svc.service"
 alias comp-suspend="qdbus org.kde.KWin /Compositor suspend"
 alias comp-resume="qdbus org.kde.KWin /Compositor resume"
-alias vpn="nordvpn"
+alias vpn="mullvad"
 alias ec="emacsclient -c"
 alias yt="youtube-dl"
 alias alac-theme="alacritty-colorscheme -c $HOME/.config/alacritty/alacritty.yml -C $HOME/.config/alacritty/themes"
@@ -74,11 +74,6 @@ end
 
 ## Advanced command-not-found hook
 # source /usr/share/doc/find-the-command/ftc.fish
-
-## Functions
-function dir-size
-	du -bd 1 $argv | sort -n | numfmt --to iec
-end
 
 # Functions needed for !! and !$ https://github.com/oh-my-fish/plugin-bang-bang
 function __history_previous_command

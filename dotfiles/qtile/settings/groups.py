@@ -4,7 +4,7 @@
 
 # Qtile workspaces
 
-from libqtile.config import Key, Group
+from libqtile.config import Key, Group, Match
 from libqtile.command import lazy
 from .keys import mod, keys
 
@@ -20,16 +20,57 @@ from .keys import mod, keys
 # nf-mdi-image, 
 # nf-mdi-layers
 
-# def cycle_groups(qtile, name):
-#     lazy.spawn(f'notify-send "Hey" "{name}"')
-    # qtile.current_screen.set_group(qtile.current_screen.next_group)
+# groups = [Group(name=i+1, label=l) for i, l in enumerate([
+# groups = [Group(i) for i in [
+#     "   ", "   ", "   ", "   ", "  ", "   ", "   ", " 嗢  ", "   ",
+# ]]
 
-groups = [Group(i) for i in [
-    "   ", "   ", "   ", "   ", "  ", "   ", "   ", "   ", "   ",
-]]
+groups = [
+    Group(
+        name="1",
+        label="   "
+    ),
+    Group(
+        name="2",
+        label="   "
+    ),
+    Group(
+        name="3",
+        label="   "
+    ),
+    Group(
+        name="4",
+        label="   "
+    ),
+    Group(
+        name="5",
+        label="   "
+    ),
+    Group(
+        name="6",
+        label="   "
+    ),
+    Group(
+        name="7",
+        label="   "
+        # label="  "
+    ),
+    Group(
+        name="8",
+        label=" 嗢  "
+    ),
+    Group(
+        name="9",
+        label="   ",
+        matches=[Match(wm_class=["spotify"])],
+        spawn=["spotify"]
+    )
+]
 
-for i, group in enumerate(groups):
-    actual_key = str(i + 1)
+# for i, group in enumerate(groups):
+for group in groups:
+    # actual_key = str(i + 1)
+    actual_key = group.name
     keys.extend([
         # Switch to workspace N
         Key([mod], actual_key, lazy.group[group.name].toscreen()),

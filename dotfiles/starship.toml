@@ -155,6 +155,9 @@ truncation_length = 10
 [jobs]
 format = "[$symbol $number\n]($style)"
 
+[sudo]
+disabled = false
+
 # Disable the package module, hiding it from the prompt completely
 [package]
 disabled = true

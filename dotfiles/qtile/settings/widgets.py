@@ -87,10 +87,6 @@ primary_widgets = [
 
     widget.Net(**base(bg='color3'), interface='wlan0'),
 
-    icon(bg="color3", text=' ', fontsize=28),  # Icon: nf-fa-feed
-
-    widget.Memory(**base(bg='color3')),
-
     # widget.Net(**base(bg='color3'), interface='eno1'),
 
     powerline('color2', 'color3'),
@@ -117,9 +113,9 @@ secondary_widgets = [
 
     powerline('color3', 'dark'),
 
-    icon(bg="color3", text=''),  # Icon: nf-fa-feed
+    icon(bg="color3", text='', fontsize=28),  # Icon: nf-fa-feed
 
-    widget.Net(**base(bg='color3'), interface='eno1'),
+    widget.Memory(**base(bg='color3')),
 
     powerline('color1', 'color3'),
 

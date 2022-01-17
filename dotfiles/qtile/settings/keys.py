@@ -6,29 +6,48 @@
 
 from libqtile.config import Key
 from libqtile.command import lazy
+from libqtile.utils import send_notification
+import json
 
 
 mod = "mod1"
 scripts_dir = "/home/george/dev/scripts/scripts/"
 
-@lazy.function
-def cycle_groups(qtile, key="prev"):
-    if key == "next":
-        group = qtile.current_screen.group.get_next_group()
-    else:
-        group = qtile.current_screen.group.get_previous_group()
-    qtile.current_screen.set_group(group)
+# @lazy.function
+# def cycle_groups(qtile, key="prev"):
+#     if key == "next":
+#         group = qtile.current_screen.group.get_next_group()
+#     else:
+#         group = qtile.current_screen.group.get_previous_group()
+#     qtile.current_screen.set_group(group)
 
-def latest_group(qtile):
-    qtile.current_screen.set_group(qtile.current_screen.previous_group)
+# def latest_group(qtile):
+#     qtile.current_screen.set_group(qtile.current_screen.previous_group)
+
+@lazy.function
+def testing(qtile, obj="Empty"):
+    # string = qtile.cmd_windows()
+    windows = {w.name:w.group.name for w in qtile.windows_map.values() if w.group is not None}
+    # qtile.cmd_spawn(f'rofi -e "{windows}"')
+    qtile.cmd_spawn(f'rofi -e "{qtile.window.name}"')
 
 keys = [Key(key[0], key[1], *key[2:]) for key in [
+    # ------------ Testing ------------
+
+    ([mod, "control"], "Return", testing),
+
     # ------------ Group Configs ------------
 
-    ([mod, "control"], "comma", cycle_groups),
-    ([mod, "control"], "period", cycle_groups("next")),
+    # Cycle through groups
+    ([mod, "control"], "comma", lazy.screen.prev_group()),
+    ([mod, "control"], "period", lazy.screen.next_group()),
+
+    # Toggle between the latest 2 groups
+    ([mod], "grave", lazy.screen.toggle_group()),
 
     # ------------ Window Configs ------------
+    ([mod, "shift"], "m", lazy.window.toggle_minimize()),
+    ([mod, "shift"], "f", lazy.window.toggle_fullscreen()),
 
     # Switch between windows in current stack pane
     ([mod], "j", lazy.layout.down()),
@@ -64,14 +83,9 @@ keys = [Key(key[0], key[1], *key[2:]) for key in [
     ([mod], "comma", lazy.next_screen()),
     ([mod], "period", lazy.prev_screen()),
 
-    # Groups
-    ([mod], "grave", lazy.function(latest_group)),
-
     # Restart Qtile
     ([mod, "control"], "r", lazy.restart()),
-
     ([mod, "control"], "q", lazy.shutdown()),
-    # ([mod], "e", lazy.spawncmd()),
 
     # ------------ App Configs ------------
 
@@ -105,16 +119,16 @@ keys = [Key(key[0], key[1], *key[2:]) for key in [
 
     # ------------ Utility Configs ------------
 
-    ([mod], "space", lazy.spawn(f'{scripts_dir}/cycle-kb-layout.sh')),
+    ([mod], "space", lazy.spawn('cycle-kb-layout')),
 
     # ------------ Hardware Configs ------------
 
     # Volume
     ([], "XF86AudioLowerVolume", lazy.spawn(
-        f'{scripts_dir}/change-volume.sh -2%'
+        "change-volume -2%"
     )),
     ([], "XF86AudioRaiseVolume", lazy.spawn(
-        f'{scripts_dir}/change-volume.sh +2%'
+        "change-volume +2%"
     )),
     ([], "XF86AudioMute", lazy.spawn(
         "pactl set-sink-mute @DEFAULT_SINK@ toggle"
