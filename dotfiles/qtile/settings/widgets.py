@@ -1,10 +1,94 @@
 from libqtile import widget
 from .theme import colors
-from .helpers import get_monitor_count
+from .helpers import get_monitor_count, get_mic_state
+
+# ~~~~~~~~~ CUSTOM WIDGETS ~~~~~~~~~ #
+
+from typing import Any, List, Tuple
+from libqtile import bar, hook
+from libqtile.widget import base
+
+class MicState(base._TextBox):
+    defaults = [
+        ("active_icon", "", "Icon used to indicate that the mic is active"),
+        ("mute_icon", "", "Icon used to indicate that the mic is muted"),
+    ]
+
+    def __init__(self, text=" ", width=bar.CALCULATED, **config):
+        base._TextBox.__init__(self, text=text, width=width, **config)
+        self.add_defaults(MicState.defaults)
+
+    def toggle(self):
+        icon = self.active_icon if get_mic_state() == "on" else self.mute_icon
+        self.update(text=icon)
+
+class MyWindowCount(base._TextBox):
+    """
+    Same implementation of default WindowCount() widget,
+    but I've added the show_one variable which works in
+    the same way as the default show_zero variable.
+    """
+
+    defaults = [
+        ("font", "sans", "Text font"),
+        ("fontsize", None, "Font pixel size. Calculated if None."),
+        ("fontshadow", None, "font shadow color, default is None(no shadow)"),
+        ("padding", None, "Padding left and right. Calculated if None."),
+        ("foreground", "#ffffff", "Foreground colour."),
+        ("text_format", "{num}", "Format for message"),
+        ("show_zero", False, "Show window count when no windows"),
+        ("threshold", 0, "Show window count when number of windows in group is more than the threshold"),
+    ]  # type: List[Tuple[str, Any, str]]
+
+    def __init__(self, text=" ", width=bar.CALCULATED, **config):
+        base._TextBox.__init__(self, text=text, width=width, **config)
+        self.add_defaults(MyWindowCount.defaults)
+        self._count = 0
+
+    def _configure(self, qtile, bar):
+        base._TextBox._configure(self, qtile, bar)
+        self._setup_hooks()
+        self._wincount()
+
+    def _setup_hooks(self):
+        hook.subscribe.client_killed(self._win_killed)
+        hook.subscribe.client_managed(self._wincount)
+        hook.subscribe.current_screen_change(self._wincount)
+        hook.subscribe.setgroup(self._wincount)
+
+    def _wincount(self, *args):
+        try:
+            self._count = len(self.bar.screen.group.windows)
+        except AttributeError:
+            self._count = 0
+
+        self.update(self.text_format.format(num=self._count))
+
+    def _win_killed(self, window):
+        try:
+            self._count = len(self.bar.screen.group.windows)
+            if window.group == self.bar.screen.group:
+                self._count -= 1
+        except AttributeError:
+            self._count = 0
+
+        self.update(self.text_format.format(num=self._count))
+
+    def calculate_length(self):
+        if self.text and (self._count > self.threshold or self.show_zero):
+            return min(self.layout.width, self.bar.width) + self.actual_padding * 2
+        else:
+            return 0
+
+    def cmd_get(self):
+        """Retrieve the current text."""
+        return self.text
+
+# ~~~~~~~~~ CUSTOM WIDGETS ~~~~~~~~~ #
 
 # Get the icons at https://www.nerdfonts.com/cheat-sheet (you need a Nerd Font)
 
-def base(fg='text', bg='dark'): 
+def base_colours(fg='text', bg='dark'):
     return {
         'foreground': colors[fg],
         'background': colors[bg]
@@ -12,12 +96,12 @@ def base(fg='text', bg='dark'):
 
 
 def separator():
-    return widget.Sep(**base(), linewidth=0, padding=5)
+    return widget.Sep(**base_colours(), linewidth=0, padding=5)
 
 
 def icon(fg='text', bg='dark', fontsize=16, text="?"):
     return widget.TextBox(
-        **base(fg, bg),
+        **base_colours(fg, bg),
         fontsize=fontsize,
         text=text,
         padding=3
@@ -26,7 +110,7 @@ def icon(fg='text', bg='dark', fontsize=16, text="?"):
 
 def powerline(fg="light", bg="dark"):
     return widget.TextBox(
-        **base(fg, bg),
+        **base_colours(fg, bg),
         text="", # Icon: nf-oct-triangle_left
         fontsize=60,
         padding=-9
@@ -37,7 +121,7 @@ def workspaces():
     return [
         separator(),
         widget.GroupBox(
-            **base(fg='light'),
+            **base_colours(fg='light'),
             font='UbuntuMono Nerd Font',
             fontsize=19,
             margin_y=3,
@@ -58,7 +142,9 @@ def workspaces():
             disable_drag=True
         ),
         separator(),
-        widget.WindowName(**base(fg='focus'), fontsize=14, padding=5),
+        MyWindowCount(**base_colours(fg='focus'), fontsize=14, fmt='[{}]', threshold=1),
+        separator(),
+        widget.WindowName(**base_colours(fg='focus'), fontsize=14),
         separator(),
     ]
 
@@ -69,9 +155,7 @@ primary_widgets = [
     separator(),
 
     powerline('color4', 'dark'),
-
     icon(bg="color4", text='', fontsize=20), # Icon: nf-fa-download
-    
     widget.CheckUpdates(
         background=colors['color4'],
         colour_have_updates=colors['text'],
@@ -83,23 +167,19 @@ primary_widgets = [
     ),
 
     powerline('color3', 'color4'),
-
     icon(bg="color3", text='', fontsize=20),  # Icon: nf-fa-feed
-
-    widget.Net(**base(bg='color3'), interface='wlan0'),
-
-    # widget.Net(**base(bg='color3'), interface='eno1'),
+    widget.Net(**base_colours(bg='color3'), interface='wlan0'),
 
     powerline('color2', 'color3'),
+    MicState(**base_colours(bg='color2'), fontsize=24),
 
-    widget.CurrentLayoutIcon(**base(bg='color2'), scale=0.65),
+    powerline('color1_5', 'color2'),
+    widget.CurrentLayoutIcon(**base_colours(bg='color1_5'), scale=0.65),
 
-    widget.CurrentLayout(**base(bg='color2'), padding=5),
+    widget.CurrentLayout(**base_colours(bg='color1_5'), padding=5),
+    powerline('color1', 'color1_5'),
 
-    powerline('color1', 'color2'),
-
-    widget.Clock(**base(bg='color1'), format='%d/%m/%Y - %H:%M '),
-
+    widget.Clock(**base_colours(bg='color1'), format='%d/%m/%Y - %H:%M '),
     powerline('dark', 'color1'),
 ]
 
@@ -109,33 +189,23 @@ secondary_widgets = [
     separator(),
 
     powerline('color4', 'dark'),
-
-    icon(bg="color4", text='RAM', fontsize=12),
-
-    widget.Memory(**base(bg='color4'), format='{MemUsed: .0f}{mm}'),
+    icon(bg="color4", text='', fontsize=28),
+    widget.Memory(**base_colours(bg='color4'), format='{MemUsed: .0f}{mm}'),
 
     powerline('color3', 'color4'),
-
-    icon(bg="color3", text='', fontsize=28),
-
-    widget.CPU(**base(bg='color3'), format='{freq_current}GHz {load_percent}%'),
+    icon(bg="color3", text='', fontsize=28),
+    widget.CPU(**base_colours(bg='color3'), format='{freq_current}GHz {load_percent}%'),
 
     powerline('color2', 'color3'),
-
     icon(bg="color2", text="", fontsize=28),
-
-    widget.NvidiaSensors(**base(bg='color2'), format='{temp}°C {perf}'),
+    widget.NvidiaSensors(**base_colours(bg='color2'), format='{temp}°C {perf}'),
 
     powerline('color1_5', 'color2'),
-
-    widget.CurrentLayoutIcon(**base(bg='color1_5'), scale=0.65),
-
-    widget.CurrentLayout(**base(bg='color1_5'), padding=5),
+    widget.CurrentLayoutIcon(**base_colours(bg='color1_5'), scale=0.65),
+    widget.CurrentLayout(**base_colours(bg='color1_5'), padding=5),
 
     powerline('color1', 'color1_5'),
-
-    widget.Clock(**base(bg='color1'), format='%d/%m/%Y - %H:%M '),
-
+    widget.Clock(**base_colours(bg='color1'), format='%d/%m/%Y - %H:%M '),
     powerline('dark', 'color1'),
 ]
 
@@ -149,4 +219,6 @@ widget_defaults = {
     'fontsize': 14,
     'padding': 2,
 }
+
 extension_defaults = widget_defaults.copy()
+

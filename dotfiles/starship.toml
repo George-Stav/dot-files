@@ -163,10 +163,16 @@ disabled = false
 disabled = true
 
 [aws]
+symbol = " "
 disabled = true
 
 [python]
-disabled = true
+disabled = false
+detect_extensions = []
+detect_files = []
+
+[docker_context]
+disabled = false
 
 [perl]
 disabled = true

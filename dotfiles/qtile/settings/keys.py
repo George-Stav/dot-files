@@ -1,4 +1,4 @@
-# Antonio Sarosi
+#https://jupyter.packtpub.services/lab/tree/find_table_occurances.sh Antonio Sarosi
 # https://youtube.com/c/antoniosarosi
 # https://github.com/antoniosarosi/dotfiles
 
@@ -7,7 +7,7 @@
 from libqtile.config import Key
 from libqtile.command import lazy
 from libqtile.utils import send_notification
-import json
+from .helpers import get_monitor_position
 
 
 mod = "mod1"
@@ -25,16 +25,33 @@ scripts_dir = "/home/george/dev/scripts/scripts/"
 #     qtile.current_screen.set_group(qtile.current_screen.previous_group)
 
 @lazy.function
-def testing(qtile, obj="Empty"):
-    # string = qtile.cmd_windows()
-    windows = {w.name:w.group.name for w in qtile.windows_map.values() if w.group is not None}
-    # qtile.cmd_spawn(f'rofi -e "{windows}"')
-    qtile.cmd_spawn(f'rofi -e "{qtile.window.name}"')
+def testing_mon(qtile, command="prev"):
+    # prev = left
+    # next = right
+    pos = get_monitor_position(f'{qtile.current_screen.cmd_info()["index"]}')
+    # qtile.cmd_spawn(f'rofi -e "{pos} | {command}"')
+
+    if pos == "left" and command == "next":
+        # do screen.next_screen()
+        qtile.cmd_next_screen()
+        # qtile.cmd_spawn(f'rofi -e "go to right monitor"')
+    elif pos == "right" and command == "prev":
+        # do screen.prev_screen()
+        qtile.cmd_prev_screen()
+        # qtile.cmd_spawn(f'rofi -e "go to left monitor"')
+
+@lazy.function
+def mic_toggle(qtile):
+    qtile.widgets_map['micstate'].toggle() # change widget text
+    qtile.cmd_spawn('mic-toggle') # toggle mic using amixer and push notification
+
 
 keys = [Key(key[0], key[1], *key[2:]) for key in [
     # ------------ Testing ------------
 
-    ([mod, "control"], "Return", testing),
+    # ([mod, "control"], "Return", testing),
+    # ([mod, "shift"], "Return", testing_mon),
+    # ([mod, "control"], "Return", mic_toggle),
 
     # ------------ Group Configs ------------
 
@@ -46,6 +63,11 @@ keys = [Key(key[0], key[1], *key[2:]) for key in [
     ([mod], "grave", lazy.screen.toggle_group()),
 
     # ------------ Window Configs ------------
+
+    # Switch focus of monitors
+    ([mod], "comma", lazy.next_screen()),
+    ([mod], "period", lazy.prev_screen()),
+
     ([mod, "shift"], "m", lazy.window.toggle_minimize()),
     ([mod, "shift"], "f", lazy.window.toggle_fullscreen()),
 
@@ -79,10 +101,6 @@ keys = [Key(key[0], key[1], *key[2:]) for key in [
     # Kill window
     ([mod], "q", lazy.window.kill()),
 
-    # Switch focus of monitors
-    ([mod], "comma", lazy.next_screen()),
-    ([mod], "period", lazy.prev_screen()),
-
     # Restart Qtile
     ([mod, "control"], "r", lazy.restart()),
     ([mod, "control"], "q", lazy.shutdown()),
@@ -90,9 +108,10 @@ keys = [Key(key[0], key[1], *key[2:]) for key in [
     # ------------ App Configs ------------
 
     # Rofi
-    ([mod], "m", lazy.spawn("rofi -show drun")),
-    ([mod], "r", lazy.spawn("rofi -show run")),
-    ([mod], "w", lazy.spawn("rofi -show window")),
+    # -m -4: rofi prompt appears on the screen with the focused window
+    ([mod], "m", lazy.spawn("rofi -m -4 -modi drun -show drun")),
+    ([mod], "r", lazy.spawn("rofi -m -4 -show run")),
+    ([mod], "w", lazy.spawn("rofi -m -4 -show window")),
 
     # Browser
     ([mod], "b", lazy.spawn("firefox")),
@@ -120,6 +139,7 @@ keys = [Key(key[0], key[1], *key[2:]) for key in [
     # ------------ Utility Configs ------------
 
     ([mod], "space", lazy.spawn('cycle-kb-layout')),
+    ([mod], "a", mic_toggle),
 
     # ------------ Hardware Configs ------------
 
@@ -131,7 +151,7 @@ keys = [Key(key[0], key[1], *key[2:]) for key in [
         "change-volume +2%"
     )),
     ([], "XF86AudioMute", lazy.spawn(
-        "pactl set-sink-mute @DEFAULT_SINK@ toggle"
+        "change-volume 0"
     )),
     ([], "XF86AudioPlay", lazy.spawn(
         "playerctl play-pause"

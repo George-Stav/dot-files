@@ -13,7 +13,7 @@ import subprocess
 
 
 def status_bar(widgets):
-    return bar.Bar(widgets, 24, opacity=0.92)
+    return bar.Bar(widgets, 24, opacity=1)
 
 connected_monitors = get_monitor_count()
 screens = [Screen(top=status_bar(primary_widgets))]

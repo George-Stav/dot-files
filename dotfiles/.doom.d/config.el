@@ -174,8 +174,9 @@ information retrieved from files created by the keychain script."
                (setenv       "GPG_AGENT_INFO" (match-string 1 gpg))))))
 
 ;; Org-agenda
-(setq org-log-done t
-      org-agenda-files '("~/Packt/agenda.org", "~/Documents/notes/asdf.org"))
+(setq org-log-done t)
+      ;; org-agenda-files '("~/Packt/agenda.org"))
+      ;; org-agenda-files '("~/Packt/agenda.org" "~/Documents/notes/asdf.org"))
 
 (provide 'keychain-environment)
 

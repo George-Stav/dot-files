@@ -4,6 +4,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(auth-source-save-behavior nil)
+ '(org-agenda-files
+   '("~/Documents/notes/asdf.org" "/home/george/Packt/agenda.org"))
  '(package-selected-packages
    '(unicode-fonts yaml-mode list-unicode-display forge ghub python-docstring projectile flyspell-lazy latex-extra dash pdf-tools)))
 (custom-set-faces
