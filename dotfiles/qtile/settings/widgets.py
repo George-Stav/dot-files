@@ -18,6 +18,9 @@ class MicState(base._TextBox):
         base._TextBox.__init__(self, text=text, width=width, **config)
         self.add_defaults(MicState.defaults)
 
+    def _setup_hooks(self):
+        hook.subscribe.restart(self.toggle)
+
     def toggle(self):
         icon = self.active_icon if get_mic_state() == "on" else self.mute_icon
         self.update(text=icon)

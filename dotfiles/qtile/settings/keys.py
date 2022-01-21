@@ -42,8 +42,8 @@ def testing_mon(qtile, command="prev"):
 
 @lazy.function
 def mic_toggle(qtile):
-    qtile.widgets_map['micstate'].toggle() # change widget text
     qtile.cmd_spawn('mic-toggle') # toggle mic using amixer and push notification
+    qtile.widgets_map['micstate'].toggle() # change widget icon
 
 
 keys = [Key(key[0], key[1], *key[2:]) for key in [
@@ -139,7 +139,7 @@ keys = [Key(key[0], key[1], *key[2:]) for key in [
     # ------------ Utility Configs ------------
 
     ([mod], "space", lazy.spawn('cycle-kb-layout')),
-    ([mod], "a", mic_toggle),
+    (["shift"], "XF86AudioMute", mic_toggle),
 
     # ------------ Hardware Configs ------------
 
