@@ -45,7 +45,7 @@ font:
 
 # GENERAL
 draw_bold_text_with_bright_colors: true
-background_opacity: 1
+window.opacity: 1
 save_to_clipboard: true
 window.dynamic_title: false
 live_config_reload: true
@@ -86,7 +86,8 @@ colors:
 
   cursor:
     text: '#7f85a3'
-    cursor: '#808080'
+      # cursor: '#808080'
+    cursor: '#3e68d7'
 
   normal:
     black: '#444a73'

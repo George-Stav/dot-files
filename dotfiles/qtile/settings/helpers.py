@@ -65,6 +65,11 @@ def get_monitor_position(id):
 
     return pos
 
+# ~~~~~~~~~ Dummy State ~~~~~~~~~ #
+
+def get_dummy_state():
+    return "off"
+
 # ~~~~~~~~~ Mic State ~~~~~~~~~ #
 
 def get_mic_state():
@@ -78,5 +83,23 @@ def get_mic_state():
         state = "on"
     else:
         state = output.stdout.decode("UTF-8").rstrip('\n')
+
+    return state
+
+# ~~~~~~~~~ Warp State ~~~~~~~~~ #
+
+def get_warp_state():
+    state = "systemctl status warp-svc | grep Active: | awk '{print $2}'"
+
+    output = command(state)
+
+    if output.returncode != 0:
+        error = output.stderr.decode("UTF-8")
+        logger.error(f"Failed: \n{state} \n{error}")
+        # print(f"Failed: \n{state} \n{error}")
+        state = "on"
+    else:
+        state = output.stdout.decode("UTF-8").rstrip('\n')
+        state = "on" if state == "active" else "off"
 
     return state

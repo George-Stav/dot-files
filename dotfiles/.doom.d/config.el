@@ -183,6 +183,7 @@ information retrieved from files created by the keychain script."
 (keychain-refresh-environment)
 
 (setq max-lisp-eval-depth 100000)
+(setq python-shell-interpreter "/usr/bin/python")
 
 ;; (provide 'config)
 ;;; config.el ends here

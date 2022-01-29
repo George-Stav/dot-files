@@ -1,6 +1,6 @@
 from libqtile import widget
 from .theme import colors
-from .helpers import get_monitor_count, get_mic_state
+from .helpers import get_monitor_count, get_mic_state, get_dummy_state, get_warp_state
 
 # ~~~~~~~~~ CUSTOM WIDGETS ~~~~~~~~~ #
 
@@ -8,21 +8,23 @@ from typing import Any, List, Tuple
 from libqtile import bar, hook
 from libqtile.widget import base
 
-class MicState(base._TextBox):
+class ToggleState(base._TextBox):
     defaults = [
-        ("active_icon", "", "Icon used to indicate that the mic is active"),
-        ("mute_icon", "", "Icon used to indicate that the mic is muted"),
+        ("on", "", "Icon used to indicate the on-state"),
+        ("off", "", "Icon used to indicate the off-state"),
+        ("get_state", get_dummy_state, "Function used to get the state")
     ]
 
     def __init__(self, text=" ", width=bar.CALCULATED, **config):
         base._TextBox.__init__(self, text=text, width=width, **config)
-        self.add_defaults(MicState.defaults)
+        self.add_defaults(ToggleState.defaults)
 
-    def _setup_hooks(self):
-        hook.subscribe.restart(self.toggle)
+    def _configure(self, qtile, bar):
+        base._TextBox._configure(self, qtile, bar)
+        self.toggle()
 
     def toggle(self):
-        icon = self.active_icon if get_mic_state() == "on" else self.mute_icon
+        icon = self.on if self.get_state() == "off" else self.off
         self.update(text=icon)
 
 class MyWindowCount(base._TextBox):
@@ -174,7 +176,10 @@ primary_widgets = [
     widget.Net(**base_colours(bg='color3'), interface='wlan0'),
 
     powerline('color2', 'color3'),
-    MicState(**base_colours(bg='color2'), fontsize=24),
+    ToggleState(**base_colours(bg='color2'), fontsize=24,
+                on="", off="", get_state=get_mic_state), # mic-state
+    ToggleState(**base_colours(bg='color2'), fontsize=24,
+                off="", on="", get_state=get_warp_state), # warp-cli-state
 
     powerline('color1_5', 'color2'),
     widget.CurrentLayoutIcon(**base_colours(bg='color1_5'), scale=0.65),

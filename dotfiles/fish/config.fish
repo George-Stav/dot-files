@@ -2,8 +2,8 @@
 
 # set -x MANPAGER "nvim -c 'set ft=man' -"
 set TERM "xterm-256color"
-set EDITOR "vim"
-set VISUAL "emacs"
+set EDITOR "nvim"
+set VISUAL "emacsclient -c"
 set -x TEXMFCNF "~/.config:"
 set fish_cursor_insert underscore
 

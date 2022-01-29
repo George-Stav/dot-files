@@ -18,8 +18,8 @@ layout_conf = {
 layouts = [
     layout.Columns(**layout_conf),
     layout.Max(),
-    layout.MonadWide(**layout_conf),
     layout.Floating(**layout_conf),
+    # layout.MonadWide(**layout_conf),
     # layout.MonadTall(**layout_conf),
     # layout.Bsp(**layout_conf),
     # layout.Matrix(columns=2, **layout_conf),
@@ -37,6 +37,7 @@ floating_layout = layout.Floating(
         Match(wm_class='makebranch'),
         Match(wm_class='maketag'),
         Match(wm_class='galculator'),
+        Match(wm_class='xpad'),
         Match(wm_class='ssh-askpass'),
         Match(title='branchdialog'),
         Match(title='pinentry'),
