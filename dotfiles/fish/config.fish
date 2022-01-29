@@ -9,8 +9,6 @@ set fish_cursor_insert underscore
 
 set -x LD_LIBRARY_PATH "$LD_LIBRARY_PATH:/usr/lib/"
 
-fish_add_path "$HOME/.emacs.d/bin"
-
 # keychain --quiet --eval --agents ssh id_ed25519
 
 alias doom="$HOME/.emacs.d/bin/doom"
@@ -28,7 +26,7 @@ alias battery="echo (cat /sys/class/power_supply/BAT1/capacity)%"
 alias source-fish="source $HOME/.config/fish/config.fish"
 alias paru="paru --bottomup"
 alias opt-man="prime-offload &> /dev/null && optimus-manager"
-alias enable-monitor='xrandr --output "HDMI-1-0" --mode 1920x1080 --rate 144 --right-of "DP-1"'
+alias enable-monitor="xrandr --output "eDP-1" --off --output "HDMI-1-0" --primary --mode 1920x1080 --rate 144"
 
 ### ~~~~~~~~~~~~~~~~~~~~~ ###
 set fish_greeting
