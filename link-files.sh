@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 set -euo pipefail
 
 DIR="$HOME/dotfiles/dotfiles"
@@ -20,22 +21,26 @@ dotfiles[.bashrc]="$HOME/:bash"
 dotfiles[qtile]="$HOME/.config/:qtile"
 dotfiles[picom.conf]="$HOME/.config/:picom"
 dotfiles[pacman.conf]="/etc/:pacman"
-dotfiles[99-libinput-custom-config.conf]="/etc/X11/xorg.conf.d/:Xorg"
+# dotfiles[99-libinput-custom-config.conf]="/etc/X11/xorg.conf.d/:Xorg"
 dotfiles[.easystroke]="$HOME/:easystroke"
+dotfiles[.gitconfig]="$HOME/:git"
+dotfiles[gtk-3.0]="$HOME/.config:cd"
+dotfiles[init.vim]="$HOME/.config/nvim:nvim"
+dotfiles[ranger]="$HOME/.config:ranger"
+dotfiles[rofi]="$HOME/.config:rofi"
+dotfiles[sxiv]="$HOME/.config:sxiv"
+dotfiles[dunst]="$HOME/.config:dunst"
 
 for file in ${!dotfiles[@]}; do
-    # set separator to ':'
-    # replace new separator with a whitespace
-    # create array 'arr' using by enclosing variable in parentheses ()
+    # set separator to ':' from whitespace
+    # create array 'arr' by enclosing variable in parentheses ()
     IFS=':'; arr=(${dotfiles[$file]}); unset IFS;
     path=${arr[0]}
     executable=${arr[1]}
 
     # if the executable exists in $PATH then proceed
     if [[ $(find ${PATH//:/\/ } -name $executable) ]]; then
-        # sudo rm -rf "$path$file"
-        # sudo ln -sf "$DIR/$file" $path
-        echo "Remove $path $file"
-        echo "Link $DIR/$file $path"
+        mkdir -p "$path"
+        ln -sf "$DIR/$file" $path
     fi
 done
