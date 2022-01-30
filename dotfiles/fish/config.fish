@@ -137,7 +137,7 @@ alias lss='ls'
 alias cat='bat --style header --style rules --style snip --style changes --style header'
 
 # Common use
-alias grubup="sudo update-grub"
+alias grubup="sudo grub-mkconfig -o /boot/grub/grub.cfg"
 alias fixpacman="sudo rm /var/lib/pacman/db.lck"
 alias tarnow='tar -acf '
 alias untar='tar -zxvf '

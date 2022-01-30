@@ -117,12 +117,12 @@ def powerline(fg="light", bg="dark"):
     return widget.TextBox(
         **base_colours(fg, bg),
         text="", # Icon: nf-oct-triangle_left
-        fontsize=60,
-        padding=-9
+        fontsize=59,
+        padding=-12
     )
 
 
-def workspaces(): 
+def workspaces():
     return [
         separator(),
         widget.GroupBox(
@@ -173,7 +173,7 @@ primary_widgets = [
 
     powerline('color3', 'color4'),
     icon(bg="color3", text='', fontsize=20),  # Icon: nf-fa-feed
-    widget.Net(**base_colours(bg='color3'), interface='wlan0'),
+    widget.Net(**base_colours(bg='color3'), interface='wlp0s20f3', format='{down} ↓↑ {up}'),
 
     powerline('color2', 'color3'),
     ToggleState(**base_colours(bg='color2'), fontsize=24,
@@ -229,4 +229,3 @@ widget_defaults = {
 }
 
 extension_defaults = widget_defaults.copy()
-
