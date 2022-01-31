@@ -116,9 +116,10 @@ def icon(fg='text', bg='dark', fontsize=16, text="?"):
 def powerline(fg="light", bg="dark"):
     return widget.TextBox(
         **base_colours(fg, bg),
-        text="", # Icon: nf-oct-triangle_left
+        # text="", # padding=-11
+        text="", # padding=-1
         fontsize=60,
-        padding=-9
+        padding=-1
     )
 
 
