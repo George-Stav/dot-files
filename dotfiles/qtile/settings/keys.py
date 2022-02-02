@@ -9,11 +9,11 @@ from libqtile.config import Match
 from libqtile.command import lazy
 from libqtile.utils import send_notification
 from .helpers import get_monitor_position
+from .path import scripts_path
 
 
 mod = "mod1"
 windows = "mod4"
-scripts_dir = "/home/george/dev/scripts/scripts/"
 
 # @lazy.function
 # def cycle_groups(qtile, key="prev"):
@@ -158,13 +158,13 @@ keys = [
 
     # Volume
     Key([], "XF86AudioLowerVolume", lazy.spawn(
-        "change-volume -2%"
+        f"{scripts_path}/change-volume -2%"
     )),
     Key([], "XF86AudioRaiseVolume", lazy.spawn(
-        "change-volume +2%"
+        f"{scripts_path}/change-volume +2%"
     )),
     Key([], "XF86AudioMute", lazy.spawn(
-        "change-volume 0"
+        f"{scripts_path}/change-volume 0"
     )),
     Key([], "XF86AudioPlay", lazy.spawn(
         "playerctl play-pause"

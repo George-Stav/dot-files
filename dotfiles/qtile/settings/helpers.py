@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import subprocess
+from .path import scripts_path
 
 command = lambda shell: \
 subprocess.run(
@@ -46,8 +47,8 @@ def get_session_type():
 # ~~~~~~~~~ Monitor Position ~~~~~~~~~ #
 
 def get_monitor_position(id):
-    left = "monitor-layout | grep left | awk '{print $2}'"
-    right = "monitor-layout | grep right | awk '{print $2}'"
+    left = scripts_path + "/monitor-layout | grep left | awk '{print $2}'"
+    right = scripts_path + "/monitor-layout | grep right | awk '{print $2}'"
 
     output_left = command(left)
     output_right = command(right)
@@ -73,7 +74,7 @@ def get_dummy_state():
 # ~~~~~~~~~ Mic State ~~~~~~~~~ #
 
 def get_mic_state():
-    state = "mic-state"
+    state = scripts_path + "/mic-state"
 
     output = command(state)
 

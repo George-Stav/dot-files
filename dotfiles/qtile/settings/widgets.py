@@ -1,6 +1,7 @@
 from libqtile import widget
 from .theme import colors
 from .helpers import get_monitor_count, get_mic_state, get_dummy_state, get_warp_state
+from .path import scripts_path
 
 # ~~~~~~~~~ CUSTOM WIDGETS ~~~~~~~~~ #
 

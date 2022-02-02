@@ -2,7 +2,7 @@
 map <Space> <leader>
 map <leader>w <C-w>
 " Save file with SPC-f-s
-map <leader>fs :<c-u>update<cr>
+" map <leader>fs :<c-u>update<cr>
 
 " Graciously using Luke Smith's config
 if ! filereadable(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/plug.vim"'))
@@ -51,7 +51,7 @@ set noshowcmd
 " Goyo plugin makes text more readable when writing prose:
 	map <leader>f :Goyo \| set bg=light \| set linebreak<CR>
 " Spell-check set to <leader>o, 'o' for 'orthography':
-	map <leader>o :setlocal spell! spelllang=en_us<CR>
+	map <leader>o :setlocal spell! spelllang=en_gb<CR>
 " Splits open at the bottom and right unlike vim defaults.
 	set splitbelow splitright
 
@@ -65,11 +65,11 @@ set noshowcmd
     endif
 
 " vimling:
-	nm <leader><leader>d :call ToggleDeadKeys()<CR>
-	imap <leader><leader>d <esc>:call ToggleDeadKeys()<CR>a
-	nm <leader><leader>i :call ToggleIPA()<CR>
-	imap <leader><leader>i <esc>:call ToggleIPA()<CR>a
-	nm <leader><leader>q :call ToggleProse()<CR>
+	" nm <leader><leader>d :call ToggleDeadKeys()<CR>
+	" imap <leader><leader>d <esc>:call ToggleDeadKeys()<CR>a
+	" nm <leader><leader>i :call ToggleIPA()<CR>
+	" imap <leader><leader>i <esc>:call ToggleIPA()<CR>a
+	" nm <leader><leader>q :call ToggleProse()<CR>
 
 " Shortcutting split navigation, saving a keypress:
 	map <C-h> <C-w>h
