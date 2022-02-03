@@ -13,7 +13,7 @@ truncation_length = 10
 format = "[$symbol $number\n]($style)"
 
 [sudo]
-disabled = true
+disabled = false
 
 # Disable the package module, hiding it from the prompt completely
 [package]

@@ -45,7 +45,7 @@ def testing_mon(qtile, command="prev"):
 @lazy.function
 def mic_toggle(qtile):
     qtile.widgets_map['togglestate'].toggle() # change widget icon
-    qtile.cmd_spawn('mic-toggle') # toggle mic using amixer and push notification
+    qtile.cmd_spawn(f'{scripts_path}/mic-toggle') # toggle mic using amixer and push notification
 
 @lazy.function
 def test_widgets(qtile):
