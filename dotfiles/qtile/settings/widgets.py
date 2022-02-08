@@ -124,7 +124,7 @@ def powerline(fg="light", bg="dark"):
     )
 
 
-def workspaces(): 
+def workspaces():
     return [
         separator(),
         widget.GroupBox(
@@ -170,12 +170,12 @@ primary_widgets = [
         no_update_string='0',
         display_format='{updates}',
         update_interval=1800,
-        custom_command='checkupdates',
+        # custom_command='checkupdates',
     ),
 
     powerline('color3', 'color4'),
     icon(bg="color3", text='', fontsize=20),  # Icon: nf-fa-feed
-    widget.Net(**base_colours(bg='color3'), interface='wlan0'),
+    widget.Net(**base_colours(bg='color3'), interface='wlp0s20f3'),
 
     powerline('color2', 'color3'),
     ToggleState(**base_colours(bg='color2'), fontsize=24,
@@ -207,14 +207,10 @@ secondary_widgets = [
     widget.CPU(**base_colours(bg='color3'), format='{freq_current}GHz {load_percent}%'),
 
     powerline('color2', 'color3'),
-    icon(bg="color2", text="", fontsize=28),
-    widget.NvidiaSensors(**base_colours(bg='color2'), format='{temp}°C {perf}'),
+    widget.CurrentLayoutIcon(**base_colours(bg='color2'), scale=0.65),
+    widget.CurrentLayout(**base_colours(bg='color2'), padding=5),
 
-    powerline('color1_5', 'color2'),
-    widget.CurrentLayoutIcon(**base_colours(bg='color1_5'), scale=0.65),
-    widget.CurrentLayout(**base_colours(bg='color1_5'), padding=5),
-
-    powerline('color1', 'color1_5'),
+    powerline('color1', 'color2'),
     widget.Clock(**base_colours(bg='color1'), format='%d/%m/%Y - %H:%M '),
     powerline('dark', 'color1'),
 ]
@@ -231,4 +227,3 @@ widget_defaults = {
 }
 
 extension_defaults = widget_defaults.copy()
-

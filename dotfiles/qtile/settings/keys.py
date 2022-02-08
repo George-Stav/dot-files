@@ -151,7 +151,7 @@ keys = [
 
     # ------------ Utility Configs ------------
 
-    Key([mod], "space", lazy.spawn('cycle-kb-layout')),
+    Key([mod], "space", lazy.spawn(f'{scripts_path}/cycle-kb-layout')),
     Key(["shift"], "XF86AudioMute", mic_toggle),
 
     # ------------ Hardware Configs ------------

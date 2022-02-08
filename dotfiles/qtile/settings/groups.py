@@ -50,29 +50,29 @@ from .helpers import get_session_type
 #               spawn=["spotify"])
 #     ]
 
-groups = [
-    Group(name="1", label=" "),
-    Group(name="2", label=" "),
-    Group(name="3", label=" "),
-    Group(name="4", label=" "),
-    Group(name="5", label=" "),
-    Group(name="6", label=" "),
-    Group(name="7", label=" "),
-    Group(name="8", label=" "),
-    Group(name="9", label=" "),
- ]
-
 # groups = [
 #     Group(name="1", label="   "),
 #     Group(name="2", label="   "),
 #     Group(name="3", label="   "),
 #     Group(name="4", label="   "),
-#     Group(name="5", label="   "),
+#     Group(name="5", label="   "),
 #     Group(name="6", label="   "),
-#     Group(name="7", label="   "),
-#     Group(name="8", label="   "),
+#     Group(name="7", label="   "),
+#     Group(name="8", label="  "),
 #     Group(name="9", label="   "),
-# ]
+#  ]
+
+groups = [
+    Group(name="1", label="   "),
+    Group(name="2", label="   "),
+    Group(name="3", label="   "),
+    Group(name="4", label="   "),
+    Group(name="5", label="   "),
+    Group(name="6", label="   "),
+    Group(name="7", label="   "),
+    Group(name="8", label="   "),
+    Group(name="9", label="   "),
+]
 
 for group in groups:
     actual_key = group.name
