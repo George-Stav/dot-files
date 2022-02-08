@@ -22,11 +22,12 @@ alias vpn="mullvad"
 alias ec="emacsclient -c"
 alias yt="youtube-dl"
 alias alac-theme="alacritty-colorscheme -c $HOME/.config/alacritty/alacritty.yml -C $HOME/.config/alacritty/themes"
-alias battery="echo (cat /sys/class/power_supply/BAT1/capacity)%"
+alias battery="echo (cat /sys/class/power_supply/BAT0/capacity)%"
 alias source-fish="source $HOME/.config/fish/config.fish"
 alias paru="paru --bottomup"
 alias opt-man="prime-offload &> /dev/null && optimus-manager"
 alias enable-monitor="xrandr --output "eDP-1" --off --output "HDMI-1-0" --primary --mode 1920x1080 --rate 144"
+alias cds="cd $HOME/repos/scripts"
 
 ### ~~~~~~~~~~~~~~~~~~~~~ ###
 set fish_greeting
@@ -137,7 +138,7 @@ alias lss='ls'
 alias cat='bat --style header --style rules --style snip --style changes --style header'
 
 # Common use
-alias grubup="sudo update-grub"
+alias grubup="sudo grub-mkconfig -o /boot/grub/grub.cfg"
 alias fixpacman="sudo rm /var/lib/pacman/db.lck"
 alias tarnow='tar -acf '
 alias untar='tar -zxvf '

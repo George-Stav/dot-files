@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-DIR="$HOME/dotfiles/dotfiles"
+DIR="$HOME/repos/dotfiles/dotfiles"
 declare -A dotfiles
 
 # dictionary of dot files
@@ -20,7 +20,7 @@ dotfiles[starship.toml]="$HOME/.config/:starship"
 dotfiles[.bashrc]="$HOME/:bash"
 dotfiles[qtile]="$HOME/.config/:qtile"
 dotfiles[picom.conf]="$HOME/.config/:picom"
-dotfiles[pacman.conf]="/etc/:pacman"
+# dotfiles[pacman.conf]="/etc/:pacman"
 # dotfiles[99-libinput-custom-config.conf]="/etc/X11/xorg.conf.d/:Xorg"
 dotfiles[.easystroke]="$HOME/:easystroke"
 dotfiles[.gitconfig]="$HOME/:git"
@@ -40,6 +40,7 @@ for file in ${!dotfiles[@]}; do
 
     # if the executable exists in $PATH then proceed
     if [[ $(find ${PATH//:/\/ } -name $executable) ]]; then
+	rm -rf "$path$file"
         mkdir -p "$path"
         ln -sf "$DIR/$file" $path
     fi
