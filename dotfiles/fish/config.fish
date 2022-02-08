@@ -2,7 +2,6 @@
 
 # set -x MANPAGER "nvim -c 'set ft=man' -"
 set TERM "xterm-256color"
-set EDITOR "nvim"
 set VISUAL "emacsclient -c"
 set -x TEXMFCNF "~/.config:"
 set fish_cursor_insert underscore
@@ -28,6 +27,7 @@ alias paru="paru --bottomup"
 alias opt-man="prime-offload &> /dev/null && optimus-manager"
 alias enable-monitor="xrandr --output "eDP-1" --off --output "HDMI-1-0" --primary --mode 1920x1080 --rate 144"
 alias cds="cd $HOME/repos/scripts"
+alias cdr="cd $HOME/repos"
 
 ### ~~~~~~~~~~~~~~~~~~~~~ ###
 set fish_greeting

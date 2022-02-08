@@ -1,0 +1,5 @@
+#!/bin/sh
+
+export BROWSER="firefox"
+export TERMINAL="alacritty"
+export EDITOR="nvim"
