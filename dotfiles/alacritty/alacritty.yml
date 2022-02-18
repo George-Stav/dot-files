@@ -32,7 +32,7 @@ scrolling:
 # FONT
 font:
   # size: 12 # for single laptop monitor
-  size: 17 # for multi-monitor setup (27 inches)
+  size: 15 # for multi-monitor setup (27 inches)
   normal:
     family: Jetbrains Mono
   bold:

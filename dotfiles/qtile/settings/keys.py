@@ -143,6 +143,7 @@ keys = [
     # Key([mod], "s", lazy.spawn("scrot")),
     # Key([mod, "shift"], "s", lazy.spawn("scrot -s")),
     Key([mod, "shift"], "s", lazy.spawn("flameshot gui")),
+    # Key([], "print", lazy.spawn("flameshot gui")),
 
     KeyChord([windows], "x", [
         Key([], "t", lazy.spawn("xpad -t")),
@@ -153,6 +154,7 @@ keys = [
 
     Key([mod], "space", lazy.spawn(f'{scripts_path}/cycle-kb-layout')),
     Key(["shift"], "XF86AudioMute", mic_toggle),
+    Key([], "XF86AudioMicMute", mic_toggle),
 
     # ------------ Hardware Configs ------------
 
