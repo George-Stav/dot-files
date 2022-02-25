@@ -180,8 +180,8 @@ primary_widgets = [
     powerline('color2', 'color3'),
     ToggleState(**base_colours(bg='color2'), fontsize=24,
                 on="", off="", get_state=get_mic_state), # mic-state
-    ToggleState(**base_colours(bg='color2'), fontsize=24,
-                off="", on="", get_state=get_warp_state), # warp-cli-state
+    # ToggleState(**base_colours(bg='color2'), fontsize=24,
+    #             off="", on="", get_state=get_warp_state), # warp-cli-state
 
     powerline('color1_5', 'color2'),
     widget.CurrentLayoutIcon(**base_colours(bg='color1_5'), scale=0.65),

@@ -17,7 +17,6 @@ alias warp-enable="sudo systemctl enable --now warp-svc.service"
 alias warp-disable="warp disconnect && sudo systemctl disable --now warp-svc.service"
 alias comp-suspend="qdbus org.kde.KWin /Compositor suspend"
 alias comp-resume="qdbus org.kde.KWin /Compositor resume"
-alias vpn="mullvad"
 alias ec="emacsclient -c"
 alias yt="youtube-dl"
 alias alac-theme="alacritty-colorscheme -c $HOME/.config/alacritty/alacritty.yml -C $HOME/.config/alacritty/themes"
@@ -26,8 +25,9 @@ alias source-fish="source $HOME/.config/fish/config.fish"
 alias paru="paru --bottomup"
 alias opt-man="prime-offload &> /dev/null && optimus-manager"
 alias enable-monitor="xrandr --output "eDP-1" --off --output "HDMI-1-0" --primary --mode 1920x1080 --rate 144"
-alias cds="cd $HOME/repos/scripts"
+alias cds="cd $HOME/repos/scripts/scripts"
 alias cdr="cd $HOME/repos"
+alias s='nvim $HOME/repos/scripts/scripts/scratchpad'
 
 ### ~~~~~~~~~~~~~~~~~~~~~ ###
 set fish_greeting
@@ -154,6 +154,7 @@ alias .....='cd ../../../..'
 alias ......='cd ../../../../..'
 alias dir='dir --color=auto'
 alias vdir='vdir --color=auto'
+# alias grep='rg --color auto'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
