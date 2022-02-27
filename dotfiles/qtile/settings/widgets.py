@@ -124,7 +124,7 @@ def powerline(fg="light", bg="dark"):
     )
 
 
-def workspaces(): 
+def workspaces():
     return [
         separator(),
         widget.GroupBox(
@@ -180,6 +180,8 @@ primary_widgets = [
     powerline('color2', 'color3'),
     ToggleState(**base_colours(bg='color2'), fontsize=24,
                 on="", off="", get_state=get_mic_state), # mic-state
+
+    widget.Battery(**base_colours(bg='color2'), battery=1, format='{char} {percent:2.0%}'),
     # ToggleState(**base_colours(bg='color2'), fontsize=24,
     #             off="", on="", get_state=get_warp_state), # warp-cli-state
 
@@ -231,4 +233,3 @@ widget_defaults = {
 }
 
 extension_defaults = widget_defaults.copy()
-

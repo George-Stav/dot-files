@@ -77,6 +77,7 @@ key_bindings:
   - {key: Space, mods: Control, action: ToggleViMode}
 
 # COLOURS / STYLING
+# CURSOR COLOURS ACT WEIRD AND DON'T MATCH THE DISPLAYED COLOUR
 colors:
   # COLORSCHEME: tokyo-night-storm.yaml
   # Default colors
@@ -86,8 +87,8 @@ colors:
 
   # Normal colors
   cursor:
-    text: '#7f85a3'
-    cursor: '#7e80ed'
+    text: '#000000'
+    cursor: '#86c0d9'
 
   normal:
     black: '#32344a'
