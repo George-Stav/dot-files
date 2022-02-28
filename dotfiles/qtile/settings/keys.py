@@ -59,7 +59,8 @@ keys = [
 
     # ([mod, "control"], "Return", testing),
     # ([mod, "shift"], "Return", testing_mon),
-    Key([mod, "control"], "Return", test_widgets),
+    # Key([mod, "control"], "Return", test_widgets),
+    Key([mod, "control"], "Return", lazy.spawn(f'{scripts_path}/mic-toggle')),
 
     # ------------ Group Configs ------------
 

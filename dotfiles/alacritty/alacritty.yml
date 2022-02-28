@@ -4,6 +4,7 @@ env:
 
 # WINDOW
 window:
+  opacity: 1
   dimensions:
     columns: 100
     lines: 30
@@ -32,7 +33,7 @@ scrolling:
 # FONT
 font:
   # size: 12 # for single laptop monitor
-  size: 17 # for multi-monitor setup (27 inches)
+  size: 15 # for multi-monitor setup (27 inches)
   normal:
     family: Jetbrains Mono
   bold:
@@ -44,7 +45,6 @@ font:
 
 # GENERAL
 draw_bold_text_with_bright_colors: true
-window.opacity: 1
 save_to_clipboard: true
 window.dynamic_title: false
 live_config_reload: true
@@ -77,36 +77,39 @@ key_bindings:
   - {key: Space, mods: Control, action: ToggleViMode}
 
 # COLOURS / STYLING
+# CURSOR COLOURS ACT WEIRD AND DON'T MATCH THE DISPLAYED COLOUR
 colors:
-  # COLORSCHEME: moonlight_ii_vscode.yaml
+  # COLORSCHEME: tokyo-night-storm.yaml
+  # Default colors
   primary:
-    background: '#1e2030'
-    foreground: '#7f85a3'
+    background: '#24283b'
+    foreground: '#a9b1d6'
 
+  # Normal colors
   cursor:
-    text: '#7f85a3'
-      # cursor: '#808080'
-    cursor: '#3e68d7'
+    text: '#000000'
+    cursor: '#86c0d9'
 
   normal:
-    black: '#444a73'
-    red: '#ff5370'
-    green: '#4fd6be'
-    yellow: '#ffc777'
-    blue: '#3e68d7'
-    magenta: '#fc7b7b'
-    cyan: '#86e1fc'
-    white: '#d0d0d0'
+    black: '#32344a'
+    red: '#f7768e'
+    green: '#9ece6a'
+    yellow: '#e0af68'
+    blue: '#7aa2f7'
+    magenta: '#ad8ee6'
+    cyan: '#449dab'
+    white: '#9699a8'
 
+  # Bright colors
   bright:
-    black: '#828bb8'
-    red: '#ff98a4'
-    green: '#c3e88d'
-    yellow: '#ffc777'
-    blue: '#82aaff'
-    magenta: '#ff966c'
-    cyan: '#b4f9f8'
-    white: '#5f8787'
+    black: '#444b6a'
+    red: '#ff7a93'
+    green: '#b9f27c'
+    yellow: '#ff9e64'
+    blue: '#7da6ff'
+    magenta: '#bb9af7'
+    cyan: '#0db9d7'
+    white: '#acb0d0'
   indexed_colors:
     - {index: 16, color: '0xF8BD96'}
     - {index: 17, color: '0xF5E0DC'}

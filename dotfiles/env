@@ -1,0 +1,9 @@
+#!/bin/sh
+
+export BROWSER="firefox"
+export TERMINAL="alacritty"
+export EDITOR="nvim"
+export FONT_NAME="Jetbrains Mono"
+
+#~~~ -{PATHS}- ~~~#
+export SCRIPTS="$HOME/.local/bin"

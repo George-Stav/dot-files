@@ -14,7 +14,7 @@ subprocess.run(
 # ~~~~~~~~~ Monitor Count ~~~~~~~~~ #
 
 def get_monitor_count():
-    xrandr = "xrandr | grep -w 'connected' | cut -d ' ' -f 2 | wc -l"
+    xrandr = f"{scripts_path}/monitor-count"
 
     output = command(xrandr)
 
