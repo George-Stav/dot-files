@@ -2,7 +2,6 @@
 
 # set -x MANPAGER "nvim -c 'set ft=man' -"
 set TERM "xterm-256color"
-set EDITOR "nvim"
 set VISUAL "emacsclient -c"
 set -x TEXMFCNF "~/.config:"
 set fish_cursor_insert underscore
@@ -18,7 +17,6 @@ alias warp-enable="sudo systemctl enable --now warp-svc.service"
 alias warp-disable="warp disconnect && sudo systemctl disable --now warp-svc.service"
 alias comp-suspend="qdbus org.kde.KWin /Compositor suspend"
 alias comp-resume="qdbus org.kde.KWin /Compositor resume"
-alias vpn="mullvad"
 alias ec="emacsclient -c"
 alias yt="youtube-dl"
 alias alac-theme="alacritty-colorscheme -c $HOME/.config/alacritty/alacritty.yml -C $HOME/.config/alacritty/themes"
@@ -160,6 +158,7 @@ alias .....='cd ../../../..'
 alias ......='cd ../../../../..'
 alias dir='dir --color=auto'
 alias vdir='vdir --color=auto'
+# alias grep='rg --color auto'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
