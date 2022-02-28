@@ -1,96 +1,8 @@
 from libqtile import widget
 from .theme import colors
-from .helpers import get_monitor_count, get_mic_state, get_dummy_state, get_warp_state
+from .helpers import get_monitor_count, get_mic_state, get_warp_state
 from .path import scripts_path
-
-# ~~~~~~~~~ CUSTOM WIDGETS ~~~~~~~~~ #
-
-from typing import Any, List, Tuple
-from libqtile import bar, hook
-from libqtile.widget import base
-
-class ToggleState(base._TextBox):
-    defaults = [
-        ("on", "", "Icon used to indicate the on-state"),
-        ("off", "", "Icon used to indicate the off-state"),
-        ("get_state", get_dummy_state, "Function used to get the state")
-    ]
-
-    def __init__(self, text=" ", width=bar.CALCULATED, **config):
-        base._TextBox.__init__(self, text=text, width=width, **config)
-        self.add_defaults(ToggleState.defaults)
-
-    def _configure(self, qtile, bar):
-        base._TextBox._configure(self, qtile, bar)
-        self.toggle()
-
-    def toggle(self):
-        icon = self.on if self.get_state() == "off" else self.off
-        self.update(text=icon)
-
-class MyWindowCount(base._TextBox):
-    """
-    Same implementation of default WindowCount() widget,
-    but I've added the show_one variable which works in
-    the same way as the default show_zero variable.
-    """
-
-    defaults = [
-        ("font", "sans", "Text font"),
-        ("fontsize", None, "Font pixel size. Calculated if None."),
-        ("fontshadow", None, "font shadow color, default is None(no shadow)"),
-        ("padding", None, "Padding left and right. Calculated if None."),
-        ("foreground", "#ffffff", "Foreground colour."),
-        ("text_format", "{num}", "Format for message"),
-        ("show_zero", False, "Show window count when no windows"),
-        ("threshold", 0, "Show window count when number of windows in group is more than the threshold"),
-    ]  # type: List[Tuple[str, Any, str]]
-
-    def __init__(self, text=" ", width=bar.CALCULATED, **config):
-        base._TextBox.__init__(self, text=text, width=width, **config)
-        self.add_defaults(MyWindowCount.defaults)
-        self._count = 0
-
-    def _configure(self, qtile, bar):
-        base._TextBox._configure(self, qtile, bar)
-        self._setup_hooks()
-        self._wincount()
-
-    def _setup_hooks(self):
-        hook.subscribe.client_killed(self._win_killed)
-        hook.subscribe.client_managed(self._wincount)
-        hook.subscribe.current_screen_change(self._wincount)
-        hook.subscribe.setgroup(self._wincount)
-
-    def _wincount(self, *args):
-        try:
-            self._count = len(self.bar.screen.group.windows)
-        except AttributeError:
-            self._count = 0
-
-        self.update(self.text_format.format(num=self._count))
-
-    def _win_killed(self, window):
-        try:
-            self._count = len(self.bar.screen.group.windows)
-            if window.group == self.bar.screen.group:
-                self._count -= 1
-        except AttributeError:
-            self._count = 0
-
-        self.update(self.text_format.format(num=self._count))
-
-    def calculate_length(self):
-        if self.text and (self._count > self.threshold or self.show_zero):
-            return min(self.layout.width, self.bar.width) + self.actual_padding * 2
-        else:
-            return 0
-
-    def cmd_get(self):
-        """Retrieve the current text."""
-        return self.text
-
-# ~~~~~~~~~ CUSTOM WIDGETS ~~~~~~~~~ #
+from .custom_widgets import ToggleState, MyWindowCount
 
 # Get the icons at https://www.nerdfonts.com/cheat-sheet (you need a Nerd Font)
 
@@ -170,7 +82,7 @@ primary_widgets = [
         no_update_string='0',
         display_format='{updates}',
         update_interval=1800,
-        # custom_command='checkupdates',
+        custom_command='checkupdates',
     ),
 
     powerline('color3', 'color4'),
@@ -183,7 +95,7 @@ primary_widgets = [
 
     widget.Battery(**base_colours(bg='color2'), battery=1, format='{char} {percent:2.0%}'),
     # ToggleState(**base_colours(bg='color2'), fontsize=24,
-    #             off="", on="", get_state=get_warp_state), # warp-cli-state
+    #             off="", on="", update_interval=300, get_state=get_warp_state), # warp-cli-state
 
     powerline('color1_5', 'color2'),
     widget.CurrentLayoutIcon(**base_colours(bg='color1_5'), scale=0.65),
