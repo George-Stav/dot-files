@@ -28,8 +28,11 @@ alias enable-monitor="xrandr --output "eDP-1" --off --output "HDMI-1-0" --primar
 alias cds="cd $HOME/repos/scripts/scripts"
 alias cdn="cd $HOME/repos/notes"
 alias cdd="cd $HOME/repos/dotfiles"
+alias cdp="cd $HOME/Packt/"
 alias cdr="cd $HOME/repos"
 alias s='nvim $HOME/repos/scripts/scripts/scratchpad'
+alias aws-sso="aws sso login --profile legacy.prod"
+alias aws-login="aws-gate session -p legacy.prod 'Data Services'"
 
 ### ~~~~~~~~~~~~~~~~~~~~~ ###
 set fish_greeting

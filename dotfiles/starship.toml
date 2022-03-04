@@ -35,6 +35,10 @@ detect_files = []
 disabled = false
 symbol = " "
 
+[java]
+disabled = true
+symbol = " "
+
 [perl]
 disabled = true
 
@@ -61,9 +65,6 @@ disabled = true
 
 # [hg_branch]
 # symbol = " "
-
-# [java]
-# symbol = " "
 
 # [julia]
 # symbol = " "
