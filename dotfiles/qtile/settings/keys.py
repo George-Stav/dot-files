@@ -161,8 +161,14 @@ keys = [
     Key([], "XF86AudioLowerVolume", lazy.spawn(
         f"{scripts_path}/change-volume -2%"
     )),
+    Key(["shift"], "XF86AudioLowerVolume", lazy.spawn(
+        f"{scripts_path}/change-volume -10%"
+    )),
     Key([], "XF86AudioRaiseVolume", lazy.spawn(
         f"{scripts_path}/change-volume +2%"
+    )),
+    Key(["shift"], "XF86AudioRaiseVolume", lazy.spawn(
+        f"{scripts_path}/change-volume +10%"
     )),
     Key([], "XF86AudioMute", lazy.spawn(
         f"{scripts_path}/change-volume 0"
