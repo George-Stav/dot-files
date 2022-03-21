@@ -11,70 +11,32 @@ from .helpers import get_session_type
 
 # Get the icons at https://www.nerdfonts.com/cheat-sheet (you need a Nerd Font)
 
-# labels_casual = [
-#     "   ", "   ", "   ", "   ", "   ", "   ", "   ", " 嗢  ", "   "
-# ]
 
-# labels_work = [
-#     "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   ", "   "
-# ]
-
-# groups = []
-# if get_session_type == 2: # Work session
-#     groups = [
-#         Group(name="1", label="   "),
-#         Group(name="2", label="   "),
-#         Group(name="3", label="   ",
-#               spawn=["emacsclient -c"]),
-#         Group(name="4", label="   "),
-#         Group(name="5", label="   ",
-#               spawn=["dbeaver"]),
-#         Group(name="6", label="   "),
-#         Group(name="7", label="   ",
-#               spawn=["teams"]),
-#         Group(name="8", label="   "),
-#         Group(name="9", label="   ",
-#               spawn=["spotify"])
-#     ]
-# else: # Casual session
-#     groups = [
-#         Group(name="1", label="   "),
-#         Group(name="2", label="   "),
-#         Group(name="3", label="   "),
-#         Group(name="4", label="   "),
-#         Group(name="5", label="   "),
-#         Group(name="6", label="   "),
-#         Group(name="7", label="   "),
-#         Group(name="8", label=" 嗢  "),
-#         Group(name="9", label="   ",
-#               spawn=["spotify"])
-#     ]
-
-groups = [
-    Group(name="1", label=" "),
-    Group(name="2", label=" "),
-    Group(name="3", label=" "),
-    Group(name="4", label=" "),
-    Group(name="5", label=" "),
-    Group(name="6", label=" "),
-    Group(name="7", label=" "),
-    Group(name="8", label=" "),
-    Group(name="9", label=" "),
+groups_play = [
+    Group(name="1", label="   "),
+    Group(name="2", label="   "),
+    Group(name="3", label="   "),
+    Group(name="4", label="   "),
+    Group(name="5", label="   "),
+    Group(name="6", label="   "),
+    Group(name="7", label="   "),
+    Group(name="8", label="  "),
+    Group(name="9", label="   "),
  ]
 
-# groups = [
-#     Group(name="1", label="   "),
-#     Group(name="2", label="   "),
-#     Group(name="3", label="   "),
-#     Group(name="4", label="   "),
-#     Group(name="5", label="   "),
-#     Group(name="6", label="   "),
-#     Group(name="7", label="   "),
-#     Group(name="8", label="   "),
-#     Group(name="9", label="   "),
-# ]
+groups_work = [
+    Group(name="1", label="   "),
+    Group(name="2", label="   "),
+    Group(name="3", label="   "),
+    Group(name="4", label="   "),
+    Group(name="5", label="   "),
+    Group(name="6", label="   "),
+    Group(name="7", label="   "),
+    Group(name="8", label="   "),
+    Group(name="9", label="   "),
+]
 
-for group in groups:
+for group in groups_play:
     actual_key = group.name
     keys.extend([
         # Switch to workspace N

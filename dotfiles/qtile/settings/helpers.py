@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 import subprocess
 from .path import scripts_path
 
@@ -14,7 +14,7 @@ subprocess.run(
 # ~~~~~~~~~ Monitor Count ~~~~~~~~~ #
 
 def get_monitor_count():
-    xrandr = f"{scripts_path}/monitor-count"
+    xrandr = scripts_path + "/monitor-count"
 
     output = command(xrandr)
 

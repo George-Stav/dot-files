@@ -26,6 +26,9 @@ alias paru="paru --bottomup"
 alias opt-man="prime-offload &> /dev/null && optimus-manager"
 alias enable-monitor="xrandr --output "eDP-1" --off --output "HDMI-1-0" --primary --mode 1920x1080 --rate 144"
 alias cds="cd $HOME/repos/scripts/scripts"
+alias cdn="cd $HOME/repos/notes"
+alias cdd="cd $HOME/repos/dotfiles"
+alias cdp="cd $HOME/Packt/"
 alias cdr="cd $HOME/repos"
 alias s='nvim $HOME/repos/scripts/scripts/scratchpad'
 
