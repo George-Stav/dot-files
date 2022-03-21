@@ -1,0 +1,46 @@
+set previewer scope
+set preview true
+set hidden true
+set drawbox true
+set icons true
+set ignorecase true
+
+cmd open ${{
+	case $(file --mime-type "$f" -bL) in
+		text/*|application/json) $EDITOR "$f" ;;
+		application/pdf) zathura "$f" ;;
+		image/*) sxiv "$f" ;;
+	esac
+}}
+
+# Archive bindings
+cmd unarchive ${{
+	case "$f" in
+		*.zip) unzip "$f" ;;
+		*.tar.gz) tar -xzvf "$f" ;;
+		*.tar.bz2) tar -xjvf "$f" ;;
+		*.tar) tar -xvf "$f" ;;
+		*) echo "Unsupported format" ;;
+	esac
+}}
+
+map w
+
+map . set hidden!
+map p paste
+map d cut
+map y copy
+map <enter> open
+map au unarchive
+map e $$VISUAL "$f"
+
+map gc cd ~/.config
+map gr cd ~/repos
+map gd cd ~/repos/dotfiles
+map gv cd ~/repos/cv
+map gs cd ~/repos/scripts/scripts
+map gn cd ~/repos/notes
+map gp cd ~/Packt
+map gh cd /mnt/HDD
+map gw cd /mnt/WD
+map gl cd ~/wallpapers

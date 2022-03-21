@@ -120,7 +120,7 @@ keys = [
     # -m -4: rofi prompt appears on the screen with the focused window
     Key([mod], "m", lazy.spawn("rofi -m -4 -modi drun -show drun")),
     Key([mod], "r", lazy.spawn("rofi -m -4 -show run")),
-    Key([mod], "w", lazy.spawn("rofi -m -4 -show window")),
+    Key([mod], "space", lazy.spawn("rofi -m -4 -show window")),
 
     # Browser
     Key([mod], "b", lazy.spawn("firefox")),
@@ -153,7 +153,7 @@ keys = [
 
     # ------------ Utility Configs ------------
 
-    Key([mod], "space", lazy.spawn(f'{scripts_path}/cycle-kb-layout')),
+    Key([mod, "control"], "space", lazy.spawn(f'{scripts_path}/cycle-kb-layout')),
     Key(["shift"], "XF86AudioMute", mic_toggle),
     Key([], "XF86AudioMicMute", mic_toggle),
 

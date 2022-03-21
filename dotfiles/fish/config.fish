@@ -10,27 +10,27 @@ set -x LD_LIBRARY_PATH "$LD_LIBRARY_PATH:/usr/lib/"
 
 # keychain --quiet --eval --agents ssh id_ed25519
 
-alias doom="$HOME/.emacs.d/bin/doom"
-alias dc="docker-compose"
-alias warp="warp-cli"
-alias warp-enable="sudo systemctl enable --now warp-svc.service"
-alias warp-disable="warp disconnect && sudo systemctl disable --now warp-svc.service"
-alias comp-suspend="qdbus org.kde.KWin /Compositor suspend"
-alias comp-resume="qdbus org.kde.KWin /Compositor resume"
-alias ec="emacsclient -c"
-alias yt="youtube-dl"
-alias alac-theme="alacritty-colorscheme -c $HOME/.config/alacritty/alacritty.yml -C $HOME/.config/alacritty/themes"
-alias battery="echo (cat /sys/class/power_supply/BAT1/capacity)%"
-alias source-fish="source $HOME/.config/fish/config.fish"
+abbr dc "docker-compose"
+abbr warp-enable "sudo systemctl enable --now warp-svc.service"
+abbr warp-disable "warp disconnect && sudo systemctl disable --now warp-svc.service"
+abbr comp-suspend "qdbus org.kde.KWin /Compositor suspend"
+abbr comp-resume "qdbus org.kde.KWin /Compositor resume"
+abbr ec "emacsclient -c"
+abbr yt "youtube-dl"
+abbr alac-theme "alacritty-colorscheme -c $HOME/.config/alacritty/alacritty.yml -C $HOME/.config/alacritty/themes"
+abbr battery "echo (cat /sys/class/power_supply/BAT1/capacity)%"
+abbr source-fish "source $HOME/.config/fish/config.fish"
+abbr opt-man "prime-offload &> /dev/null && optimus-manager"
+abbr enable-monitor "xrandr --output "eDP-1" --off --output "HDMI-1-0" --primary --mode 1920x1080 --rate 144"
+abbr cds "cd $HOME/repos/scripts/scripts"
+abbr cdn "cd $HOME/repos/notes"
+abbr cdd "cd $HOME/repos/dotfiles"
+abbr cdp "cd $HOME/Packt/"
+abbr cdr "cd $HOME/repos"
+abbr s 'nvim $HOME/repos/scripts/scripts/scratchpad'
+
 alias paru="paru --bottomup"
-alias opt-man="prime-offload &> /dev/null && optimus-manager"
-alias enable-monitor="xrandr --output "eDP-1" --off --output "HDMI-1-0" --primary --mode 1920x1080 --rate 144"
-alias cds="cd $HOME/repos/scripts/scripts"
-alias cdn="cd $HOME/repos/notes"
-alias cdd="cd $HOME/repos/dotfiles"
-alias cdp="cd $HOME/Packt/"
-alias cdr="cd $HOME/repos"
-alias s='nvim $HOME/repos/scripts/scripts/scratchpad'
+alias doom="$HOME/.emacs.d/bin/doom"
 
 ### ~~~~~~~~~~~~~~~~~~~~~ ###
 set fish_greeting
