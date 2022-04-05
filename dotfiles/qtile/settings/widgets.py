@@ -87,15 +87,15 @@ primary_widgets = [
 
     powerline('color3', 'color4'),
     icon(bg="color3", text='', fontsize=20),  # Icon: nf-fa-feed
-    widget.Net(**base_colours(bg='color3'), interface='wlp0s20f3'),
+    widget.Net(**base_colours(bg='color3'), interface='wlan0'),
 
     powerline('color2', 'color3'),
     ToggleState(**base_colours(bg='color2'), fontsize=24,
                 on="", off="", get_state=get_mic_state), # mic-state
 
-    # widget.Battery(**base_colours(bg='color2'), battery=1, format='{char} {percent:2.0%}'),
-    ToggleState(**base_colours(bg='color2'), fontsize=24,
-                off="", on="", update_interval=300, get_state=get_warp_state), # warp-cli-state
+    widget.Battery(**base_colours(bg='color2'), battery=1, format='{char} {percent:2.0%}'),
+    # ToggleState(**base_colours(bg='color2'), fontsize=24,
+    #             off="", on="", update_interval=300, get_state=get_warp_state), # warp-cli-state
 
     powerline('color1_5', 'color2'),
     widget.CurrentLayoutIcon(**base_colours(bg='color1_5'), scale=0.65),

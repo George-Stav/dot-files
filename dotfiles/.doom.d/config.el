@@ -25,8 +25,8 @@
 ;; SauceCodePro Nerd Font Mono
 ;; Monaco
 ;; Jetbrains Mono
-(setq doom-font (font-spec :family "Jetbrains Mono" :size 18))
-(setq doom-variable-pitch-font (font-spec :family "Jetbrains Mono" :size 18))
+(setq doom-font (font-spec :family "Jetbrains Mono" :size 15))
+(setq doom-variable-pitch-font (font-spec :family "Jetbrains Mono" :size 15))
 
 (after! doom-themes
   (setq doom-themes-enable-bold t

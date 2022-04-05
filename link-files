@@ -31,6 +31,7 @@ dotfiles[rofi]="$HOME/.config:rofi"
 dotfiles[sxiv]="$HOME/.config:sxiv"
 dotfiles[dunst]="$HOME/.config:dunst"
 dotfiles[env]="$HOME/.config:test"
+dotfiles[lf]="$HOME/.config:lf"
 
 for file in ${!dotfiles[@]}; do
     # set separator to ':' from whitespace

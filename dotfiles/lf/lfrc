@@ -6,10 +6,12 @@ set icons true
 set ignorecase true
 
 cmd open ${{
-	case $(file --mime-type "$f" -bL) in
-		text/*|application/json) $EDITOR "$f" ;;
-		application/pdf) zathura "$f" ;;
-		image/*) sxiv "$f" ;;
+	case "$f" in
+		*.org|*.tex) $VISUAL "$f" ;;
+		*.jpg|*.png|*.gif) sxiv "$f" ;;
+		*.mkv|*.mp3|*.mp4) vlc "$f" ;;
+		*.pdf) zathura "$f" ;;
+		*) $EDITOR "$f" ;;
 	esac
 }}
 
@@ -24,22 +26,89 @@ cmd unarchive ${{
 	esac
 }}
 
-map w
+# taken from Brodie
+# github.com/BrodieRobertson/dotfiles
+cmd trash_restore %trash-restore
+cmd trash_clear %trash-empty
+cmd trash ${{
+	files=$(printf "$fx" | tr '\n' ';')
+	while [ "$files" ]; do
+		f=${files%%;*}
 
+		trash-put "$(basename "$f")"
+
+		if [ "$files" = "$f" ]; then
+			files=''
+		else
+			files="${files#*;}"
+		fi
+	done
+}}
+
+cmd fzf_jump ${{
+	res="$(find . -maxdepth 3 | fzf --reverse --header='Jump to location')"
+	if [ -f "$res" ]; then
+		cmd="select"
+	elif [ -d "$res" ]; then
+		cmd="cd"
+	fi
+	lf -remote "send $id $cmd \"$res\""
+}}
+
+# Capitalise beginning of a word
+# Replace spaces with underscores
+cmd rename_snake_pascal ${{
+	echo "$fx" | while read l; do
+		new="$(basename "$l" | sed 's/\(^[a-z]\| [a-z]\)/\U&/g ; s/ /_/g')"
+		mv "$l" "$(pwd)/$new"
+	done
+}}
+
+# Lowercase everything
+# Replace spaces with underscores
+cmd rename_snake_case ${{
+	echo "$fx" | while read l; do
+		new="$(basename "$l" | sed 's/[A-Z]/\L&/g ; s/ /_/g')"
+		mv "$l" "$(pwd)/$new"
+	done
+}}
+
+# Un-map
+# map m
+map w
+map d
+map r
+
+# Rename
+map rr rename
+map rp rename_snake_case
+map rm rename_snake_pascal
+map rb $vimv $fx
+
+# Trash
+map dd trash
+map dr trash_restore
+map dc trash_clear
+
+# Other
 map . set hidden!
 map p paste
-map d cut
+map x cut
 map y copy
+map D delete
+map dD delete
 map <enter> open
 map au unarchive
 map e $$VISUAL "$f"
+map J fzf_jump
 
+# Shortcuts
 map gc cd ~/.config
-map gr cd ~/repos
-map gd cd ~/repos/dotfiles
-map gv cd ~/repos/cv
-map gs cd ~/repos/scripts/scripts
-map gn cd ~/repos/notes
+map grr cd ~/repos
+map grd cd ~/repos/dotfiles
+map grc cd ~/repos/cv
+map grs cd ~/repos/scripts/scripts
+map grn cd ~/repos/notes
 map gp cd ~/Packt
 map gh cd /mnt/HDD
 map gw cd /mnt/WD
