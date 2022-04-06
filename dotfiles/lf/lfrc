@@ -29,6 +29,7 @@ map w
 map . set hidden!
 map p paste
 map d cut
+map dd delete
 map y copy
 map <enter> open
 map au unarchive

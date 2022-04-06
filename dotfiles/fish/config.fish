@@ -130,6 +130,27 @@ function copy
     end
 end
 
+function activate
+	set DIR "$HOME/.virtualenvs"
+	set ACCENT "$(tput setaf 3)"
+	set BOLD "$(tput bold)"
+	set NORM "$(tput sgr0)"
+
+	set env $(find "$DIR" -maxdepth 1 -printf "%f\n" \
+	| tail -n +2 \
+	| while read l;
+		printf "%s $ACCENT$BOLD(🐍 v%s)$NORM\n" "$l" "$($DIR/$l/bin/python --version | awk '{print $2}')";
+	end | fzf --reverse \
+		--ansi \
+		--min-height=7 --height=7% \
+		--cycle -m --marker="*" \
+		--bind 'tab:down' --bind 'btab:up' \
+		--bind 'shift-down:toggle+down' --bind 'shift-up:toggle+up' \
+	| awk '{print $1}')
+
+	[ -n "$env" ] && source "$DIR/$env/bin/activate.fish"
+end
+
 ## Useful aliases
 # Replace ls with exa
 alias ls='exa -al --color=always --group-directories-first --icons' # preferred listing

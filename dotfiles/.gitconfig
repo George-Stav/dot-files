@@ -3,3 +3,5 @@
 	name = George Stavropoulos
 [github]
 	user = George-Stav
+[init]
+	defaultBranch = main
