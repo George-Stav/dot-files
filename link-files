@@ -24,12 +24,14 @@ dotfiles[picom.conf]="$HOME/.config/:picom"
 # dotfiles[99-libinput-custom-config.conf]="/etc/X11/xorg.conf.d/:Xorg"
 dotfiles[.easystroke]="$HOME/:easystroke"
 dotfiles[.gitconfig]="$HOME/:git"
-dotfiles[gtk-3.0]="$HOME/.config:cd"
+dotfiles[gtk-3.0]="$HOME/.config:test"
 dotfiles[init.vim]="$HOME/.config/nvim:nvim"
 dotfiles[ranger]="$HOME/.config:ranger"
 dotfiles[rofi]="$HOME/.config:rofi"
 dotfiles[sxiv]="$HOME/.config:sxiv"
 dotfiles[dunst]="$HOME/.config:dunst"
+dotfiles[env]="$HOME/.config:test"
+dotfiles[lf]="$HOME/.config:lf"
 
 for file in ${!dotfiles[@]}; do
     # set separator to ':' from whitespace
