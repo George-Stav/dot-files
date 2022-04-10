@@ -128,7 +128,8 @@ keys = [
     # Emacs
     Key([mod], "e", lazy.spawn("emacsclient -c")),
     Key([mod, "shift"], "e", lazy.spawn("systemctl --user restart emacs")),
-    Key([mod], "d", lazy.spawn("emacsclient -c -a 'emacs' --eval '(dired nil)'")),
+    # Key([mod], "d", lazy.spawn("emacsclient -c -a 'emacs' --eval '(dired nil)'")),
+    Key([mod], "d", lazy.spawn("alacritty -e lf")),
 
     # File Explorer
     # Key([mod], "e", lazy.spawn("pcmanfm")),

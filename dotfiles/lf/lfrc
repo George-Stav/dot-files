@@ -9,7 +9,7 @@ cmd open ${{
 	case "$f" in
 		*.org|*.tex) $VISUAL "$f" ;;
 		*.jpg|*.png|*.gif) sxiv "$f" ;;
-		*.mkv|*.mp3|*.mp4) vlc "$f" ;;
+		*.mkv|*.mp3|*.mp4|*.flac|*.webp) vlc "$f" ;;
 		*.pdf) zathura "$f" ;;
 		*) $EDITOR "$f" ;;
 	esac
@@ -85,6 +85,9 @@ map rp rename_snake_case
 map rm rename_snake_pascal
 map rb $vimv $fx
 
+# Backup
+map bb $cp -r $f $f.bkp
+
 # Trash
 map dd trash
 map dr trash_restore
@@ -113,3 +116,4 @@ map gp cd ~/Packt
 map gh cd /mnt/HDD
 map gw cd /mnt/WD
 map gl cd ~/wallpapers
+map gd cd ~/dev

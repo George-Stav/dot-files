@@ -28,9 +28,11 @@ abbr cdd "cd $HOME/repos/dotfiles"
 abbr cdp "cd $HOME/Packt/"
 abbr cdr "cd $HOME/repos"
 abbr s 'nvim $HOME/repos/scripts/scripts/scratchpad'
+abbr ydl-music "youtube-dl -wc -o /mnt/HDD/MUSIC/'%(uploader)s/%(title)s.%(ext)s' --write-description --embed-thumbnail -x --audio-format 'mp3'"
 
 alias paru="paru --bottomup"
 alias doom="$HOME/.emacs.d/bin/doom"
+
 
 ### ~~~~~~~~~~~~~~~~~~~~~ ###
 set fish_greeting
