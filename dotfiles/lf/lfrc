@@ -11,6 +11,7 @@ cmd open ${{
 		*.jpg|*.png|*.gif) sxiv "$f" ;;
 		*.mkv|*.mp3|*.mp4) vlc "$f" ;;
 		*.pdf) zathura "$f" ;;
+		*.csv|*.xls|*.xlsx) gnumeric "$f" ;;
 		*) $EDITOR "$f" ;;
 	esac
 }}
