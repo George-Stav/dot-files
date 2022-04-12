@@ -79,11 +79,11 @@ key_bindings:
 # COLOURS / STYLING
 # CURSOR COLOURS ACT WEIRD AND DON'T MATCH THE DISPLAYED COLOUR
 colors:
-  # COLORSCHEME: tokyo-night-storm.yaml
+  # COLORSCHEME: palenight.yml
   # Default colors
   primary:
-    background: '#24283b'
-    foreground: '#a9b1d6'
+    background: '#292d3e'
+    foreground: '#d0d0d0'
 
   # Normal colors
   cursor:
@@ -91,25 +91,25 @@ colors:
     cursor: '#86c0d9'
 
   normal:
-    black: '#32344a'
-    red: '#f7768e'
-    green: '#9ece6a'
-    yellow: '#e0af68'
-    blue: '#7aa2f7'
-    magenta: '#ad8ee6'
-    cyan: '#449dab'
-    white: '#9699a8'
+    black: '#292d3e'
+    red: '#f07178'
+    green: '#c3e88d'
+    yellow: '#ffcb6b'
+    blue: '#82aaff'
+    magenta: '#c792ea'
+    cyan: '#89ddff'
+    white: '#d0d0d0'
 
   # Bright colors
   bright:
-    black: '#444b6a'
-    red: '#ff7a93'
-    green: '#b9f27c'
-    yellow: '#ff9e64'
-    blue: '#7da6ff'
-    magenta: '#bb9af7'
-    cyan: '#0db9d7'
-    white: '#acb0d0'
+    black: '#434758'
+    red: '#ff8b92'
+    green: '#ddffa7'
+    yellow: '#ffe585'
+    blue: '#9cc4ff'
+    magenta: '#e1acff'
+    cyan: '#a3f7ff'
+    white: '#ffffff'
   indexed_colors:
     - {index: 16, color: '0xF8BD96'}
     - {index: 17, color: '0xF5E0DC'}
