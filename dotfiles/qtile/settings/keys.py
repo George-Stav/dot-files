@@ -27,6 +27,16 @@ windows = "mod4"
 #     qtile.current_screen.set_group(qtile.current_screen.previous_group)
 
 @lazy.function
+def mic_toggle(qtile):
+    qtile.widgets_map['togglestate'].toggle() # change widget icon
+    qtile.cmd_spawn(f'{scripts_path}/mic-toggle') # toggle mic using amixer and push notification
+
+@lazy.function
+def play_pause(qtile):
+    qtile.cmd_spawn('playerctl play-pause')
+    qtile.cmd_spawn(f'{scripts_path}/spotify-notif')
+
+@lazy.function
 def testing_mon(qtile, command="prev"):
     # prev = left
     # next = right
@@ -43,15 +53,9 @@ def testing_mon(qtile, command="prev"):
         # qtile.cmd_spawn(f'rofi -e "go to left monitor"')
 
 @lazy.function
-def mic_toggle(qtile):
-    qtile.widgets_map['togglestate'].toggle() # change widget icon
-    qtile.cmd_spawn(f'{scripts_path}/mic-toggle') # toggle mic using amixer and push notification
-
-@lazy.function
 def test_widgets(qtile):
     widgets = [w for w in qtile.cmd_list_widgets()]
-    # qtile.cmd_spawn(f'rofi -e {len(qtile.cmd_list_widgets())}')
-    qtile.cmd_spawn(f'rofi -e "{widgets}"')
+    qtile.cmd_spawn(f'rofi -e {len(qtile.cmd_list_widgets())}')
 
 
 keys = [
@@ -174,9 +178,7 @@ keys = [
     Key([], "XF86AudioMute", lazy.spawn(
         f"{scripts_path}/change-volume 0"
     )),
-    Key([], "XF86AudioPlay", lazy.spawn(
-        "playerctl play-pause"
-    )),
+    Key([], "XF86AudioPlay", play_pause()),
     Key([], "XF86AudioPrev", lazy.spawn(
         "playerctl previous"
     )),
