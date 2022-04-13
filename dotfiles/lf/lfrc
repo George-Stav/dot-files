@@ -1,4 +1,4 @@
-set previewer scope
+set previewer preview
 set preview true
 set hidden true
 set drawbox true
@@ -9,9 +9,9 @@ cmd open ${{
 	case "$f" in
 		*.org|*.tex) $VISUAL "$f" ;;
 		*.jpg|*.png|*.gif) sxiv "$f" ;;
-		*.mkv|*.mp3|*.mp4) vlc "$f" ;;
-		*.pdf) zathura "$f" ;;
+		*.mkv|*.mp3|*.mp4|*.flac|*.webp) vlc "$f" ;;
 		*.csv|*.xls|*.xlsx) gnumeric "$f" ;;
+		*.pdf) zathura "$f" ;;
 		*) $EDITOR "$f" ;;
 	esac
 }}
@@ -74,6 +74,15 @@ cmd rename_snake_case ${{
 	done
 }}
 
+# Get size of file/dir
+# By default returns size of file/dir that has the cursor over it
+# Works with multiple file selections
+cmd size ${{
+	dirs="$PWD"
+	[ -n "$fx" ] && dirs="$(echo $fx | sed -z 's/\n/ /;s/ $//g')"
+	lf -remote "send echo $(dir-size -d "$dirs" -D 0 -c)"
+}}
+
 # Un-map
 # map m
 map w
@@ -85,6 +94,9 @@ map rr rename
 map rp rename_snake_case
 map rm rename_snake_pascal
 map rb $vimv $fx
+
+# Backup
+map bb $cp -r $f $f.bkp
 
 # Trash
 map dd trash
@@ -102,6 +114,7 @@ map <enter> open
 map au unarchive
 map e $$VISUAL "$f"
 map J fzf_jump
+map S size
 
 # Shortcuts
 map gc cd ~/.config
@@ -114,3 +127,4 @@ map gp cd ~/Packt
 map gh cd /mnt/HDD
 map gw cd /mnt/WD
 map gl cd ~/wallpapers
+map gd cd ~/dev
