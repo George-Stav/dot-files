@@ -6,6 +6,8 @@ set VISUAL "emacsclient -c"
 set -x TEXMFCNF "~/.config:"
 set fish_cursor_insert underscore
 
+set -p PATH /usr/bin
+
 set -x LD_LIBRARY_PATH "$LD_LIBRARY_PATH:/usr/lib/"
 
 # keychain --quiet --eval --agents ssh id_ed25519
@@ -62,7 +64,7 @@ end
 # Add ~/.local/bin to PATH
 if test -d ~/.local/bin
     if not contains -- ~/.local/bin $PATH
-        set -p PATH ~/.local/bin
+        set -a PATH ~/.local/bin
     end
 end
 
