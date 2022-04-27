@@ -37,6 +37,7 @@ alias paru="paru --bottomup"
 alias warp="warp-cli"
 alias doom="$HOME/.emacs.d/bin/doom"
 alias source-dbt="source $HOME/Packt/dbt-env/bin/activate.fish"
+alias lf="lfrun"
 
 ### ~~~~~~~~~~~~~~~~~~~~~ ###
 set fish_greeting

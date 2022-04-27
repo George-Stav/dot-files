@@ -1,4 +1,5 @@
 set previewer preview
+set cleaner cleaner
 set preview true
 set hidden true
 set drawbox true
