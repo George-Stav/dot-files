@@ -32,9 +32,13 @@ def mic_toggle(qtile):
     qtile.cmd_spawn(f'{scripts_path}/mic-toggle') # toggle mic using amixer and push notification
 
 @lazy.function
-def play_pause(qtile):
-    qtile.cmd_spawn('playerctl play-pause')
-    qtile.cmd_spawn(f'{scripts_path}/spotify-notif')
+def play_pause(qtile, spotify=False):
+    if not spotify:
+        qtile.cmd_spawn('playerctl play-pause')
+        qtile.cmd_spawn(f'{scripts_path}/spotify-notif')
+    else:
+        qtile.cmd_spawn('playerctl -p spotify play-pause')
+        qtile.cmd_spawn(f'{scripts_path}/spotify-notif force')
 
 @lazy.function
 def testing_mon(qtile, command="prev"):
@@ -131,7 +135,8 @@ keys = [
     # Emacs
     Key([mod], "e", lazy.spawn("emacsclient -c")),
     Key([mod, "shift"], "e", lazy.spawn("systemctl --user restart emacs")),
-    Key([mod], "d", lazy.spawn("alacritty -e lf")),
+    # Key([mod], "d", lazy.spawn("emacsclient -c -a 'emacs' --eval '(dired nil)'")),
+    Key([mod], "d", lazy.spawn(f"alacritty -e {scripts_path}/lfrun")),
 
     # File Explorer
     # Key([mod], "e", lazy.spawn("pcmanfm")),
@@ -159,6 +164,7 @@ keys = [
     Key([mod, "control"], "space", lazy.spawn(f'{scripts_path}/cycle-kb-layout')),
     Key(["shift"], "XF86AudioMute", mic_toggle),
     Key([], "XF86AudioMicMute", mic_toggle),
+    Key([], "XF86Favorites", mic_toggle),
 
     # ------------ Hardware Configs ------------
 
@@ -179,6 +185,7 @@ keys = [
         f"{scripts_path}/change-volume 0"
     )),
     Key([], "XF86AudioPlay", play_pause()),
+    Key(["shift"], "XF86AudioPlay", play_pause(spotify=True)),
     Key([], "XF86AudioPrev", lazy.spawn(
         "playerctl previous"
     )),

@@ -1,4 +1,5 @@
 set previewer preview
+set cleaner cleaner
 set preview true
 set hidden true
 set drawbox true
@@ -10,6 +11,7 @@ cmd open ${{
 		*.org|*.tex) $VISUAL "$f" ;;
 		*.jpg|*.png|*.gif) sxiv "$f" ;;
 		*.mkv|*.mp3|*.mp4|*.flac|*.webp) vlc "$f" ;;
+		*.csv|*.xls|*.xlsx) gnumeric "$f" ;;
 		*.pdf) zathura "$f" ;;
 		*) $EDITOR "$f" ;;
 	esac
@@ -82,6 +84,19 @@ cmd size ${{
 	lf -remote "send echo $(dir-size -d "$dirs" -D 0 -c)"
 }}
 
+cmd sudo_paste ${{
+	load=$(cat ~/.local/share/lf/files)
+	mode=$(echo "$load" | sed -n '1p')
+	list=$(echo "$load" | sed '1d')
+	if [ $mode = 'copy' ]; then
+		sudo cp -R $list .
+	elif [ $mode = 'move' ]; then
+		sudo mv $list .
+	fi
+	rm ~/.local/share/lf/files
+	lf -remote 'send clear'
+}}
+
 # Un-map
 # map m
 map w
@@ -105,10 +120,12 @@ map dc trash_clear
 # Other
 map . set hidden!
 map p paste
+map sp sudo_paste
 map x cut
 map y copy
 map D delete
 map dD delete
+map sD $sudo rm -r "$f"
 map <enter> open
 map au unarchive
 map e $$VISUAL "$f"
@@ -127,3 +144,4 @@ map gh cd /mnt/HDD
 map gw cd /mnt/WD
 map gl cd ~/wallpapers
 map gd cd ~/dev
+map g/ cd /
