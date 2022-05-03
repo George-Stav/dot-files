@@ -32,6 +32,7 @@ abbr ydl-music "youtube-dl -wc -o /mnt/HDD/MUSIC/'%(uploader)s/%(title)s.%(ext)s
 
 alias paru="paru --bottomup"
 alias doom="$HOME/.emacs.d/bin/doom"
+alias lf="lfrun"
 
 
 ### ~~~~~~~~~~~~~~~~~~~~~ ###
