@@ -35,10 +35,10 @@ def mic_toggle(qtile):
 def play_pause(qtile, spotify=False):
     if not spotify:
         qtile.cmd_spawn('playerctl play-pause')
-        qtile.cmd_spawn(f'{scripts_path}/spotify-notif')
+        qtile.cmd_spawn(f'{scripts_path}/media-notif')
     else:
         qtile.cmd_spawn('playerctl -p spotify play-pause')
-        qtile.cmd_spawn(f'{scripts_path}/spotify-notif force')
+        qtile.cmd_spawn(f'{scripts_path}/media-notif spotify')
 
 @lazy.function
 def testing_mon(qtile, command="prev"):
