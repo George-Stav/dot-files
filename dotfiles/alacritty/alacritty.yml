@@ -79,37 +79,44 @@ key_bindings:
 # COLOURS / STYLING
 # CURSOR COLOURS ACT WEIRD AND DON'T MATCH THE DISPLAYED COLOUR
 colors:
-  # COLORSCHEME: palenight.yml
-  # Default colors
+  # COLORSCHEME: omni.yml
   primary:
-    background: '#292d3e'
-    foreground: '#d0d0d0'
+    background: '#191622'
+    foreground: '#e1e1e6'
 
-  # Normal colors
   cursor:
-    text: '#000000'
-    cursor: '#86c0d9'
+    text: '#191622'
+    cursor: '#f8f8f2'
 
   normal:
-    black: '#292d3e'
-    red: '#f07178'
-    green: '#c3e88d'
-    yellow: '#ffcb6b'
-    blue: '#82aaff'
-    magenta: '#c792ea'
-    cyan: '#89ddff'
-    white: '#d0d0d0'
+    black: '#000000'
+    red: '#ff5555'
+    green: '#50fa7b'
+    yellow: '#effa78'
+    blue: '#bd93f9'
+    magenta: '#ff79c6'
+    cyan: '#8d79ba'
+    white: '#bfbfbf'
 
-  # Bright colors
   bright:
-    black: '#434758'
-    red: '#ff8b92'
-    green: '#ddffa7'
-    yellow: '#ffe585'
-    blue: '#9cc4ff'
-    magenta: '#e1acff'
-    cyan: '#a3f7ff'
-    white: '#ffffff'
+    black: '#4d4d4d'
+    red: '#ff6e67'
+    green: '#5af78e'
+    yellow: '#eaf08d'
+    blue: '#caa9fa'
+    magenta: '#ff92d0'
+    cyan: '#aa91e3'
+    white: '#e6e6e6'
+
   indexed_colors:
     - {index: 16, color: '0xF8BD96'}
     - {index: 17, color: '0xF5E0DC'}
+  dim:
+    black: '#000000'
+    red: '#a90000'
+    green: '#049f2b'
+    yellow: '#a3b106'
+    blue: '#530aba'
+    magenta: '#bb006b'
+    cyan: '#433364'
+    white: '#5f5f5f'
