@@ -89,7 +89,7 @@ cmd sudo_paste ${{
 	mode=$(echo "$load" | sed -n '1p')
 	list=$(echo "$load" | sed '1d')
 	if [ $mode = 'copy' ]; then
-		sudo cp -R $list .
+		sudo cp -vR $list .
 	elif [ $mode = 'move' ]; then
 		sudo mv $list .
 	fi
