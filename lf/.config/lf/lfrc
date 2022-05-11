@@ -150,3 +150,5 @@ map gw cd /mnt/WD
 map gl cd ~/wallpapers
 map gd cd ~/dev
 map g/ cd /
+map g~ cd ~
+map g. cd ~/.config
