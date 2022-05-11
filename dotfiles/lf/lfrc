@@ -97,11 +97,15 @@ cmd sudo_paste ${{
 	lf -remote 'send clear'
 }}
 
+cmd copy_path ${{
+	echo "$fx" | xclip -r -selection clipboard
+}}
+
 # Un-map
-# map m
 map w
 map d
 map r
+map y
 
 # Rename
 map rr rename
@@ -122,7 +126,8 @@ map . set hidden!
 map p paste
 map sp sudo_paste
 map x cut
-map y copy
+map yy copy
+map yp copy_path
 map D delete
 map dD delete
 map sD $sudo rm -r "$f"

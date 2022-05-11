@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from libqtile import widget
+from libqtile.command import lazy
 from .path import scripts_path
 from .helpers import get_dummy_state
 
@@ -8,6 +9,29 @@ from .helpers import get_dummy_state
 from typing import Any, List, Tuple
 from libqtile import bar, hook
 from libqtile.widget import base
+
+class AudioSource(base._TextBox):
+    defaults = [
+        ("default", "", "Default icon"),
+        ("update_interval", 60, "Time in seconds between updates"),
+    ]
+
+    mappings = {
+        "firefox": "",
+        "spotify": "",
+    }
+
+    def __init__(self, text=" ", width=bar.CALCULATED, **config):
+        base._TextBox.__init__(self, text=text, width=width, **config)
+        self.add_defaults(AudioSource.defaults)
+
+    def _configure(self, qtile, bar):
+        base._TextBox._configure(self, qtile, bar)
+        self.update(self.default)
+
+    def update(self, text):
+        base._TextBox.update(self, str(lazy.spawn("playerctl -l")))
+        # base._TextBox.update(self, text)
 
 class ToggleState(base._TextBox):
     defaults = [
