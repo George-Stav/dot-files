@@ -101,6 +101,17 @@ keys = [
     Key([mod, "control"], "k", lazy.layout.grow_up()),
     Key([mod], "n", lazy.layout.normalize()),
 
+    # MonadWide
+    Key([mod, "shift"], "h", lazy.layout.swap_left()),
+    Key([mod, "shift"], "l", lazy.layout.swap_right()),
+    Key([mod, "shift"], "j", lazy.layout.shuffle_down()),
+    Key([mod, "shift"], "k", lazy.layout.shuffle_up()),
+    Key([mod, "control"], "k", lazy.layout.grow()),
+    Key([mod, "control"], "j", lazy.layout.shrink()),
+    Key([mod], "n", lazy.layout.normalize()),
+    Key([mod], "o", lazy.layout.maximize()),
+    Key([mod, "shift"], "space", lazy.layout.flip()),
+
     # Toggle floating
     Key([mod, "control"], "f", lazy.window.toggle_floating()),
 
