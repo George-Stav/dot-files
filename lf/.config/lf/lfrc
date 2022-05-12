@@ -89,7 +89,7 @@ cmd sudo_paste ${{
 	mode=$(echo "$load" | sed -n '1p')
 	list=$(echo "$load" | sed '1d')
 	if [ $mode = 'copy' ]; then
-		sudo cp -vR $list .
+		sudo cp -R $list .
 	elif [ $mode = 'move' ]; then
 		sudo mv $list .
 	fi
@@ -97,11 +97,15 @@ cmd sudo_paste ${{
 	lf -remote 'send clear'
 }}
 
+cmd copy_path ${{
+	echo "$fx" | xclip -r -selection clipboard
+}}
+
 # Un-map
-# map m
 map w
 map d
 map r
+map y
 
 # Rename
 map rr rename
@@ -122,7 +126,8 @@ map . set hidden!
 map p paste
 map sp sudo_paste
 map x cut
-map y copy
+map yy copy
+map yp copy_path
 map D delete
 map dD delete
 map sD $sudo rm -r "$f"
@@ -145,3 +150,5 @@ map gw cd /mnt/WD
 map gl cd ~/wallpapers
 map gd cd ~/dev
 map g/ cd /
+map g~ cd ~
+map g. cd ~/.config

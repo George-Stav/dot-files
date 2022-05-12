@@ -12,7 +12,7 @@ if ! filereadable(system('echo -n "${XDG_CONFIG_HOME:=$HOME/.config}/nvim/autolo
 	autocmd VimEnter * PlugInstall
 endif
 
-call plug#begin(system('echo -n "${XDG_CONFIG_HOME:=$HOME/.config}/nvim/plugged"'))
+call plug#begin(system('echo -n "${XDG_CONFIG_HOME:=$HOME/.config}/nvim_plugins/plugged"'))
 Plug 'tpope/vim-surround'
 Plug 'preservim/nerdtree'
 Plug 'junegunn/goyo.vim'
