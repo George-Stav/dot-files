@@ -59,7 +59,7 @@ def testing_mon(qtile, command="prev"):
 @lazy.function
 def test_widgets(qtile):
     widgets = [w for w in qtile.cmd_list_widgets()]
-    qtile.cmd_spawn(f'rofi -e {len(qtile.cmd_list_widgets())}')
+    qtile.cmd_spawn(f'rofi -e {widgets}')
 
 
 keys = [

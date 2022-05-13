@@ -8,11 +8,11 @@ set ignorecase true
 
 cmd open ${{
 	case "$f" in
-		*.org|*.tex) $VISUAL "$f" ;;
-		*.jpg|*.png|*.gif) sxiv "$f" ;;
-		*.mkv|*.mp3|*.mp4|*.flac|*.webp) vlc "$f" ;;
-		*.csv|*.xls|*.xlsx) gnumeric "$f" ;;
-		*.pdf) zathura "$f" ;;
+		*.org|*.tex) "$VISUAL" "$f" & ;;
+		*.jpg|*.png|*.gif) sxiv "$f" & ;;
+		*.mkv|*.mp3|*.mp4|*.flac|*.webp) vlc "$fx" & ;;
+		*.csv|*.xls|*.xlsx) gnumeric "$f" & ;;
+		*.pdf) zathura "$f" & ;;
 		*) $EDITOR "$f" ;;
 	esac
 }}
