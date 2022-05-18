@@ -94,7 +94,7 @@ primary_widgets = [
                 on="", off="", get_state=get_mic_state), # mic-state
     ToggleState(**base_colours(bg='color2'), fontsize=24,
                 off="", on="", update_interval=300, get_state=get_warp_state), # warp-cli-state
-    widget.Battery(**base_colours(bg='color2'), battery=1, format='{char} {percent:2.0%}'),
+    widget.Battery(**base_colours(bg='color2'), battery=0, format='{char} {percent:2.0%}'),
 
     powerline('color1_5', 'color2'),
     widget.CurrentLayoutIcon(**base_colours(bg='color1_5'), scale=0.65),

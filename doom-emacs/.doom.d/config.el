@@ -102,7 +102,14 @@
 (map! :leader
       :desc "Save Tex file and export to PDF" "l" #'TeX-command-master)
 
+(map! :leader
+      :desc "Run shell command" "!" #'shell-command)
 
+(map! :leader
+      :desc "Run shell command asynchronously" "&" #'async-shell-command)
+
+(map! :leader
+      :desc "Recompile" "c r" #'recompile)
 ;;; keychain autoload
 (defun keychain-refresh-environment ()
   "Set ssh-agent and gpg-agent environment variables.
@@ -126,12 +133,13 @@ information retrieved from files created by the keychain script."
 (keychain-refresh-environment)
 
 (setq max-lisp-eval-depth 100000)
-(setq pyvenv-default-virtual-env-name "/home/george/.virtualenvs/")
+;; (setq pyvenv-default-virtual-env-name "/home/george/.virtualenvs/")
 (setq org-hide-emphasis-markers t)
 (setq auth-sources '("~/.authinfo"))
 (setq org-log-done t)
 (setq TeX-command-force "LaTeX") ;; Skip prompt when pressing C-c C-c and force run LaTeX
 (setq vterm-shell "/bin/bash")
+(setq compile-command "")
 
 ;; Thesaurus
 (defun synonym (syn)
