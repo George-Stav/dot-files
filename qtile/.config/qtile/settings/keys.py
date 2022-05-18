@@ -92,6 +92,7 @@ keys = [
     Key([mod], "k", lazy.layout.up()),
     Key([mod], "h", lazy.layout.left()),
     Key([mod], "l", lazy.layout.right()),
+    Key([mod, "control"], "n", lazy.layout.next()),
 
     # Grow windows. If current window is on the edge of screen and direction
     # will be to screen edge - window would shrink.
@@ -99,7 +100,6 @@ keys = [
     Key([mod, "control"], "l", lazy.layout.grow_right()),
     Key([mod, "control"], "j", lazy.layout.grow_down()),
     Key([mod, "control"], "k", lazy.layout.grow_up()),
-    Key([mod], "n", lazy.layout.normalize()),
 
     # MonadWide
     Key([mod, "shift"], "h", lazy.layout.swap_left()),

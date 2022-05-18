@@ -5,13 +5,6 @@
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
 
-
-;; Some functionality uses this to identify you, e.g. GPG configuration, email
-;; clients, file templates and snippets.
-;;; Code:
-(setq user-full-name "George Stavropoulos"
-      user-mail-address "georgestavropoulos0@gmail.com")
-
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
 ;; are the three important ones:
 ;;
@@ -20,7 +13,11 @@
 ;; + `doom-big-font' -- used for `doom-big-font-mode'; use this for
 ;;   presentations or streaming.
 ;;
-
+;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
+;; font string. You generally only need these two:
+;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
+;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
+;;
 ;; DejaVu Sans Mono
 ;; SauceCodePro Nerd Font Mono
 ;; Monaco
@@ -36,17 +33,10 @@
   '(font-lock-comment-face :slant italic)
   '(font-lock-keyword-face :slant italic))
 
-;;
-;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
-;; font string. You generally only need these two:
-;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
-;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
-
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-
-(setq doom-theme 'doom-shades-of-purple)
+(setq doom-theme 'doom-zenburn)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -73,14 +63,6 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
-;; Thesaurus
-(defun synonym (syn)
-  (interactive (list (save-excursion (car (ispell-get-word nil)))))
-  (browse-url (concat "https://www.thesaurus.com/browse/" syn)))
-
-;; Forge
-(use-package forge
-  :after magit)
 
 ;; Macros
 
@@ -117,44 +99,11 @@
 (map! :leader
       :desc "Man" "m" #'man)
 
-;; (unless (package-installed-p 'polymode)
-;;   (package-install 'poly-markdown))
-
-(use-package pdf-tools)
-
-;; LaTeX
-;; Skip prompt when pressing C-c C-c and force run LaTeX
-(setq TeX-command-force "LaTeX")
-(setq vterm-shell "/usr/bin/fish")
-
 (map! :leader
       :desc "Save Tex file and export to PDF" "l" #'TeX-command-master)
 
-;; (defun markdown-html (buffer)
-;;   (princ (with-current-buffer buffer
-;;     (format "<!DOCTYPE html><html><title>Impatient Markdown</title><xmp theme=\"united\" style=\"display:none;\"> %s  </xmp><script src=\"http://strapdownjs.com/v/0.2/strapdown.js\"></script></html>" (buffer-substring-no-properties (point-min) (point-max))))
-;;   (current-buffer)))
 
-;; (load! "~/dev/elisp/run-cmd-on-save.el")
-
-(setq auth-sources '("~/.authinfo"))
-(setq vterm-shell "/usr/bin/fish")
-
-;; ssh-agent
-;; (require 'exec-path-from-shell)
-;; (exec-path-from-shell-copy-env "SSH_AGENT_PID")
-;; (exec-path-from-shell-copy-env "SSH_AUTH_SOCK")
-
-(blink-cursor-mode)
-(add-hook 'find-file-hook 'recentf-save-list)
-
-;; org-mode
-
-;; hide [*,/,etc.]
-(setq org-hide-emphasis-markers t)
-
-;;; keychain
-;;; autoload
+;;; keychain autoload
 (defun keychain-refresh-environment ()
   "Set ssh-agent and gpg-agent environment variables.
 Set the environment variables `SSH_AUTH_SOCK', `SSH_AGENT_PID'
@@ -173,17 +122,36 @@ information retrieved from files created by the keychain script."
                (string-match "GPG_AGENT_INFO[=\s]\\([^\s;\n]*\\)" gpg)
                (setenv       "GPG_AGENT_INFO" (match-string 1 gpg))))))
 
-;; Org-agenda
-(setq org-log-done t)
-      ;; org-agenda-files '("~/Packt/agenda.org"))
-      ;; org-agenda-files '("~/Packt/agenda.org" "~/Documents/notes/asdf.org"))
-
 (provide 'keychain-environment)
-
 (keychain-refresh-environment)
+
 
 (setq max-lisp-eval-depth 100000)
 (setq pyvenv-default-virtual-env-name "/home/george/.virtualenvs/")
+(setq org-hide-emphasis-markers t)
+(setq auth-sources '("~/.authinfo"))
+(setq org-log-done t)
+(setq TeX-command-force "LaTeX") ;; Skip prompt when pressing C-c C-c and force run LaTeX
+(setq vterm-shell "/bin/bash")
 
-;; (provide 'config)
+;; Thesaurus
+(defun synonym (syn)
+  (interactive (list (save-excursion (car (ispell-get-word nil)))))
+  (browse-url (concat "https://www.thesaurus.com/browse/" syn)))
+
+(blink-cursor-mode)
+(add-hook 'find-file-hook 'recentf-save-list)
+
+;; Change to normal mode with the following keys
+(require 'key-chord)(key-chord-mode 1)
+(key-chord-define-global "fj" 'evil-normal-state)
+(key-chord-define-global "jf" 'evil-normal-state)
+
+(require 'evil-mc)
+(evil-mc-mode 1)
+
+(require 'pdf-tools)
+
+
+
 ;;; config.el ends here

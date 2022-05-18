@@ -92,7 +92,7 @@ primary_widgets = [
     powerline('color2', 'color3'),
     ToggleState(**base_colours(bg='color2'), fontsize=24,
                 on="", off="", get_state=get_mic_state), # mic-state
-    AudioSource(**base_colours(bg='color2'), fontsize=24),
+    # AudioSource(**base_colours(bg='color2'), fontsize=24),
 
     widget.Battery(**base_colours(bg='color2'), battery=1, format='{char} {percent:2.0%}'),
     # ToggleState(**base_colours(bg='color2'), fontsize=24,
