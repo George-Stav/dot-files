@@ -5,14 +5,14 @@ map <leader>w <C-w>
 " map <leader>fs :<c-u>update<cr>
 
 " Graciously using Luke Smith's config
-if ! filereadable(system('echo -n "${XDG_CONFIG_HOME:=$HOME/.config}/nvim/autoload/plug.vim"'))
-	echo "Downloading junegunn/vim-plug to manage plugins..."
-	silent !mkdir -p ${XDG_CONFIG_HOME:=$HOME/.config}/nvim/autoload/
-	silent !curl "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim" > ${XDG_CONFIG_HOME:=$HOME/.config}/nvim/autoload/plug.vim
-	autocmd VimEnter * PlugInstall
-endif
+" if ! filereadable(system('echo -n "${XDG_CONFIG_HOME:=$HOME/.config}/nvim/autoload/plug.vim"'))
+	" echo "Downloading junegunn/vim-plug to manage plugins..."
+	" silent !mkdir -p ${XDG_CONFIG_HOME:=$HOME/.config}/nvim/autoload/
+	" silent !curl "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim" > ${XDG_CONFIG_HOME:=$HOME/.config}/nvim/autoload/plug.vim
+	" autocmd VimEnter * PlugInstall
+" endif
 
-call plug#begin(system('echo -n "${XDG_CONFIG_HOME:=$HOME/.config}/nvim_plugins/plugged"'))
+call plug#begin(system('echo -n "$HOME/.config/nvim_plugins/plugged"'))
 Plug 'tpope/vim-surround'
 Plug 'preservim/nerdtree'
 Plug 'junegunn/goyo.vim'
