@@ -12,17 +12,17 @@ map <leader>w <C-w>
 	" autocmd VimEnter * PlugInstall
 " endif
 
-call plug#begin(system('echo -n "$HOME/.config/nvim_plugins/plugged"'))
-Plug 'tpope/vim-surround'
-Plug 'preservim/nerdtree'
-Plug 'junegunn/goyo.vim'
-Plug 'jreybert/vimagit'
+" call plug#begin(system('echo -n "${XDG_CONFIG_HOME:=$HOME/.config}/nvim_plugins/plugged"'))
+" Plug 'tpope/vim-surround'
+" Plug 'preservim/nerdtree'
+" Plug 'junegunn/goyo.vim'
+" Plug 'jreybert/vimagit'
 " Plug 'lukesmithxyz/vimling'
 " Plug 'vimwiki/vimwiki'
 " Plug 'vim-airline/vim-airline'
-Plug 'tpope/vim-commentary'
-Plug 'ap/vim-css-color'
-call plug#end()
+" Plug 'tpope/vim-commentary'
+" Plug 'ap/vim-css-color'
+" call plug#end()
 
 set title
 set bg=light

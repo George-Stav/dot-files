@@ -7,7 +7,7 @@
  '(org-agenda-files
    '("~/Documents/notes/asdf.org" "/home/george/Packt/agenda.org"))
  '(package-selected-packages
-   '(pyvenv unicode-fonts yaml-mode list-unicode-display forge ghub python-docstring projectile flyspell-lazy latex-extra dash pdf-tools)))
+   '(pyvenv unicode-fonts yaml-mode list-unicode-display forge ghub python-docstring projectile flyspell-lazy latex-extra dash pdf-tools key-chord evil-mc)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
