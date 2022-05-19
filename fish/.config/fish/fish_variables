@@ -1,7 +1,7 @@
 # This file contains fish universal variable definitions.
 # VERSION: 3.0
-SETUVAR --export SSH_AGENT_PID:1119
-SETUVAR --export SSH_AUTH_SOCK:/tmp/ssh\x2dXXXXXXGcGDPA/agent\x2e1118
+SETUVAR --export SSH_AGENT_PID:1096
+SETUVAR --export SSH_AUTH_SOCK:/tmp/ssh\x2dXXXXXXGvpW0B/agent\x2e1095
 SETUVAR __done_min_cmd_duration:10000
 SETUVAR __done_notification_urgency_level:low
 SETUVAR __fish_initialized:3400
