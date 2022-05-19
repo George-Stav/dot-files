@@ -1,2 +1,3 @@
 __pycache__/
 dotfiles/fish/fish_variables
+.emacs.d

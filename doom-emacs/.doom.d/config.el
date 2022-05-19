@@ -155,7 +155,7 @@ information retrieved from files created by the keychain script."
 (key-chord-define-global "jf" 'evil-normal-state)
 
 (require 'evil-mc)
-(evil-mc-mode 1)
+(global-evil-mc-mode 1)
 
 (require 'pdf-tools)
 
