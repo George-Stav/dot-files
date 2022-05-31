@@ -1,6 +1,9 @@
 " let mapleader =";"
 map <Space> <leader>
 map <leader>w <C-w>
+imap fj <Esc>
+imap jf <Esc>
+
 " Save file with SPC-f-s
 " map <leader>fs :<c-u>update<cr>
 

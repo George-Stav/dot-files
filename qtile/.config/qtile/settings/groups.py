@@ -80,5 +80,5 @@ for group in groups:
         # Switch to workspace N
         Key([mod], actual_key, lazy.group[group.name].toscreen()),
         # Send window to workspace N
-        Key([mod, "control"], actual_key, lazy.window.togroup(group.name), lazy.group[actual_key].toscreen()),
+        Key([mod, "control"], actual_key, lazy.window.togroup(group.name)), # , lazy.group[actual_key].toscreen()
     ])
