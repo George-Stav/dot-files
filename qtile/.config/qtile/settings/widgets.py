@@ -106,6 +106,16 @@ primary_widgets = [
 
     widget.Clock(**base_colours(bg='color1'), format='%d/%m/%Y - %H:%M '),
     powerline('dark', 'color1'),
+
+]
+
+task_list = [
+    widget.TaskList(**base_colours(bg='dark', fg='focus'), **{
+        "font": "Jetbrains Mono",
+        "highlight_method": 'block',
+        "fontshadow": 10
+
+    })
 ]
 
 secondary_widgets = [
