@@ -5,4 +5,5 @@ configuration {
   icon-theme:         "candy-icons";
   font:               "Jetbrains Mono Bold 12";
 }
-@theme "/usr/share/rofi/themes/Arc-Dark.rasi"
+//@theme "/usr/share/rofi/themes/Arc-Dark.rasi"
+@theme "/usr/share/rofi/themes/gruvbox-dark-soft.rasi"

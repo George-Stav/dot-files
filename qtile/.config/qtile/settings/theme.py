@@ -12,7 +12,7 @@ from .path import qtile_path
 
 
 def load_theme():
-    theme = "material-ocean"
+    theme = "gruvbox"
 
     config = path.join(qtile_path, "config.json")
     if path.isfile(config):
