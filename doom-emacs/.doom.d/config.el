@@ -22,6 +22,7 @@
 ;; SauceCodePro Nerd Font Mono
 ;; Monaco
 ;; Jetbrains Mono
+;;; Code:
 (setq doom-font (font-spec :family "Jetbrains Mono" :size 15))
 (setq doom-variable-pitch-font (font-spec :family "Jetbrains Mono" :size 15))
 
@@ -159,6 +160,6 @@ information retrieved from files created by the keychain script."
 
 (require 'pdf-tools)
 
-
-
+;; (setq +python-ipython-repl-args '("-i" "--simple-prompt" "--no-color-info" "--autoindent"))
+;; (setq +python-jupyter-repl-args '("--simple-prompt"))
 ;;; config.el ends here
