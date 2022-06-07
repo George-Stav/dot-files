@@ -61,9 +61,9 @@ def workspaces():
             disable_drag=True
         ),
         separator(),
-        MyWindowCount(**base_colours(fg='focus'), fontsize=14, fmt='[{}]', threshold=1),
-        separator(),
-        widget.WindowName(**base_colours(fg='focus'), fontsize=14),
+        # MyWindowCount(**base_colours(fg='focus'), fontsize=14, fmt='[{}]', threshold=1),
+        # separator(),
+        widget.WindowName(**base_colours(fg='focus'), fontsize=14, format=""),
         separator(),
     ]
 
@@ -106,17 +106,32 @@ primary_widgets = [
 
     widget.Clock(**base_colours(bg='color1'), format='%d/%m/%Y - %H:%M '),
     powerline('dark', 'color1'),
-
 ]
 
-task_list = [
-    widget.TaskList(**base_colours(bg='dark', fg='focus'), **{
-        "font": "Jetbrains Mono",
-        "highlight_method": 'block',
-        "fontshadow": 10
+def my_parse(text):
+    d = {
+        "Mozilla Firefox": "🦊",
+        "Doom Emacs": "👹"
+    }
+    for key,value in d.items():
+        if key in text:
+            return text.replace(key, value)
 
-    })
-]
+# TaskList widget is created inside screens.py file
+task_list = {
+    "parse_text": my_parse,
+    'foreground': colors["light"],
+    'background': colors["dark"],
+    "font": "Iosevka",
+    "highlight_method": 'block',
+    "markup_focused": "* {} *",
+    "markup_floating": "~ {} ~",
+    "markup_maximized": "[ {} ]",
+    "markup_minimized": "( {} )",
+    "title_width_method": "uniform",
+    "border": colors["grey_2"],
+    "icon_size": 0
+}
 
 secondary_widgets = [
     *workspaces(),
@@ -135,9 +150,9 @@ secondary_widgets = [
     widget.CurrentLayoutIcon(**base_colours(bg='color2'), scale=0.65),
     widget.CurrentLayout(**base_colours(bg='color2'), padding=5),
 
-    powerline('color1', 'color2'),
-    widget.Clock(**base_colours(bg='color1'), format='%d/%m/%Y - %H:%M '),
-    powerline('dark', 'color1'),
+    powerline('color1_5', 'color2'),
+    widget.Clock(**base_colours(bg='color1_5'), format='%d/%m/%Y - %H:%M '),
+    powerline('dark', 'color1_5'),
 ]
 
 if get_monitor_count() > 1:

@@ -137,7 +137,8 @@ keys = [
     # Rofi
     # -m -4: rofi prompt appears on the screen with the focused window
     Key([mod], "m", lazy.spawn("rofi -m -4 -modi drun -show drun")),
-    Key([mod], "r", lazy.spawn("rofi -m -4 -show run")),
+    # Key([mod], "r", lazy.spawn("rofi -m -4 -show run")),
+    Key([mod], "r", lazy.spawn(f"{scripts_path}/run")),
     Key([mod], "space", lazy.spawn("rofi -m -4 -show window")),
 
     # Browser
