@@ -63,14 +63,14 @@ from .helpers import get_session_type
 #  ]
 
 groups = [
-    Group(name="1", label="   "),
+    Group(name="1", label="   ", layout="max"),
     Group(name="2", label="   "),
     Group(name="3", label="   "),
     Group(name="4", label="   "),
     Group(name="5", label="   "),
     Group(name="6", label="   "),
     Group(name="7", label="   "),
-    Group(name="8", label="   "),
+    Group(name="8", label="   ", layout="max"),
     Group(name="9", label="   "),
 ]
 
