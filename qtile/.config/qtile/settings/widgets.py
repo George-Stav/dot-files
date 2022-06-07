@@ -115,13 +115,15 @@ def my_parse(text):
     }
     for key,value in d.items():
         if key in text:
-            return text.replace(key, value)
+            text = text.replace(key, value)
+    return text
 
 # TaskList widget is created inside screens.py file
 task_list = {
     "parse_text": my_parse,
-    'foreground': colors["light"],
-    'background': colors["dark"],
+    "foreground": colors["light"],
+    "background": colors["dark"],
+    "urgent_border": colors["urgent"],
     "font": "Iosevka",
     "highlight_method": 'block',
     "markup_focused": "* {} *",
