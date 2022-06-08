@@ -109,11 +109,13 @@ primary_widgets = [
 def my_parse(text):
     d = {
         "Mozilla Firefox": "🦊",
-        "Doom Emacs": "👹"
+        "Doom Emacs": "👹",
+        "Outlook": "📫",
     }
     for key,value in d.items():
         if key in text:
-            return text.replace(key, value)
+            text = text.replace(key, value)
+    return text
 
 # TaskList widget is created inside screens.py file
 task_list = {
