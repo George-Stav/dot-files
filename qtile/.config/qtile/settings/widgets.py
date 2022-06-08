@@ -2,7 +2,7 @@ from libqtile import widget
 from .theme import colors
 from .helpers import get_monitor_count, get_mic_state, get_warp_state
 from .path import scripts_path
-from .custom_widgets import ToggleState, MyWindowCount
+from .custom_widgets import ToggleState, MyWindowCount, AudioSource
 
 # Get the icons at https://www.nerdfonts.com/cheat-sheet (you need a Nerd Font)
 
@@ -87,14 +87,16 @@ primary_widgets = [
 
     powerline('color3', 'color4'),
     icon(bg="color3", text='', fontsize=20),  # Icon: nf-fa-feed
-    widget.Net(**base_colours(bg='color3'), interface='wlp0s20f3'),
+    widget.Net(**base_colours(bg='color3'), interface='eno1'),
 
     powerline('color2', 'color3'),
     ToggleState(**base_colours(bg='color2'), fontsize=24,
                 on="", off="", get_state=get_mic_state), # mic-state
-    ToggleState(**base_colours(bg='color2'), fontsize=24,
-                off="", on="", update_interval=300, get_state=get_warp_state), # warp-cli-state
-    widget.Battery(**base_colours(bg='color2'), battery=0, format='{char} {percent:2.0%}'),
+    # AudioSource(**base_colours(bg='color2'), fontsize=24),
+
+    widget.Battery(**base_colours(bg='color2'), battery=1, format='{char} {percent:2.0%}'),
+    # ToggleState(**base_colours(bg='color2'), fontsize=24,
+    #             off="", on="", update_interval=300, get_state=get_warp_state), # warp-cli-state
 
     powerline('color1_5', 'color2'),
     widget.CurrentLayoutIcon(**base_colours(bg='color1_5'), scale=0.65),
@@ -109,8 +111,7 @@ primary_widgets = [
 def my_parse(text):
     d = {
         "Mozilla Firefox": "🦊",
-        "Doom Emacs": "👹",
-        "Outlook": "📫",
+        "Doom Emacs": "👹"
     }
     for key,value in d.items():
         if key in text:
@@ -120,8 +121,9 @@ def my_parse(text):
 # TaskList widget is created inside screens.py file
 task_list = {
     "parse_text": my_parse,
-    'foreground': colors["light"],
-    'background': colors["dark"],
+    "foreground": colors["light"],
+    "background": colors["dark"],
+    "urgent_border": colors["urgent"],
     "font": "Iosevka",
     "highlight_method": 'block',
     "markup_focused": "* {} *",
