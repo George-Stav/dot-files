@@ -3,7 +3,7 @@
 #
 
 [ -f "$HOME/.config/env" ] && source "$HOME/.config/env"
-[ -f "$DOTFILES/.fehbg" ] && source "$DOTFILES/.fehbg"
+[ -f "$HOME/.fehbg" ] && source "$HOME/.fehbg"
 
 PATH=$(echo $PATH | sed 's/:\/home\/georges\/.emacs.d\/bin//')
 export PATH
