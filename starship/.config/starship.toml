@@ -17,6 +17,7 @@ format = "[$symbol $number\n]($style)"
 
 [sudo]
 disabled = false
+symbol = "🦸 "
 
 # Disable the package module, hiding it from the prompt completely
 [package]

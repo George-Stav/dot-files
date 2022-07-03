@@ -155,10 +155,25 @@ information retrieved from files created by the keychain script."
 (key-chord-define-global "fj" 'evil-normal-state)
 (key-chord-define-global "jf" 'evil-normal-state)
 
-(require 'evil-mc)
-(global-evil-mc-mode 1)
 
-(require 'pdf-tools)
+;; (require 'evil-mc)
+;; (global-evil-mc-mode 1)
+
+;; (require 'pdf-tools)
+;; (setq ansi-color-for-compilation-mode nil)
+
+;; (require 'ansi-color)
+;; (add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
+
+;; (use-package ansi-color
+;;   :hook (compilation-filter . ansi-color-compilation-filter))
+
+;; (use-package ansi-color
+;;   :config
+;;   (defun my-colorise-compilation-buffer ()
+;;     (when (eq major-mode 'compilation-mode)
+;;       (ansi-color-apply-on-region compilation-filter-start (point-max))))
+;;   :hook (compilation-filter . my-colorise-compilation-buffer))
 
 ;; (setq +python-ipython-repl-args '("-i" "--simple-prompt" "--no-color-info" "--autoindent"))
 ;; (setq +python-jupyter-repl-args '("--simple-prompt"))

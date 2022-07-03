@@ -6,6 +6,7 @@
 # volumeicon &
 # optimus-manager --status > /dev/null # for some reason opt-man-qt doesn't run otherwise
 # optimus-manager-qt &
+[ -f "$HOME/.fehbg" ] && source "$HOME/.fehbg"
 flameshot &
 picom &
 "$HOME/repos/scripts/scripts/monitor-setup"
