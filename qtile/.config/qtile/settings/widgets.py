@@ -1,8 +1,8 @@
 from libqtile import widget
 from .theme import colors
-from .helpers import get_monitor_count, get_mic_state, get_warp_state
+from .helpers import get_monitor_count, get_mic_state, get_warp_state, get_vpn_status
 from .path import scripts_path
-from .custom_widgets import ToggleState, MyWindowCount, AudioSource
+from .custom_widgets import ToggleState, MyWindowCount, AudioSource, TimedTextBox
 
 # Get the icons at https://www.nerdfonts.com/cheat-sheet (you need a Nerd Font)
 
@@ -87,16 +87,17 @@ primary_widgets = [
 
     powerline('color3', 'color4'),
     icon(bg="color3", text='', fontsize=20),  # Icon: nf-fa-feed
-    widget.Net(**base_colours(bg='color3'), interface='eno1'),
+    widget.Net(**base_colours(bg='color3'), interface='wlan0'),
+    # widget.Net(**base_colours(bg='color3'), interface='eno1'),
 
     powerline('color2', 'color3'),
     ToggleState(**base_colours(bg='color2'), fontsize=24,
                 on="", off="", get_state=get_mic_state), # mic-state
     # AudioSource(**base_colours(bg='color2'), fontsize=24),
 
-    widget.Battery(**base_colours(bg='color2'), battery=1, format='{char} {percent:2.0%}'),
-    # ToggleState(**base_colours(bg='color2'), fontsize=24,
-    #             off="", on="", update_interval=300, get_state=get_warp_state), # warp-cli-state
+    widget.Battery(**base_colours(bg='color2'), battery=1, full_char="🔋", format='{char} {percent:2.0%}'),
+    TimedTextBox(**base_colours(bg='color2'), text=get_vpn_status(), update_interval=60,
+                 update_fn=get_vpn_status, fontsize=18),
 
     powerline('color1_5', 'color2'),
     widget.CurrentLayoutIcon(**base_colours(bg='color1_5'), scale=0.65),
@@ -169,3 +170,4 @@ widget_defaults = {
 }
 
 extension_defaults = widget_defaults.copy()
+

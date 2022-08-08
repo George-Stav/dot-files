@@ -52,3 +52,4 @@
 (package! pdf-tools)
 (package! python-docstring)
 (package! yaml-mode)
+(package! dired-toggle-sudo)

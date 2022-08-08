@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import subprocess
+import flag
 from .path import scripts_path
 
 command = lambda shell: \
@@ -102,5 +103,25 @@ def get_warp_state():
     else:
         state = output.stdout.decode("UTF-8").rstrip('\n')
         state = "on" if state == "active" else "off"
+
+    return state
+
+# ~~~~~~~~~ VPN Status ~~~~~~~~~ #
+
+def get_vpn_status():
+    status = f"{scripts_path}/vpn s"
+    output = command(status)
+    off = "🔻"
+
+    if output.returncode != 0:
+        error = output.stderr.decode("UTF-8")
+        # logger.error(f"Failed: \n{state} \n{error}")
+        state = off
+    else:
+        state = output.stdout.decode("UTF-8").rstrip('\n')
+        if state[0] == '-':
+            state = off
+        else:
+            state = flag.flag(state.split('-')[1][:2])
 
     return state

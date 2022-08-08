@@ -10,11 +10,16 @@ cmd open ${{
 	case "$f" in
 		*.org|*.tex) "$VISUAL" "$f" & ;;
 		*.jpg|*.png|*.gif) sxiv "$f" & ;;
-		*.mkv|*.mp3|*.mp4|*.flac|*.webp) vlc "$fx" & ;;
+		# *.mkv|*.mp3|*.mp4|*.flac|*.webp) mpv --no-terminal "$(echo "$fx" | tr '\n' ' ')" ;;
+		*.mkv|*.mp3|*.mp4|*.flac|*.webp) mpv --no-terminal "$fx" ;;
 		*.csv|*.xls|*.xlsx) gnumeric "$f" & ;;
 		*.pdf) zathura "$f" & ;;
 		*) $EDITOR "$f" ;;
 	esac
+}}
+
+cmd test ${{
+	echo "mpv "$(echo "$fx" | tr '\n' ' ')"&"
 }}
 
 # Archive bindings
@@ -106,6 +111,9 @@ map w
 map d
 map r
 map y
+map t
+
+map t test
 
 # Rename
 map rr rename
@@ -122,6 +130,7 @@ map dr trash_restore
 map dc trash_clear
 
 # Other
+map - updir
 map . set hidden!
 map p paste
 map sp sudo_paste

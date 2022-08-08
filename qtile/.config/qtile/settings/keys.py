@@ -92,7 +92,7 @@ keys = [
     Key([mod], "k", lazy.layout.up()),
     Key([mod], "h", lazy.layout.left()),
     Key([mod], "l", lazy.layout.right()),
-    Key([mod, "control"], "n", lazy.layout.next()),
+    Key([mod], "Tab", lazy.layout.next()),
 
     # Grow windows. If current window is on the edge of screen and direction
     # will be to screen edge - window would shrink.
@@ -122,8 +122,8 @@ keys = [
     Key([mod, "shift"], "h", lazy.layout.shuffle_left()),
 
     # Toggle between different layouts as defined below
-    Key([mod], "Tab", lazy.next_layout()),
-    Key([mod, "shift"], "Tab", lazy.prev_layout()),
+    Key([mod], "Escape", lazy.next_layout()),
+    Key([mod, "shift"], "Escape", lazy.prev_layout()),
 
     # Kill window
     Key([mod], "q", lazy.window.kill()),
@@ -138,11 +138,12 @@ keys = [
     # -m -4: rofi prompt appears on the screen with the focused window
     Key([mod], "m", lazy.spawn("rofi -m -4 -modi drun -show drun")),
     # Key([mod], "r", lazy.spawn("rofi -m -4 -show run")),
-    Key([mod], "r", lazy.spawn(f"{scripts_path}/run")),
+    Key([mod], "a", lazy.spawn(f"{scripts_path}/run")),
     Key([mod], "space", lazy.spawn("rofi -m -4 -show window")),
 
     # Browser
     Key([mod], "b", lazy.spawn("firefox")),
+    Key([mod], "c", lazy.spawn("google-chrome-stable")),
 
     # Emacs
     Key([mod], "e", lazy.spawn("emacsclient -c")),
@@ -178,18 +179,19 @@ keys = [
     Key(["shift"], "XF86AudioMute", mic_toggle),
     Key([], "XF86AudioMicMute", mic_toggle),
     Key([], "XF86Favorites", mic_toggle),
+    # Key([], "f6", mic_toggle),
 
     # ------------ Hardware Configs ------------
 
     # Volume
     Key([], "XF86AudioLowerVolume", lazy.spawn(
-        f"{scripts_path}/change-volume -2%"
+        f"{scripts_path}/change-volume -5%"
     )),
     Key(["shift"], "XF86AudioLowerVolume", lazy.spawn(
         f"{scripts_path}/change-volume -10%"
     )),
     Key([], "XF86AudioRaiseVolume", lazy.spawn(
-        f"{scripts_path}/change-volume +2%"
+        f"{scripts_path}/change-volume +5%"
     )),
     Key(["shift"], "XF86AudioRaiseVolume", lazy.spawn(
         f"{scripts_path}/change-volume +10%"
@@ -204,6 +206,12 @@ keys = [
     )),
     Key([], "XF86AudioNext", lazy.spawn(
         "playerctl next"
+    )),
+    Key(["shift"], "XF86AudioNext", lazy.spawn(
+        f"{scripts_path}/toggle-sink"
+    )),
+    Key(["shift"], "XF86AudioPrev", lazy.spawn(
+        f"{scripts_path}/toggle-sink"
     )),
 
     # Brightness

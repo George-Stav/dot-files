@@ -57,6 +57,29 @@ class ToggleState(base._TextBox):
         self.timeout_add(self.update_interval, self.timer_setup)
         self.toggle()
 
+class TimedTextBox(base._TextBox):
+    defaults = [
+        ("text", "timedtextbox", "text used for widget"),
+        ("update_interval", 3600*10, "Time in seconds between updates"),
+        ("update_fn", get_dummy_state, "Function used to update the text")
+    ]
+
+    def __init__(self, text=" ", width=bar.CALCULATED, **config):
+        base._TextBox.__init__(self, text=text, width=width, **config)
+        self.add_defaults(TimedTextBox.defaults)
+
+    def _configure(self, qtile, bar):
+        base._TextBox._configure(self, qtile, bar)
+        self.my_update()
+
+    def my_update(self):
+        self.update(text=self.update_fn())
+
+    def timer_setup(self) -> None:
+        self.timeout_add(self.update_interval, self.timer_setup)
+        self.my_update()
+
+
 class MyWindowCount(base._TextBox):
     """
     Same implementation of default WindowCount() widget,

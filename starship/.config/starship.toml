@@ -16,6 +16,7 @@ truncation_length = 10
 format = "[$symbol $number\n]($style)"
 
 [sudo]
+symbol = "🦸 "
 disabled = false
 
 # Disable the package module, hiding it from the prompt completely
@@ -24,6 +25,9 @@ disabled = true
 
 [aws]
 symbol = " "
+disabled = true
+
+[rust]
 disabled = true
 
 [python]

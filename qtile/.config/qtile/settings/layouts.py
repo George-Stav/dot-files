@@ -43,6 +43,7 @@ floating_layout = layout.Floating(
         Match(wm_class='galculator'),
         Match(wm_class='xpad'),
         Match(wm_class='ssh-askpass'),
+        Match(wm_class='genp'),
         Match(title='branchdialog'),
         Match(title='pinentry'),
         Match(title='pinentry-gtk-2'),

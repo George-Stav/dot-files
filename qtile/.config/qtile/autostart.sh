@@ -9,6 +9,7 @@
 picom &
 flameshot &
 qbittorrent &
+xrandr --output HDMI-1-0 --mode 1920x1080 --primary --output eDP-1 --mode 1920x1080 --left-of HDMI-1-0
 "$SCRIPTS"/monitor-setup
 # xrandr --output "HDMI-1-0" --mode 1920x1080 --rate 144\
 #     --output "DP-1" --primary --mode 1920x1080 --rate 144 --right-of "HDMI-1-0"
