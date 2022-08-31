@@ -83,6 +83,8 @@ keys = [
     # Switch focus of monitors
     Key([mod], "comma", lazy.next_screen()),
     Key([mod], "period", lazy.prev_screen()),
+    # Key([mod], "left", lazy.next_screen()),
+    # Key([mod], "right", lazy.prev_screen()),
 
     Key([mod, "shift"], "m", lazy.window.toggle_minimize()),
     Key([mod, "shift"], "f", lazy.window.toggle_fullscreen()),
@@ -93,6 +95,7 @@ keys = [
     Key([mod], "h", lazy.layout.left()),
     Key([mod], "l", lazy.layout.right()),
     Key([mod], "Tab", lazy.layout.next()),
+    Key([mod, "shift"], "Tab", lazy.layout.previous()),
 
     # Grow windows. If current window is on the edge of screen and direction
     # will be to screen edge - window would shrink.

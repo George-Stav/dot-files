@@ -12,3 +12,4 @@ startx
 prime-offload &> /dev/null
 
 [[ -f ~/.bashrc ]] && . ~/.bashrc
+. "$HOME/.cargo/env"

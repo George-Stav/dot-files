@@ -7,6 +7,8 @@ set -x TEXMFCNF "~/.config:"
 set fish_cursor_insert underscore
 
 set -x LD_LIBRARY_PATH "$LD_LIBRARY_PATH:/usr/lib/"
+set -p PATH ~/.cargo/bin
+
 
 # keychain --quiet --eval --agents ssh id_ed25519
 
@@ -29,6 +31,7 @@ abbr cdp "cd $HOME/Packt/"
 abbr cdr "cd $HOME/repos"
 abbr s 'nvim $HOME/repos/scripts/scripts/scratchpad'
 abbr ydl-music "youtube-dl -wc -o /mnt/HDD/MUSIC/'%(uploader)s/%(title)s.%(ext)s' --write-description --embed-thumbnail -x --audio-format 'mp3'"
+abbr ydl-clips "youtube-dl -wc -o /mnt/HDD/MOVIES-SERIES/clips/'%(title)s.%(ext)s' --embed-thumbnail -f best"
 
 alias paru="paru --bottomup"
 alias doom="$HOME/.emacs.d/bin/doom"

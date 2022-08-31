@@ -74,6 +74,11 @@ _G.packer_plugins = {
     path = "/home/george/.local/share/nvim/site/pack/packer/start/gruvbox.nvim",
     url = "https://github.com/ellisonleao/gruvbox.nvim"
   },
+  ["nvim-comment"] = {
+    loaded = true,
+    path = "/home/george/.local/share/nvim/site/pack/packer/start/nvim-comment",
+    url = "https://github.com/terrortylor/nvim-comment"
+  },
   ["packer.nvim"] = {
     loaded = true,
     path = "/home/george/.local/share/nvim/site/pack/packer/start/packer.nvim",

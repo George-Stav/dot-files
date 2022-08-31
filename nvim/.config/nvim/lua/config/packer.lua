@@ -7,4 +7,5 @@ return require('packer').startup(function()
     -- Packer can manage itself
     use 'wbthomason/packer.nvim'
     use 'ellisonleao/gruvbox.nvim'
+    use 'terrortylor/nvim-comment'
 end)
