@@ -42,7 +42,7 @@ def workspaces():
         widget.GroupBox(
             **base_colours(fg='light'),
             font='UbuntuMono Nerd Font',
-            fontsize=19,
+            fontsize=36,
             margin_y=3,
             margin_x=0,
             padding_y=8,
@@ -107,6 +107,7 @@ primary_widgets = [
 
     widget.Clock(**base_colours(bg='color1'), format='%d/%m/%Y - %H:%M '),
     powerline('dark', 'color1'),
+    widget.Systray(background=colors['dark'], padding=2),
 ]
 
 def my_parse(text):
@@ -136,32 +137,27 @@ task_list = {
     "icon_size": 0
 }
 
-secondary_widgets = [
-    *workspaces(),
+def secondary():
+    return [
+        *workspaces(),
+        separator(),
 
-    separator(),
+        powerline('color4', 'dark'),
+        icon(bg="color4", text='', fontsize=28),
+        widget.Memory(**base_colours(bg='color4'), format='{MemUsed: .0f}{mm}'),
 
-    powerline('color4', 'dark'),
-    icon(bg="color4", text='', fontsize=28),
-    widget.Memory(**base_colours(bg='color4'), format='{MemUsed: .0f}{mm}'),
+        powerline('color3', 'color4'),
+        icon(bg="color3", text='', fontsize=28),
+        widget.CPU(**base_colours(bg='color3'), format='{freq_current}GHz {load_percent}%'),
 
-    powerline('color3', 'color4'),
-    icon(bg="color3", text='', fontsize=28),
-    widget.CPU(**base_colours(bg='color3'), format='{freq_current}GHz {load_percent}%'),
+        powerline('color2', 'color3'),
+        widget.CurrentLayoutIcon(**base_colours(bg='color2'), scale=0.65),
+        widget.CurrentLayout(**base_colours(bg='color2'), padding=5),
 
-    powerline('color2', 'color3'),
-    widget.CurrentLayoutIcon(**base_colours(bg='color2'), scale=0.65),
-    widget.CurrentLayout(**base_colours(bg='color2'), padding=5),
-
-    powerline('color1_5', 'color2'),
-    widget.Clock(**base_colours(bg='color1_5'), format='%d/%m/%Y - %H:%M '),
-    powerline('dark', 'color1_5'),
-]
-
-if get_monitor_count() > 1:
-    secondary_widgets += [widget.Systray(background=colors['dark'], padding=2)]
-else:
-    primary_widgets += [widget.Systray(background=colors['dark'], padding=2)]
+        powerline('color1_5', 'color2'),
+        widget.Clock(**base_colours(bg='color1_5'), format='%d/%m/%Y - %H:%M '),
+        powerline('dark', 'color1_5'),
+    ]
 
 widget_defaults = {
     'font': 'Jetbrains Mono Bold',

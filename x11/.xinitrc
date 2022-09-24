@@ -9,7 +9,7 @@ xset s off -dpms
 # exec xmonad
 dunst & # notification daemon
 # picom -CG & # compositor for rounded corners and such
-. "$HOME/.fehbg" # wallpaper
+# . "$HOME/.fehbg" # wallpaper
 # nitrogen --restore & # wallpaper
 /usr/bin/easystroke &
 qtile start # WM

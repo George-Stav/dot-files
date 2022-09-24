@@ -165,7 +165,7 @@ alias lls='ls'
 alias lss='ls'
 
 # Replace some more things with better alternatives
-alias cat='bat --style header --style rules --style snip --style changes --style header'
+alias cat='bat --style header --style snip --style changes --style header'
 
 # Common use
 alias grubup="sudo grub-mkconfig -o /boot/grub/grub.cfg"

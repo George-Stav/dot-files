@@ -44,6 +44,7 @@ floating_layout = layout.Floating(
         Match(wm_class='xpad'),
         Match(wm_class='ssh-askpass'),
         Match(wm_class='genp'),
+        Match(wm_class='nannou'),
         Match(title='branchdialog'),
         Match(title='pinentry'),
         Match(title='pinentry-gtk-2'),

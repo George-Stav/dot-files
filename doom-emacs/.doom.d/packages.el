@@ -52,3 +52,4 @@
 (package! pdf-tools)
 (package! evil-mc-extras)
 (package! key-chord)
+(package! railscasts-theme)
