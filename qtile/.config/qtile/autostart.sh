@@ -6,7 +6,8 @@
 # volumeicon &
 # optimus-manager --status > /dev/null # for some reason opt-man-qt doesn't run otherwise
 # optimus-manager-qt &
-~/.local/bin/monitor-setup
+# ~/.local/bin/monitor-setup
+xrandr --output HDMI-0 --mode 1920x1080 --rate 144 --primary
 picom &
 flameshot &
 qbittorrent &

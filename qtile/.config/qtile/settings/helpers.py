@@ -2,6 +2,7 @@
 import subprocess
 import flag
 from .path import scripts_path
+import logger
 
 command = lambda shell: \
 subprocess.run(
@@ -111,10 +112,12 @@ def get_warp_state():
 def get_vpn_status():
     status = f"{scripts_path}/vpn s"
     output = command(status)
+    state = "default"
     off = "🔻"
 
     if output.returncode != 0:
         error = output.stderr.decode("UTF-8")
+        print(f"{error}")
         # logger.error(f"Failed: \n{state} \n{error}")
         state = off
     else:
