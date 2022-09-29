@@ -11,7 +11,7 @@ cmd open ${{
 		*.org|*.tex) "$VISUAL" "$f" & ;;
 		*.jpg|*.png|*.gif) sxiv "$f" & ;;
 		# *.mkv|*.mp3|*.mp4|*.flac|*.webp) mpv --ao=alsa --no-terminal "$(echo "$fx" | tr '\n' ' ')" ;;
-		*.mkv|*.mp3|*.mp4|*.flac|*.webp) mpv --ao=alsa --no-terminal "$fx" ;;
+		*.mkv|*.mp3|*.mp4|*.flac|*.webp) mpv --no-terminal "$fx" ;;
 		*.csv|*.xls|*.xlsx) gnumeric "$f" & ;;
 		*.pdf) zathura "$f" & ;;
 		*) $EDITOR "$f" ;;

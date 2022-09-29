@@ -1,7 +1,7 @@
 # This file contains fish universal variable definitions.
 # VERSION: 3.0
-SETUVAR --export SSH_AGENT_PID:3042
-SETUVAR --export SSH_AUTH_SOCK:/tmp/ssh\x2dXXXXXXh1MrQb/agent\x2e3041
+SETUVAR --export SSH_AGENT_PID:677
+SETUVAR --export SSH_AUTH_SOCK:/tmp/ssh\x2dXXXXXXvyo58g/agent\x2e676
 SETUVAR __done_min_cmd_duration:10000
 SETUVAR __done_notification_urgency_level:low
 SETUVAR __fish_initialized:3400
@@ -17,7 +17,7 @@ SETUVAR _fish_abbr_cds:cd\x20/home/neeto/repos/scripts/scripts
 SETUVAR _fish_abbr_comp_2D_resume:qdbus\x20org\x2ekde\x2eKWin\x20/Compositor\x20resume
 SETUVAR _fish_abbr_comp_2D_suspend:qdbus\x20org\x2ekde\x2eKWin\x20/Compositor\x20suspend
 SETUVAR _fish_abbr_dc:docker\x2dcompose
-SETUVAR _fish_abbr_doom:/home/george/\x2eemacs\x2ed/bin/doom
+SETUVAR _fish_abbr_doom:/home/neeto/\x2eemacs\x2ed/bin/doom
 SETUVAR _fish_abbr_ec:emacsclient\x20\x2dc
 SETUVAR _fish_abbr_enable_2D_monitor:xrandr\x20\x2d\x2doutput\x20eDP\x2d1\x20\x2d\x2doff\x20\x2d\x2doutput\x20HDMI\x2d1\x2d0\x20\x2d\x2dprimary\x20\x2d\x2dmode\x201920x1080\x20\x2d\x2drate\x20144
 SETUVAR _fish_abbr_opt_2D_man:prime\x2doffload\x20\x26\x3e\x20/dev/null\x20\x26\x26\x20optimus\x2dmanager
