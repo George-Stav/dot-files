@@ -11,18 +11,26 @@ from .helpers import get_session_type
 
 # Get the icons at https://www.nerdfonts.com/cheat-sheet (you need a Nerd Font)
 
+def steam_apps(wm_class):
+    games = ["factorio", "PapersPlease"]
+    for c in wm_class:
+        if c.startswith("steam_app") or c in games:
+            return True
+    return False
+
 groups = [
     Group(name="1", label="", layout="max"), #, matches=[Match(wm_class="firefox")]
     Group(name="2", label=""),
-    Group(name="3", label="", matches=[Match(wm_class="Emacs")]),
+    Group(name="3", label="", matches=[Match(wm_class="Emacs")]),
     Group(name="4", label=""),
     Group(name="5", label=""),
     Group(name="6", label=""),
-    Group(name="7", label="", layout="max"),
+    Group(name="7", label="", layout="max", matches=[Match(func=lambda c: steam_apps(c.get_wm_class()) if c.get_wm_class() else False)]),
     Group(name="8", label="", layout="max"),
     Group(name="9", label="", matches=[Match(wm_class="Spotify")]),
     Group(name="0", label="", layout="max"), #, matches=[Match(wm_class="firefox")]
-    # Group(name="hyphen", label="", layout="max"), #, matches=[Match(wm_class="firefox")]
+    Group(name="minus", label="", layout="max"), #, matches=[Match(wm_class="firefox")]
+    # Group(name="minus", label="", layout="max"), #, matches=[Match(wm_class="firefox")]
  ]
 
 groups_work = [
