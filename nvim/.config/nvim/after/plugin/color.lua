@@ -1,7 +1,9 @@
 vim.o.background = "dark"
 
-require("gruvbox").setup({
-    italic = false
-})
+-- require("gruvbox").setup({
+--     italic = false
+-- })
 
-vim.cmd("colorscheme gruvbox")
+-- vim.cmd("colorscheme gruvbox")
+
+vim.cmd("colorscheme tokyonight")
