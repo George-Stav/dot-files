@@ -1,0 +1,2 @@
+#!/bin/sh
+feh --no-fehbg --bg-scale --no-xinerama '/home/george/repos/dotfiles/wallpapers/screen-2.png' 
