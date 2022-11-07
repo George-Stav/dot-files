@@ -35,7 +35,7 @@
    + install basic packages
     #+begin_src
         reflector
-        pacstrap /mnt base linux linux-firmware btrfs-progs base-devel git vim
+        pacstrap /mnt base linux linux-firmware btrfs-progs base-devel git vim dash
     #+end_src
 5. fstab
    #+begin_src shell
@@ -121,7 +121,7 @@
     cd ~/repos/dotfiles && git checkout qtile-old-linbox
     stow -t "$HOME" alacritty dunst easystroke env fish git gtk-3.0 lf nvim picom qtile rofi starship sxiv vim vpn wallpapers x11
 
-    sudo pacman -Sy openssh python-pip qtile exa neovim emacs alacritty fish dunst lf rofi qbittorrent flameshot xorg xorg-xinit pulseaudio pavucontrol ttf-liberation ueberzug ripgrep btop tree dmenu ntfs-3g ffmpegthumbnailer mpv sxiv poppler nvtop gparted unzip trash-cli unzip qemu virt-manager virt-viewer dnsmasq vde2 bridge-utils openbsd-netcat libguestfs edk2-ovmf fontforge galculator mysql vim vi fzf firefox keychain lua mcfly nitrogen picom steam nvidia
+    sudo pacman -Sy openssh python-pip qtile exa neovim emacs alacritty fish dunst lf rofi qbittorrent flameshot xorg xorg-xinit pulseaudio pavucontrol ttf-liberation ueberzug ripgrep btop tree dmenu ntfs-3g ffmpegthumbnailer mpv sxiv poppler nvtop gparted trash-cli unzip qemu virt-manager virt-viewer dnsmasq vde2 bridge-utils openbsd-netcat libguestfs edk2-ovmf fontforge galculator mysql vim vi fzf firefox keychain lua mcfly nitrogen picom steam nvidia
 
     paru -S easystroke spotify xkblayout-state google-chrome sweet-cursor-theme-git candy-icons-git xampp
     #+end_src
@@ -136,6 +136,16 @@
     + copy from Maxtor:
       - fonts
       - qbittorrent
+    + python packages:
+      #+begin_src shell
+        pip install emoji-country-flag logger
+      #+end_src
+    + neovim:
+      #+begin_src shell
+        git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share/nvim/site/pack/packer/start/packer.nvim
+      #+end_src
+    + default cursor:
+      - change /usr/share/icons/default/index.theme
     + git: [[https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent][create new ssh key]] + clone notes,scripts
       #+begin_src shell
         ssh-keygen -t ed25519 -C "georgestavropoulos0@gmail.com"

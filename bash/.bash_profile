@@ -12,4 +12,4 @@ startx
 prime-offload &> /dev/null
 
 [[ -f ~/.bashrc ]] && . ~/.bashrc
-. "$HOME/.cargo/env"
+[ -f "/usr/bin/cargo" ] && . "$HOME/.cargo/env"
