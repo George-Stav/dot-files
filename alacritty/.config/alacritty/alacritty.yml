@@ -89,9 +89,10 @@ colors:
 
   # Normal colors
   cursor:
-    text: '#191622'
-    cursor: '#f8f8f2'
+    text: '#ebdbb2'
+    cursor: '#ebdbb2'
 
+  # Normal colors
   normal:
     black: '#282828'
     red: '#cc241d'
