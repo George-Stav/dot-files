@@ -37,7 +37,8 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'wombat)
+(setq doom-theme 'doom-ephemeral)
+;; (setq doom-theme 'wombat)
 ;; (setq doom-theme 'doom-Iosvkem)
 
 ;; PERSONALISED FEATURES
