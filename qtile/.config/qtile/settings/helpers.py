@@ -2,6 +2,7 @@
 import subprocess
 import flag
 from .path import scripts_path
+import logger
 
 command = lambda shell: \
 subprocess.run(
@@ -21,7 +22,7 @@ def get_monitor_count():
 
     if output.returncode != 0:
         error = output.stderr.decode("UTF-8")
-        logger.error(f"Failed counting monitors using:\n {xrandr}:\n{error}")
+        # logger.error(f"Failed counting monitors using:\n {xrandr}:\n{error}")
         connected_monitors = 1
     else:
         connected_monitors = int(output.stdout.decode("UTF-8"))
@@ -109,19 +110,21 @@ def get_warp_state():
 # ~~~~~~~~~ VPN Status ~~~~~~~~~ #
 
 def get_vpn_status():
-    status = f"{scripts_path}/vpn s"
+    status = f"{scripts_path}/vpn gc"
     output = command(status)
+    state = "default"
     off = "🔻"
 
     if output.returncode != 0:
         error = output.stderr.decode("UTF-8")
+        print(f"{error}")
         # logger.error(f"Failed: \n{state} \n{error}")
         state = off
     else:
         state = output.stdout.decode("UTF-8").rstrip('\n')
-        if state[0] == '-':
-            state = off
+        if state:
+            state = flag.flag(state)
         else:
-            state = flag.flag(state.split('-')[1][:2])
+            state = off
 
     return state

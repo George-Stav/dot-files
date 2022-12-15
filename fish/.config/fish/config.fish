@@ -61,6 +61,7 @@ if test -f ~/.fish_profile
   source ~/.fish_profile
 end
 
+set -p PATH ~/.local/bin
 # Add ~/.local/bin to PATH
 if test -d ~/.local/bin
     if not contains -- ~/.local/bin $PATH
@@ -160,9 +161,6 @@ alias la='exa -a --color=always --group-directories-first --icons'  # all files 
 alias ll='exa -l --color=always --group-directories-first --icons'  # long format
 alias lt='exa -aT --color=always --group-directories-first --icons' # tree listing
 alias l.="exa -a | egrep '^\.'"                                     # show only dotfiles
-
-alias lls='ls'
-alias lss='ls'
 
 # Replace some more things with better alternatives
 alias cat='bat --style header --style snip --style changes --style header'

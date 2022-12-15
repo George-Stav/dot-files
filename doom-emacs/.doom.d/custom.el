@@ -4,7 +4,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(railscasts-theme dap-mode pdf-tools evil-mc-extras key-chord)))
+   '(json-mode terraform-mode key-chord rust-mode treemacs-all-the-icons powershell)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

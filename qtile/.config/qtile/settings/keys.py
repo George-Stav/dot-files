@@ -59,7 +59,7 @@ def testing_mon(qtile, command="prev"):
 @lazy.function
 def test_widgets(qtile):
     widgets = [w for w in qtile.cmd_list_widgets()]
-    qtile.cmd_spawn(f'rofi -e {len(qtile.cmd_list_widgets())}')
+    qtile.cmd_spawn(f'rofi -e {qtile.cmd_list_widgets()}')
 
 
 keys = [
@@ -149,7 +149,7 @@ keys = [
     Key([mod], "c", lazy.spawn("google-chrome-stable")),
 
     # Emacs
-    Key([mod], "e", lazy.spawn("emacsclient -c -s /tmp/emacs1000/server")),
+    Key([mod], "e", lazy.spawn("emacsclient -c")),
     Key([mod, "shift"], "e", lazy.spawn("systemctl --user restart emacs")),
     # Key([mod], "d", lazy.spawn("emacsclient -c -a 'emacs' --eval '(dired nil)'")),
     # Key([mod], "d", lazy.spawn(f"alacritty -e {scripts_path}/lfrun")),

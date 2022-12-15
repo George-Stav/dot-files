@@ -38,8 +38,10 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-ephemeral)
-;; (setq doom-theme 'wombat)
-;; (setq doom-theme 'doom-Iosvkem)
+;; nice themes
+;; - wombat
+;; - doom-zenburn
+;; - doom-gruvbox
 
 ;; PERSONALISED FEATURES
 
