@@ -182,7 +182,15 @@ keys = [
     Key(["shift"], "XF86AudioMute", mic_toggle),
     Key([], "XF86AudioMicMute", mic_toggle),
     Key([], "XF86Favorites", mic_toggle),
+    Key([mod, "shift"], "Caps_Lock", lazy.spawn("setxkbmap -option caps:escape")),
     # Key([], "f6", mic_toggle),
+
+    # ------------ Power Settings ------------
+
+    Key([mod, "control", "shift"], "s", lazy.spawn("systemctl suspend")),
+    Key([mod, "control", "shift"], "h", lazy.spawn("systemctl hibernate")),
+    Key([mod, "control", "shift"], "r", lazy.spawn("reboot")),
+    Key([mod, "control", "shift"], "u", lazy.spawn("shutdown now")),
 
     # ------------ Hardware Configs ------------
 

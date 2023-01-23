@@ -37,11 +37,13 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-ephemeral)
+(setq doom-theme 'doom-snazzy)
 ;; nice themes
 ;; - wombat
 ;; - doom-zenburn
 ;; - doom-gruvbox
+;; - doom-ephemeral
+;; - doom-snazzy
 
 ;; PERSONALISED FEATURES
 

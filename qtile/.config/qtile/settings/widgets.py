@@ -14,7 +14,7 @@ def base_colours(fg='text', bg='dark'):
 
 
 def separator():
-    return widget.Sep(**base_colours(), linewidth=0, padding=5)
+    return widget.Sep(**base_colours(), linewidth=0, padding=0)
 
 
 def icon(fg='text', bg='dark', fontsize=16, text="?"):
@@ -22,7 +22,7 @@ def icon(fg='text', bg='dark', fontsize=16, text="?"):
         **base_colours(fg, bg),
         fontsize=fontsize,
         text=text,
-        padding=3
+        padding=7
     )
 
 
@@ -31,8 +31,8 @@ def powerline(fg="light", bg="dark"):
         **base_colours(fg, bg),
         # text="", # padding=-11
         text="", # padding=-1
-        fontsize=60,
-        padding=-1
+        fontsize=40,
+        padding=17
     )
 
 
@@ -74,7 +74,7 @@ primary_widgets = [
     separator(),
 
     powerline('color4', 'dark'),
-    icon(bg="color4", text='', fontsize=20), # Icon: nf-fa-download
+    icon(bg="color4", text='', fontsize=14), # Icon: nf-fa-download
     widget.CheckUpdates(
         background=colors['color4'],
         colour_have_updates=colors['text'],
@@ -86,12 +86,12 @@ primary_widgets = [
     ),
 
     powerline('color3', 'color4'),
-    icon(bg="color3", text='', fontsize=20),  # Icon: nf-fa-feed
+    icon(bg="color3", text='', fontsize=14),  # Icon: nf-fa-feed
     widget.Net(**base_colours(bg='color3'), interface='enp4s0'),
     # widget.Net(**base_colours(bg='color3'), interface='eno1'),
 
     powerline('color2', 'color3'),
-    ToggleState(**base_colours(bg='color2'), fontsize=24,
+    ToggleState(**base_colours(bg='color2'), fontsize=19,
                 on="", off="", get_state=get_mic_state), # mic-state
     # AudioSource(**base_colours(bg='color2'), fontsize=24),
 
@@ -102,12 +102,12 @@ primary_widgets = [
     powerline('color1_5', 'color2'),
     widget.CurrentLayoutIcon(**base_colours(bg='color1_5'), scale=0.65),
 
-    widget.CurrentLayout(**base_colours(bg='color1_5'), padding=5),
+    widget.CurrentLayout(**base_colours(bg='color1_5'), padding=0),
     powerline('color1', 'color1_5'),
 
-    widget.Clock(**base_colours(bg='color1'), format='%d/%m/%Y - %H:%M '),
+    widget.Clock(**base_colours(bg='color1'), format='%d/%m/%Y - %H:%M ', padding=0),
     powerline('dark', 'color1'),
-    widget.Systray(background=colors['dark'], padding=2),
+    widget.Systray(background=colors['dark'], padding=0),
 ]
 
 def my_parse(text):
@@ -143,11 +143,11 @@ def secondary():
         separator(),
 
         powerline('color4', 'dark'),
-        icon(bg="color4", text='', fontsize=28),
+        icon(bg="color4", text='', fontsize=17),
         widget.Memory(**base_colours(bg='color4'), format='{MemUsed: .0f}{mm}'),
 
         powerline('color3', 'color4'),
-        icon(bg="color3", text='', fontsize=28),
+        icon(bg="color3", text='', fontsize=17),
         widget.CPU(**base_colours(bg='color3'), format='{freq_current}GHz {load_percent}%'),
 
         powerline('color2', 'color3'),

@@ -12,7 +12,7 @@ cmd open ${{
 		*.jpg|*.png|*.gif) sxiv "$f" & ;;
 		# *.mkv|*.mp3|*.mp4|*.flac|*.webp) mpv --ao=alsa --no-terminal "$(echo "$fx" | tr '\n' ' ')" ;;
 		*.mkv|*.mp3|*.mp4|*.flac|*.webp) mpv --no-terminal "$fx" ;;
-		*.csv|*.xls|*.xlsx) gnumeric "$f" & ;;
+		*.csv|*.xls|*.xlsx|*.gnumeric) gnumeric "$f" & ;;
 		*.pdf) zathura "$f" & ;;
 		*) $EDITOR "$f" ;;
 	esac
@@ -157,7 +157,7 @@ map gp cd ~/Packt
 map gh cd /mnt/HDD
 map gw cd /mnt/WD
 map gl cd ~/wallpapers
-map gd cd ~/dev
 map g/ cd /
 map g~ cd ~
 map g. cd ~/.config
+map gd cd ~/Downloads
