@@ -8,15 +8,20 @@ from libqtile.config import Key, Group, Match
 from libqtile.command import lazy
 from .keys import mod, keys
 from .helpers import get_session_type
+from libqtile.log_utils import logger
 
 # Get the icons at https://www.nerdfonts.com/cheat-sheet (you need a Nerd Font)
 
-def games(wm_class):
-    games = ["factorio", "PapersPlease", "osu!.exe", "dota2", "Minecraft Launcher"]
-    for c in wm_class:
-        if c.startswith("steam_app") or c in games or "minecraft" in c.lower():
-            return True
-    return False
+def games(client):
+    games = ["factorio", "PapersPlease", "osu!.exe", "dota2", "minecraft launcher", "TIS-100", "Celeste"]
+    # get_wm_class() = (instance, class), may exist
+    # get_name() = str, assume it always exists
+    l = [client.window.get_name()]
+    if client.get_wm_class():
+        l += [client.get_wm_class()[1]]
+
+    # logger.warning("Hello")
+    return any([c.startswith("steam_app") or c in games for c in l])
 
 groups = [
     Group(name="1", label="", layout="max"), #, matches=[Match(wm_class="firefox")]
@@ -29,7 +34,8 @@ groups = [
     Group(name="8", label="", layout="max"),
     Group(name="9", label="", matches=[Match(wm_class="Spotify")]),
     Group(name="0", label="", layout="max"), #, matches=[Match(wm_class="firefox")]
-    Group(name="minus", label="", layout="max", matches=[Match(func=lambda c: games(c.get_wm_class()) if c.get_wm_class() else False)]), #, matches=[Match(wm_class="firefox")]
+    Group(name="minus", label="", layout="max", matches=[Match(func=lambda c: games(c))]), #, matches=[Match(wm_class="firefox")]
+    # Group(name="minus", label="", layout="max", matches=[Match(func=lambda c: games(c.get_wm_class()) if c.get_wm_class() else False)]), #, matches=[Match(wm_class="firefox")]
     # Group(name="minus", label="", layout="max"), #, matches=[Match(wm_class="firefox")]
  ]
 

@@ -8,6 +8,7 @@
 # optimus-manager-qt &
 # ~/.local/bin/monitor-setup
 eval "$SCRIPTS/xconf reload"
+openrgb --profile white.orp
 picom &
 flameshot &
 qbittorrent &

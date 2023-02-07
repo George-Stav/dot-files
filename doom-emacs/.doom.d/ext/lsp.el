@@ -30,3 +30,6 @@
   (lsp-ui-doc-enable nil)
   (lsp-ui-doc-show-with-cursor t)
   (lsp-ui-doc-delay 0))
+
+(custom-set-variables
+ '(lsp-rust-analyzer-diagnostics-disabled ["unresolved-proc-macro"]))
