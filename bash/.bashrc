@@ -74,3 +74,9 @@ alias jctl="journalctl -p 3 -xb"
 # Recent installed packages
 alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
 . "$HOME/.cargo/env"
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/home/george/Next/google-cloud-sdk/path.bash.inc' ]; then . '/home/george/Next/google-cloud-sdk/path.bash.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/home/george/Next/google-cloud-sdk/completion.bash.inc' ]; then . '/home/george/Next/google-cloud-sdk/completion.bash.inc'; fi

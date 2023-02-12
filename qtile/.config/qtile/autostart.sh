@@ -7,6 +7,7 @@
 # optimus-manager --status > /dev/null # for some reason opt-man-qt doesn't run otherwise
 # optimus-manager-qt &
 # ~/.local/bin/monitor-setup
+emacs --daemon
 eval "$SCRIPTS/xconf reload"
 picom &
 flameshot &

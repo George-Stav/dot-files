@@ -95,7 +95,7 @@ primary_widgets = [
                 on="", off="", get_state=get_mic_state), # mic-state
     # AudioSource(**base_colours(bg='color2'), fontsize=24),
 
-    widget.Battery(**base_colours(bg='color2'), battery=0, full_char="🔋", format='{char} {percent:2.0%}'),
+    widget.Battery(**base_colours(bg='color2'), battery=1, full_char="🔋", format='{char} {percent:2.0%}'),
     TimedTextBox(**base_colours(bg='color2'), text=get_vpn_status(), update_interval=60,
                  update_fn=get_vpn_status, fontsize=18),
 

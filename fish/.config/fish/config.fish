@@ -215,3 +215,7 @@ alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
 # if status --is-interactive
 #    neofetch
 # end
+
+if test -e /home/george/Next/google-cloud-sdk/path.fish.inc
+    . "/home/george/Next/google-cloud-sdk/path.fish.inc"
+end
