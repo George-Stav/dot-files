@@ -13,7 +13,7 @@ from libqtile.log_utils import logger
 # Get the icons at https://www.nerdfonts.com/cheat-sheet (you need a Nerd Font)
 
 def games(client):
-    games = ["factorio", "PapersPlease", "osu!.exe", "dota2", "minecraft launcher", "TIS-100", "Celeste"]
+    games = ["factorio", "PapersPlease", "osu!.exe", "dota2", "minecraft launcher", "TIS-100", "Celeste", "Dead Cells", "deadcells"]
     # get_wm_class() = (instance, class), may exist
     # get_name() = str, assume it always exists
     l = [client.window.get_name()]
@@ -32,7 +32,7 @@ groups = [
     Group(name="6", label="", matches=[Match(wm_class="qbittorrent")]),
     Group(name="7", label="", layout="max", matches=[Match(wm_class="Steam"), Match(wm_class="discord")]),
     Group(name="8", label="", layout="max"),
-    Group(name="9", label="", matches=[Match(wm_class="Spotify")]),
+    Group(name="9", label="", matches=[Match(func=lambda c: c.window.get_name().lower() == "spotify")]),
     Group(name="0", label="", layout="max"), #, matches=[Match(wm_class="firefox")]
     Group(name="minus", label="", layout="max", matches=[Match(func=lambda c: games(c))]), #, matches=[Match(wm_class="firefox")]
     # Group(name="minus", label="", layout="max", matches=[Match(func=lambda c: games(c.get_wm_class()) if c.get_wm_class() else False)]), #, matches=[Match(wm_class="firefox")]
