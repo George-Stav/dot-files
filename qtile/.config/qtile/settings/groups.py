@@ -29,7 +29,7 @@ groups = [
     Group(name="3", label="", matches=[Match(wm_class="Emacs")]),
     Group(name="4", label=""),
     Group(name="5", label="", matches=[Match(wm_class="virt-manager")]),
-    Group(name="6", label="", matches=[Match(wm_class="qbittorrent")]),
+    Group(name="6", label="", matches=[Match(wm_class="qbittorrent"), Match(wm_class="pentablet")]),
     Group(name="7", label="", layout="max", matches=[Match(wm_class="Steam"), Match(wm_class="discord")]),
     Group(name="8", label="", layout="max"),
     Group(name="9", label="", matches=[Match(func=lambda c: c.window.get_name().lower() == "spotify")]),

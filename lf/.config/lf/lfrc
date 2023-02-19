@@ -5,13 +5,13 @@ set hidden true
 set drawbox true
 set icons true
 set ignorecase true
+set ifs "\n"
 
 cmd open ${{
 	case "$f" in
 		*.org|*.tex) "$VISUAL" "$f" & ;;
 		*.jpg|*.png|*.gif) sxiv "$f" & ;;
-		# *.mkv|*.mp3|*.mp4|*.flac|*.webp) mpv --ao=alsa --no-terminal "$(echo "$fx" | tr '\n' ' ')" ;;
-		*.mkv|*.mp3|*.mp4|*.flac|*.webp) mpv --no-terminal "$fx" ;;
+		*.mkv|*.mp3|*.mp4|*.flac|*.webp) mpv --no-terminal $(find -name '*.srt' -printf '--sub-file=%h/%f ') $fx ;;
 		*.csv|*.xls|*.xlsx|*.gnumeric) gnumeric "$f" & ;;
 		*.pdf) zathura "$f" & ;;
 		*) $EDITOR "$f" ;;
@@ -19,7 +19,9 @@ cmd open ${{
 }}
 
 cmd test ${{
-	echo "mpv "$(echo "$fx" | tr '\n' ' ')"&"
+    # echo "mpv "$(echo $fx | tr '\n' ' ' | sed "s/ /\\ /g")""
+    # echo "echo "$fx" | tr '\n' ' '"
+    echo "mpv $(echo $fx | tr '\n' ' ')"
 }}
 
 # Archive bindings
@@ -80,6 +82,14 @@ cmd rename_snake_case ${{
 	done
 }}
 
+# Replace spaces with underscores
+cmd rename_underscore ${{
+    echo "$fx" | while read l; do
+        new="$(basename "$l" | sed 's/ /_/g')"
+        mv "$l" "$(pwd)/$new"
+    done
+}}
+
 # Get size of file/dir
 # By default returns size of file/dir that has the cursor over it
 # Works with multiple file selections
@@ -112,13 +122,24 @@ map d
 map r
 map y
 map t
+map *
 
 map t test
+
+# Glob-select
+map *c glob-select *.csv
+map *s glob-select *.srt
+map *m glob-select *.mkv
+map *4 glob-select *.mp4
+map *j glob-select *.jpg
+map *p glob-select *.png
+# map * read -p "hey>" | glob-select
 
 # Rename
 map rr rename
 map rp rename_snake_case
 map rm rename_snake_pascal
+map r_ rename_underscore
 map rb $vimv $fx
 
 # Backup
