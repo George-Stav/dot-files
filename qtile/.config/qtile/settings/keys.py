@@ -6,11 +6,10 @@
 
 from libqtile.config import Key, KeyChord
 from libqtile.config import Match
-from libqtile.command import lazy
+from libqtile.lazy import lazy
 from libqtile.utils import send_notification
 from .helpers import get_monitor_position
 from .path import scripts_path
-
 
 mod = "mod1"
 windows = "mod4"
@@ -161,6 +160,7 @@ keys = [
 
     # Terminal
     Key([mod], "Return", lazy.spawn("alacritty")),
+    # Key([new_mod], "Return", lazy.spawn("alacritty")),
 
     # Redshift
     # Key([mod], "r", lazy.spawn("redshift -O 2400")),
@@ -171,11 +171,6 @@ keys = [
     # Key([mod, "shift"], "s", lazy.spawn("scrot -s")),
     Key([mod, "shift"], "s", lazy.spawn("flameshot gui")),
     # Key([], "print", lazy.spawn("flameshot gui")),
-
-    KeyChord([windows], "x", [
-        Key([], "t", lazy.spawn("xpad -t")),
-        Key([], "n", lazy.spawn("xpad -n"))
-    ]),
 
     # ------------ Utility Configs ------------
 

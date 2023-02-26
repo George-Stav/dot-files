@@ -22,7 +22,7 @@ def icon(fg='text', bg='dark', fontsize=16, text="?"):
         **base_colours(fg, bg),
         fontsize=fontsize,
         text=text,
-        padding=3
+        padding=7
     )
 
 
@@ -31,8 +31,8 @@ def powerline(fg="light", bg="dark"):
         **base_colours(fg, bg),
         # text="", # padding=-11
         text="", # padding=-1
-        fontsize=60,
-        padding=-1
+        fontsize=43,
+        padding=17
     )
 
 
@@ -74,7 +74,7 @@ primary_widgets = [
     separator(),
 
     powerline('color4', 'dark'),
-    icon(bg="color4", text='', fontsize=20), # Icon: nf-fa-download
+    icon(bg="color4", text=''), # Icon: nf-fa-download
     widget.CheckUpdates(
         background=colors['color4'],
         colour_have_updates=colors['text'],
@@ -86,18 +86,18 @@ primary_widgets = [
     ),
 
     powerline('color3', 'color4'),
-    icon(bg="color3", text='', fontsize=20),  # Icon: nf-fa-feed
+    icon(bg="color3", text=''),  # Icon: nf-fa-feed
     widget.Net(**base_colours(bg='color3'), interface='wlan0'),
     # widget.Net(**base_colours(bg='color3'), interface='eno1'),
 
     powerline('color2', 'color3'),
-    ToggleState(**base_colours(bg='color2'), fontsize=24,
+    ToggleState(**base_colours(bg='color2'), fontsize=16, padding=10,
                 on="", off="", get_state=get_mic_state), # mic-state
     # AudioSource(**base_colours(bg='color2'), fontsize=24),
 
     widget.Battery(**base_colours(bg='color2'), battery=1, full_char="🔋", format='{char} {percent:2.0%}'),
     TimedTextBox(**base_colours(bg='color2'), text=get_vpn_status(), update_interval=60,
-                 update_fn=get_vpn_status, fontsize=18),
+                 update_fn=get_vpn_status),
 
     powerline('color1_5', 'color2'),
     widget.CurrentLayoutIcon(**base_colours(bg='color1_5'), scale=0.65),

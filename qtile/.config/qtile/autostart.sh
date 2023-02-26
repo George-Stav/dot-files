@@ -11,6 +11,7 @@ emacs --daemon
 eval "$SCRIPTS/xconf reload"
 picom &
 flameshot &
+nm-applet &
 # qbittorrent &
 nitrogen --restore &
 # xrandr --output HDMI-1-0 --mode 1920x1080 --primary --output eDP-1 --mode 1920x1080 --left-of HDMI-1-0
