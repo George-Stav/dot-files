@@ -1,4 +1,5 @@
 from libqtile import widget
+from libqtile.lazy import lazy
 from .theme import colors
 from .helpers import get_monitor_count, get_mic_state, get_warp_state, get_vpn_status
 from .path import scripts_path
@@ -122,6 +123,7 @@ def my_parse(text):
 
 # TaskList widget is created inside screens.py file
 task_list = {
+    "mouse_callbacks": {'Button3': lazy.window.toggle_fullscreen()},
     "parse_text": my_parse,
     "foreground": colors["light"],
     "background": colors["dark"],
@@ -143,11 +145,11 @@ def secondary():
         separator(),
 
         powerline('color4', 'dark'),
-        icon(bg="color4", text='', fontsize=28),
+        icon(bg="color4", text='', fontsize=20),
         widget.Memory(**base_colours(bg='color4'), format='{MemUsed: .0f}{mm}'),
 
         powerline('color3', 'color4'),
-        icon(bg="color3", text='', fontsize=28),
+        icon(bg="color3", text='', fontsize=20),
         widget.CPU(**base_colours(bg='color3'), format='{freq_current}GHz {load_percent}%'),
 
         powerline('color2', 'color3'),

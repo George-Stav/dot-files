@@ -11,8 +11,8 @@ cmd open ${{
 	case "$f" in
 		*.org|*.tex) "$VISUAL" "$f" & ;;
 		*.jpg|*.png|*.gif) sxiv "$f" & ;;
-		*.mkv|*.mp3|*.mp4|*.flac|*.webp) mpv --no-terminal $(find -name '*.srt' -printf '--sub-file=%h/%f ') $fx ;;
-		*.csv|*.xls|*.xlsx|*.gnumeric) gnumeric "$f" & ;;
+		*.mkv|*.mp3|*.mp4|*.flac|*.webp) mpv --ao=alsa --no-terminal --sub-files=$(find -regextype posix-extended -regex '.*\.(idx|srt|sub)' -printf '%p:') $fx ;;
+		*.csv|*.xls|*.xlsx|*.gnumeric) gnumeric $f & ;;
 		*.pdf) zathura "$f" & ;;
 		*) $EDITOR "$f" ;;
 	esac
@@ -21,7 +21,7 @@ cmd open ${{
 cmd test ${{
     # echo "mpv "$(echo $fx | tr '\n' ' ' | sed "s/ /\\ /g")""
     # echo "echo "$fx" | tr '\n' ' '"
-    echo "mpv $(echo $fx | tr '\n' ' ')"
+    echo mpv --no-terminal --sub-files=$(find \( -name '*.srt' -o -name '*.sub' -o -name '*.idx' \) -printf '%p:') $fx
 }}
 
 # Archive bindings

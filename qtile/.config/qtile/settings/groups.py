@@ -12,7 +12,7 @@ from .helpers import get_session_type
 # Get the icons at https://www.nerdfonts.com/cheat-sheet (you need a Nerd Font)
 
 def games(wm_class):
-    games = ["factorio", "PapersPlease", "osu!.exe", "dota2", "Minecraft Launcher"]
+    games = ["factorio", "PapersPlease", "osu!.exe", "dota2", "Minecraft Launcher", "Slay the Spire"]
     for c in wm_class:
         if c.startswith("steam_app") or c in games or "minecraft" in c.lower():
             return True
