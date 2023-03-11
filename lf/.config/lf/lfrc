@@ -11,7 +11,7 @@ cmd open ${{
 	case "$f" in
 		*.org|*.tex) "$VISUAL" "$f" & ;;
 		*.jpg|*.png|*.gif) sxiv "$f" & ;;
-		*.mkv|*.mp3|*.mp4|*.flac|*.webp) mpv --no-terminal $(find -name '*.srt' -printf '--sub-file=%h/%f ') $fx ;;
+		*.mkv|*.mp3|*.mp4|*.flac|*.webp) mpv --no-terminal $(find -name '*.srt' -o -name '*.idx' -o -name '*.sub' -printf '--sub-file=%h/%f ') $fx ;;
 		*.csv|*.xls|*.xlsx|*.gnumeric) gnumeric "$f" & ;;
 		*.pdf) zathura "$f" & ;;
 		*) $EDITOR "$f" ;;
