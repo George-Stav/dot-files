@@ -11,7 +11,8 @@ cmd open ${{
 	case "$f" in
 		*.org|*.tex) "$VISUAL" "$f" & ;;
 		*.jpg|*.png|*.gif) sxiv "$f" & ;;
-		*.mkv|*.mp3|*.mp4|*.flac|*.webp) mpv --ao=alsa --no-terminal --sub-files=$(find -regextype posix-extended -regex '.*\.(idx|srt|sub)' -printf '%p:') $fx ;;
+		*.mkv|*.mp4|*.flac|*.webp) mpv --ao=alsa --no-terminal --sub-files=$(find -regextype posix-extended -regex '.*\.(idx|srt|sub)' -printf '%p:') $fx ;;
+		*.mp3) mpv $fx ;;
 		*.csv|*.xls|*.xlsx|*.gnumeric) gnumeric $f & ;;
 		*.pdf) zathura "$f" & ;;
 		*) $EDITOR "$f" ;;

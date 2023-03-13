@@ -3,9 +3,16 @@
 -- Only required if you have packer configured as `opt`
 vim.cmd [[packadd packer.nvim]]
 
-return require('packer').startup(function()
+return require('packer').startup(function(use)
     -- Packer can manage itself
-    use 'wbthomason/packer.nvim'
-    use 'ellisonleao/gruvbox.nvim'
-    use 'terrortylor/nvim-comment'
+    use('wbthomason/packer.nvim')
+    use('ellisonleao/gruvbox.nvim')
+    use('terrortylor/nvim-comment')
+    use({
+	    'nvim-telescope/telescope.nvim', tag = '0.1.0',
+	    requires = { {'nvim-lua/plenary.nvim'} }
+    })
+    use('nvim-treesitter/nvim-treesitter', {run = ':TSUpdate'})
+    use('tpope/vim-fugitive')
+    use('mg979/vim-visual-multi', {branch = 'master'})
 end)
