@@ -1,0 +1,104 @@
+;; ========= GENERAL ========= ;;
+;; clean
+(menu-bar-mode -1)
+(scroll-bar-mode -1)
+(tool-bar-mode -1)
+(tooltip-mode -1)
+
+;; font
+(set-face-attribute 'default nil :font "Fira Code Retina" :height 180)
+
+;; Make ESC quit prompts
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+
+;; theme
+(load-theme 'wombat)
+
+;; remove startup message
+(setq inhibit-startup-message t)
+
+;; breathing room
+;; (set-fringe-mode 10)
+
+;; line numbers
+(column-number-mode)
+(setq display-line-numbers-type 'relative)
+(global-display-line-numbers-mode t)
+;;;; disable it for some modes
+(dolist (mode '(term-mode-hook
+                eshell-mode-hook))
+  (add-hook mode (lambda () (display-line-numbers-mode 0))))
+;; ============================ ;;
+
+
+
+;; ========= MELPA ========= ;;
+(require 'package)
+
+(setq package-archives '(("melpa" . "https://melpa.org/packages/")
+                         ("org" . "https://orgmode.org/elpa/")
+                         ("elpa" . "https://elpa.gnu.org/packages/")))
+
+(package-initialize)
+(unless package-archive-contents
+  (package-refresh-contents))
+
+(unless (package-installed-p 'use-package)
+  (package-install 'use-package))
+
+(require 'use-package)
+(setq use-package-always-ensure t)
+;; ============================ ;;
+
+;; ;; ========= IVY ========= ;;
+;; ;; A generic completion mechanism for Emacs.
+;; (use-package ivy
+;;   :diminish
+;;   :bind (("C-s" . swiper) ;; Mode specific keybinds
+;;          :map ivy-minibuffer-map ;; Buffer specific keybinds
+;;          ("TAB" . ivy-alt-done)
+;;          ("C-l" . ivy-alt-done)
+;;          ("C-j" . ivy-next-line)
+;;          ("C-k" . ivy-previous-line)
+;;          :map ivy-switch-buffer-map
+;;          ("C-k" . ivy-previous-line)
+;;          ("C-l" . ivy-done)
+;;          ("C-d" . ivy-switch-buffer-kill)
+;;          :map ivy-reverse-i-search-map
+;;          ("C-k" . ivy-previous-line)
+;;          ("C-d" . ivy-reverse-i-search-kill))
+;;   :config
+;;   (ivy-mode 1)
+;;   (setq ivy-initial-inputs-alist nil)) ;; Don't start searches with ^
+;; ============================ ;;
+
+;; ;; ========= COUNSEL ========= ;;
+;; ;; A collection of Ivy-enhanced versions of common Emacs commands.
+;; (use-package counsel
+;;   :bind (("M-x" . counsel-M-x)
+;;          ("C-x b" . councel-ibuffer)
+;;          ("C-x C-f" . councel-find-file)
+;;          :map minibuffer-local-map
+;;          ("C-r" . 'councel-minibuffer-history)))
+;; ============================ ;;
+
+;; ========= SWIPER ========= ;;
+;; An Ivy-enhanced alternative to Isearch.
+;; ============================ ;;
+
+;; ========= MODELINE ========= ;;
+(use-package doom-modeline
+  :ensure t
+  :init (doom-modeline-mode 1)
+  :custom (doom-modeline-height 15))
+;; ============================ ;;
+
+;; ========= ALL-THE-ICONS ========= ;;
+(use-package all-the-icons
+  :if (display-graphic-p))
+;; ============================ ;;
+
+;; ========= RAINBOW-DELIMITERS ========= ;;
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode)) ;; prog-mode is the base mode for all programming languages mode
+;; ============================ ;;
