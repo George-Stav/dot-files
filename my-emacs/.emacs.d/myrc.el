@@ -46,3 +46,10 @@ information retrieved from files created by the keychain script."
           (and gpg
                (string-match "GPG_AGENT_INFO[=\s]\\([^\s;\n]*\\)" gpg)
                (setenv       "GPG_AGENT_INFO" (match-string 1 gpg))))))
+
+(defun myrc/git-project-finder (dir)
+  "Integrate .git project roots."
+  (let ((dotgit (and (setq dir (locate-dominating-file dir ".git"))
+		     (expand-file-name dir))))
+    (and dotgit
+	 (cons 'transient (file-name-directory dotgit)))))

@@ -8,7 +8,6 @@
 (tooltip-mode 0)
 (column-number-mode 1)
 (show-paren-mode 1) 
-(recentf-mode 1) ;; enable history
 (electric-indent-mode 1) ;; dynamically indent text
 (size-indication-mode 1) ;; show file size in modeline
 (winner-mode 1) ;; enable window-undo/redo
@@ -41,12 +40,11 @@
 (setq package-user-dir "~/.cache/emacs/elpa")
 
 ;; set specific splits for Compilation (horizontal) and Help (vertical) windows
-;; as well as their dimensions
 (setq display-buffer-alist '(("\\*compilation" (display-buffer-reuse-window display-buffer-at-bottom)
 			      (window-height . 13))
 			     ("\\*help" (display-buffer-reuse-window display-buffer-in-side-window)
 			      (side . right)
-			      (window-width . 80))))
+			      (window-width . 65))))
 
 (myrc/keychain-refresh-environment)
 ;; ============================ ;;
@@ -85,7 +83,6 @@
     :keymaps 'override
     :prefix "SPC"
     :global-prefix "C-SPC"))
-
 ;; ============================ ;;
 
 
@@ -107,7 +104,8 @@
 
   ;; Use visual line motions even outside of visual-line-mode buffers (i.e. when a long line is wrapped, use j/k to get to the wrapped part of it instead of the next/prev line)
   (evil-global-set-key 'motion "j" 'evil-next-visual-line)
-  (evil-global-set-key 'motion "k" 'evil-previous-visual-line))
+  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+  (evil-global-set-key 'motion "ag" 'mark-page))
 
   ;; (evil-set-initial-state 'messages-buffer-mode 'normal)
   ;; (evil-set-initial-state 'dashboard-mode 'normal))
@@ -145,6 +143,7 @@
   "t"  '(:ignore t :which-key "toggle")
   "tw" '(visual-line-mode :which-key "line wrap")
   "tr" '(read-only-mode :which-key "read-only-mode")
+  "tt" '(toggle-truncate-lines :which-key "toggle-truncate-lines")
 
   ;; HELP
   "h"  '(:ignore t :which-key "help")
@@ -162,12 +161,18 @@
   "fr" '(consult-recent-file :which-key "recent file")
   "SPC" '(find-file :which-key "find-file")
   "ff" '(find-file :which-key "find-file")
-  "fi" '((lambda () (interactive) (find-file (expand-file-name "~/repos/dotfiles/my-emacs/.emacs.d/init.el"))) :which-key "open init")
+
+  ;; CONFIG
+  "d"  '(:ignore t :which-key "config files")
+  "di" '((lambda () (interactive) (find-file (expand-file-name "~/repos/dotfiles/my-emacs/.emacs.d/init.el"))) :which-key "init")
+  "dr" '((lambda () (interactive) (find-file (expand-file-name "~/repos/dotfiles/my-emacs/.emacs.d/myrc.el"))) :which-key "myrc")
+  "dp" '((lambda () (interactive) (find-file (expand-file-name "~/repos/dotfiles/my-emacs/.emacs.d/project-list.el"))) :which-key "project-list")
 
   ;; BUFFER
   "b"  '(:ignore t :which-key "buffer")
   ","  '(switch-to-buffer :which-key "switch-workspace-buffer")
   "<"  '(consult-buffer :which-key "switch-buffer")
+  "x"  '(consult-project-buffer :which-key "consult-project-buffer")
   "bk" '(kill-this-buffer :which-key "kill-this-buffer")
   "bl" '(evil-switch-to-windows-last-buffer :which-key "last buffer")
   "b]" '(next-buffer :which-key "next-buffer")
@@ -332,32 +337,46 @@
 ;; ============================ ;;
 
 
+;; ========= PROJECT.el ========= ;;
+(use-package project
+  :ensure nil
+  :custom ((project-list-file "~/.emacs.d/project-list.el")
+	   (project-switch-commands #'project-dired)))
+
+;; Turn off vc
+;; (with-eval-after-load 'vc
+;;   (remove-hook 'find-file-hook 'vc-find-file-hook)
+;;   (remove-hook 'find-file-hook 'vc-refresh-state)
+;;   (setq vc-handled-backends nil))
+;; (add-hook 'project-find-functions 'myrc/git-project-finder)
+;; ============================ ;;
+
+
 ;; ========= PROJECTILE ========= ;;
-(use-package projectile
-  :defer t
-  :diminish projectile-mode ;; don't show the mode in the modeline
-  :config (projectile-mode)
-  ;; :custom ((projectile-completion-system 'vertico)) ;; 'ido
-  :bind-keymap
-  ("C-c p" . projectile-command-map) ;; don't care
-  :init
-  (when (file-directory-p "~/dev")
-    (setq projectile-project-search-path '("~/dev" "~/dev/rust")))
-  (setq projectile-switch-project-action #'projectile-dired)) ;; projectile-dired is run when switching projects
+;; (use-package projectile
+;;   :defer t
+;;   :diminish projectile-mode ;; don't show the mode in the modeline
+;;   :config (projectile-mode)
+;;   ;; :custom ((projectile-completion-system 'vertico)) ;; 'ido
+;;   :bind-keymap
+;;   ("C-c p" . projectile-command-map) ;; don't care
+;;   :init
+;;   (when (file-directory-p "~/dev")
+;;     (setq projectile-project-search-path '("~/dev" "~/dev/rust")))
+;;   (setq projectile-switch-project-action #'projectile-dired)) ;; projectile-dired is run when switching projects
 
 (myrc/leader-keys
  "p"  '(:ignore t :which-key "projectile")
- "pp" '(projectile-switch-project :which-key "switch project")
- "pa" '(projectile-add-known-project :which-key "add project")
+ "pp" '(project-switch-project "~/dev/rust/genp" :which-key "switch project")
+ ;; "pa" '(projectile-add-known-project :which-key "add project")
  "ps" '(consult-ripgrep :which-key "search project")
- "pd" '(projectile-remove-known-project :which-key "remove known project")
- "pr" '(projectile-recentf :which-key "recent files")
- "." '(projectile-find-file :which-key "find project file"))
+ ;; "pd" '(projectile-remove-known-project :which-key "remove known project")
+ ;; "pr" '(projectile-recentf :which-key "recent files")
+ "pd" '(project-dired :which-key "project-dired")
+ "." '(project-find-file :which-key "project-find-file"))
 
-(use-package consult-projectile
-  :after projectile)
-;; (use-package counsel-projectile
-;;   :config (counsel-projectile-mode))
+;; (use-package consult-projectile
+;;   :after projectile)
 ;; ============================ ;;
 
 
@@ -420,6 +439,10 @@
 
 
 ;; ========= MISCELLANEOUS ========= ;;
+(use-package recentf
+  :init (recentf-mode)
+  :custom ((recentf-save-file "~/.cache/emacs/var/recentf-save.el")))
+
 ;; turn on manually when needed
 (use-package rainbow-mode
   :diminish
@@ -439,16 +462,3 @@
 ;; ========= STARTUP ========= ;;
 (add-hook 'emacs-startup-hook #'myrc/display-startup-time)
 ;; ============================ ;;
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(rainbow-delimiters rainbow-mode yaml-mode python-mode rust-mode tree-sitter all-the-icons-dired dired-single consult-projectile projectile magit which-key all-the-icons gruber-darker-theme doom-themes doom-modeline corfu orderless marginalia consult vertico evil-collection evil-nerd-commenter evil general no-littering use-package)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
