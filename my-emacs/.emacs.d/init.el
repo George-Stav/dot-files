@@ -34,7 +34,7 @@
 (global-display-line-numbers-mode t)
 
 ;; needed to toggle wrap (SPC-t-w) to work properly
-;; (toggle-truncate-lines)
+(toggle-truncate-lines)
 
 ;; cleaner ~/.emacs.d
 (setq user-emacs-directory "~/.cache/emacs")
@@ -47,6 +47,8 @@
 			     ("\\*help" (display-buffer-reuse-window display-buffer-in-side-window)
 			      (side . right)
 			      (window-width . 80))))
+
+(myrc/keychain-refresh-environment)
 ;; ============================ ;;
 
 
