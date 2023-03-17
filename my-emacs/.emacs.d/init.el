@@ -11,6 +11,7 @@
 (electric-indent-mode 1) ;; dynamically indent text
 (size-indication-mode 1) ;; show file size in modeline
 (winner-mode 1) ;; enable window-undo/redo
+;; (global-visual-line-mode 1)
 
 ;; font
 ;; (setq myrc/font "Fira Code Retina")
@@ -22,6 +23,11 @@
 
 ;; remove startup message
 (setq inhibit-startup-message t)
+
+;; cleaner ~/.emacs.d
+;; moving these lines runs the risk of re-downloading all packages from scratch
+(setq user-emacs-directory "~/.cache/emacs")
+(setq package-user-dir "~/.cache/emacs/elpa")
 
 ;; don't show git information on modeline
 (setq vc-display-status 0)
@@ -36,12 +42,6 @@
 (setq display-line-numbers-type 'relative)
 (global-display-line-numbers-mode t)
 
-;; needed to toggle wrap (SPC-t-w) to work properly
-
-;; cleaner ~/.emacs.d
-(setq user-emacs-directory "~/.cache/emacs")
-(setq package-user-dir "~/.cache/emacs/elpa")
-
 ;; set specific splits for Compilation (horizontal) and Help (vertical) windows
 (setq display-buffer-alist '(("\\*compilation" (display-buffer-reuse-window display-buffer-at-bottom)
 			      (window-height . 13))
@@ -49,6 +49,7 @@
 			      (side . right)
 			      (window-width . 80))))
 
+(add-hook 'help-mode-hook 'visual-line-mode)
 (myrc/keychain-refresh-environment)
 ;; ============================ ;;
 
@@ -182,12 +183,12 @@
   "b"  '(:ignore t :which-key "buffer")
   ","  '(switch-to-buffer :which-key "switch-to-buffer")
   "<"  '(consult-buffer :which-key "consult-buffer")
-  "x"  '(consult-project-buffer :which-key "consult-project-buffer")
   "bk" '(kill-this-buffer :which-key "kill-this-buffer")
   "bl" '(evil-switch-to-windows-last-buffer :which-key "last buffer")
   "b]" '(next-buffer :which-key "next-buffer")
   "b[" '(previous-buffer :which-key "previous-buffer")
   "bi" '(ibuffer :which-key "ibuffer")
+  "br" '(evil-edit :which-key "refresh buffer")
 
   ;; WINDOW
   "w"  '(:ignore t :which-key "window")
@@ -229,6 +230,7 @@
   "es" '(eval-last-sexp :which-key "eval-last-sexp")
 
   ;; MISC
+  "x"  '(evil-buffer-new :which-key "temp buffer")
   "/"  '(consult-line :which-key "search")
   "qq" '(evil-save-and-quit :which-key "save and quit"))
   ;; "se" '(evil-iedit-state/iedit-mode :which-key "evil-iedit-state")
@@ -528,8 +530,8 @@
   (define-key evil-insert-state-map (kbd "C-p") 'move-text-up)
   (define-key evil-normal-state-map (kbd "C-n") 'move-text-down)
   (define-key evil-normal-state-map (kbd "C-p") 'move-text-up)
-  (define-key evil-visual-state-map (kbd "C-n") 'move-text-region-down)
-  (define-key evil-visual-state-map (kbd "C-p") 'move-text-region-up))
+  (define-key evil-motion-state-map (kbd "C-n") 'move-text-region-down)
+  (define-key evil-motion-state-map (kbd "C-p") 'move-text-region-up))
 ;; ============================ ;;
 
 
