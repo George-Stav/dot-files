@@ -1,5 +1,9 @@
 ;;; -*- lisp-data -*-
 (("~/repos/dotfiles/")
+ ("~/dev/qtile/")
+ ("~/shared/ga-entities/")
+ ("~/dev/ded/")
+ ("/home/neeto/dev/ded/")
  ("/home/neeto/dev/rust/genp/")
  ("/home/neeto/repos/dotfiles/")
  ("/home/neeto/repos/cv/")
@@ -18,4 +22,5 @@
  ("/home/neeto/dev/rust/spotiver/")
  ("/home/neeto/dev/rust/testing/")
  ("/home/neeto/repos/notes/")
- ("/home/neeto/repos/scripts/"))
+ ("/home/neeto/repos/scripts/")
+ ("/home/neeto/shared/ga-entities"))

@@ -13,8 +13,12 @@
 (winner-mode 1) ;; enable window-undo/redo
 
 ;; font
-;; "Fira Code Retina"
-(set-face-attribute 'default nil :font "Iosevka" :height 180)
+;; (setq myrc/font "Fira Code Retina")
+;; (setq myrc/font "JetBrains Mono")
+(setq myrc/font "Iosevka")
+(set-face-attribute 'default nil :font myrc/font :height 180)
+(set-face-attribute 'fixed-pitch nil :font myrc/font :weight 'regular)
+(set-face-attribute 'variable-pitch nil :font myrc/font :weight 'regular)
 
 ;; remove startup message
 (setq inhibit-startup-message t)
@@ -33,7 +37,6 @@
 (global-display-line-numbers-mode t)
 
 ;; needed to toggle wrap (SPC-t-w) to work properly
-(toggle-truncate-lines)
 
 ;; cleaner ~/.emacs.d
 (setq user-emacs-directory "~/.cache/emacs")
@@ -44,7 +47,7 @@
 			      (window-height . 13))
 			     ("\\*help" (display-buffer-reuse-window display-buffer-in-side-window)
 			      (side . right)
-			      (window-width . 65))))
+			      (window-width . 80))))
 
 (myrc/keychain-refresh-environment)
 ;; ============================ ;;
@@ -54,8 +57,8 @@
 (require 'package)
 
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                         ("org" . "https://orgmode.org/elpa/")
-                         ("elpa" . "https://elpa.gnu.org/packages/")))
+			 ("org" . "https://orgmode.org/elpa/")
+			 ("elpa" . "https://elpa.gnu.org/packages/")))
 
 (package-initialize)
 (unless package-archive-contents
@@ -70,8 +73,15 @@
 (setq use-package-always-ensure t)
 ;; ============================ ;;
 
+
+;; ========= CLEAN ========= ;;
 ;; cleaner ~/.emacs.d
 (use-package no-littering)
+(use-package recentf
+  :init (recentf-mode)
+  :custom ((recentf-save-file "~/.cache/emacs/var/recentf-save.el")))
+;; ============================ ;;
+
 
 ;; ========= GENERAL.EL ========= ;;
 (use-package general
@@ -101,21 +111,21 @@
   ;; (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state) ;; enter normal mode using C-g while in insert mode
   ;; (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)) ;; use C-h to delete characters (same as backspace)
   ;; (define-key evil-normal-state-map (kbd "C-h") 'evil-delete-backward-char-and-join) ;; use C-h to delete characters while in normal mode
+  (define-key evil-insert-state-map (kbd "C-h") 'left-char) ;; use C-h to delete characters while in normal mode
+  (define-key evil-insert-state-map (kbd "C-l") 'right-char) ;; use C-h to delete characters while in normal mode
 
   ;; Use visual line motions even outside of visual-line-mode buffers (i.e. when a long line is wrapped, use j/k to get to the wrapped part of it instead of the next/prev line)
   (evil-global-set-key 'motion "j" 'evil-next-visual-line)
   (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
   (evil-global-set-key 'motion "ag" 'mark-page))
 
-  ;; (evil-set-initial-state 'messages-buffer-mode 'normal)
-  ;; (evil-set-initial-state 'dashboard-mode 'normal))
+;; (evil-set-initial-state 'messages-buffer-mode 'normal)
+;; (evil-set-initial-state 'dashboard-mode 'normal))
 
 (use-package evil-nerd-commenter
   :after evil
   :config
   (evil-global-set-key 'motion "gc" 'evilnc-comment-operator))
-
-;; (use-package evil-iedit-state)
 ;; ============================ ;;
 
 
@@ -159,7 +169,7 @@
   "f"  '(:ignore t :which-key "file")
   "fs" '(save-buffer :which-key "save file")
   "fr" '(consult-recent-file :which-key "recent file")
-  "SPC" '(find-file :which-key "find-file")
+  "." '(find-file :which-key "find-file")
   "ff" '(find-file :which-key "find-file")
 
   ;; CONFIG
@@ -170,8 +180,8 @@
 
   ;; BUFFER
   "b"  '(:ignore t :which-key "buffer")
-  ","  '(switch-to-buffer :which-key "switch-workspace-buffer")
-  "<"  '(consult-buffer :which-key "switch-buffer")
+  ","  '(switch-to-buffer :which-key "switch-to-buffer")
+  "<"  '(consult-buffer :which-key "consult-buffer")
   "x"  '(consult-project-buffer :which-key "consult-project-buffer")
   "bk" '(kill-this-buffer :which-key "kill-this-buffer")
   "bl" '(evil-switch-to-windows-last-buffer :which-key "last buffer")
@@ -201,7 +211,7 @@
   "w-" '(evil-window-decrease-height 10 :which-key "decrease window height")
   "w=" '(evil-window-increase-height 10 :which-key "increase window height")
   "wB" '(balance-windows :which-key "balance-windows")
-  "wR" '(evil-window-rotate-upwards :which-key "rorate windows")
+  "w C-r" '(evil-window-rotate-upwards :which-key "rorate windows")
   ;; undo-redo
   "wu" '(winner-undo :which-key "winner-undo")
   "wr" '(winner-redo :which-key "winner-redo")
@@ -210,7 +220,7 @@
   "i"  '(:ignore t :which-key "inferior processes")
   "ip" '(run-python :which-key "python interpreter")
   "ie" '(eshell :which-key "eshell")
-  "iv" '(vterm :which-key "vterm")
+  "it" '(term :which-key "term")
 
   ;; EVAL
   "e"  '(:ignore t :which-key "eval")
@@ -219,28 +229,31 @@
   "es" '(eval-last-sexp :which-key "eval-last-sexp")
 
   ;; MISC
-  "/"  '(consult-line :which-key "search"))
+  "/"  '(consult-line :which-key "search")
+  "qq" '(evil-save-and-quit :which-key "save and quit"))
+  ;; "se" '(evil-iedit-state/iedit-mode :which-key "evil-iedit-state")
 ;; ============================ ;;
 
 
 ;; ========= COMPLETION FRAMEWORK ========= ;;
 (use-package vertico
   :bind (:map vertico-map
-              ("C-j" . vertico-next)
-              ("C-k" . vertico-previous))
+	      ("C-j" . vertico-next)
+	      ("C-k" . vertico-previous))
   :custom (vertico-cycle t)
   :init (vertico-mode))
 
 (use-package consult
-  :after vertico
-  :bind (("C-s" . consult-line)
-         ("C-M-l" . consult-imenu)
-         :map minibuffer-local-map
-         ("C-r" . consult-hitory))
+  :defer t
+  :bind (("C-f" . consult-line)
+	 ("C-M-l" . consult-imenu)
+	 :map minibuffer-local-map
+	 ("C-r" . consult-hitory))
   :custom
-  (consult-project-root-function #' myrc/get-project-root)
   (completion-in-region-function #'consult-completion-in-region)
+  (consult)
   :config
+  (setq consult-ripgrep-args (concat consult-ripgrep-args " --hidden"))
   (consult-preview-at-point-mode))
 
 (use-package savehist
@@ -257,8 +270,8 @@
   :after vertico
   :config
   (setq completion-styles '(orderless basic)
-        completion-category-defaults nil
-        completion-category-overrides '((file (styles . (partial-completion))))))
+	completion-category-defaults nil
+	completion-category-overrides '((file (styles . (partial-completion))))))
 
 (use-package corfu
   :init (global-corfu-mode)
@@ -269,7 +282,26 @@
   :custom
   (corfu-auto t)
   (corfu-cycle t))
+
+(use-package embark
+  :bind (("C-," . embark-act)
+	 :map minibuffer-local-map
+	 ("C-d" . embark-act)))
+
+(use-package embark-consult
+  :after (embark consult)
+  :defer t
+  :hook (embark-collect-mode . embark-consult-preview-minor-mode))
+
+(setq embark-indicators
+  '(myrc/embark-which-key-indicator
+    embark-highlight-indicator
+    embark-isearch-highlight-indicator))
+
+(advice-add #'embark-completing-read-prompter
+            :around #'myrc/embark-hide-which-key-indicator)
 ;; ============================ ;;
+
 
 ;; ========= DOOM-MODELINE ========= ;;
 (use-package doom-modeline
@@ -283,16 +315,27 @@
 ;; ============================ ;;
 
 
+;; ========= TERM.el ========= ;;
+(use-package term
+  :commands (term))
+;; :config
+;; (setq explicit-shell-file-name "bash"))
+;; ============================ ;;
+
+
 ;; ========= THEMES ========= ;;
-(use-package doom-themes)
-  ;; :init (load-theme 'doom-fairy-floss t))
-(use-package gruber-darker-theme)
-
-(load-theme 'wombat t) ;; t at the end is needed to avoid a warning message
-
 ;; for more themes:
 ;;;; https://emacsthemes.com
 ;;;; https://peach-melpa.org
+
+(use-package doom-themes
+  ;; :defer t
+  :commands (consult-theme))
+;; :init (load-theme 'doom-fairy-floss t))
+(use-package gruber-darker-theme
+  :commands (consult-theme))
+
+(load-theme 'wombat t) ;; t at the end is needed to avoid a warning message
 ;; ============================ ;;
 
 
@@ -324,16 +367,32 @@
 ;; ;; ============================ ;;
 
 
+;; ========= ORG-MODE ========= ;;
+(defun myrc/org-mode-setup ()
+  (org-indent-mode)
+  (variable-pitch-mode 1)
+  (auto-fill-mode 0)
+  (visual-line-mode 1)
+  (setq evil-auto-indent nil))
+
+(use-package org
+  :hook (org-mode . myrc/org-mode-setup)
+  :config
+  ;; org-ellipsis " ▾"
+  (setq org-hide-emphasis-markers t))
+;; ============================ ;;
+
+
 ;; ========= MAGIT ========= ;;
 (use-package magit
-  ;; :defer t
+  :commands (magit-status)
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
 (myrc/leader-keys
- "g"  '(:ignore t :which-key "magit")
- "gg" '(magit-status :which-key "magit-status")
- "gp" '(magit-pull-from-upstream :which-key "magit-pull"))
+  "g"  '(:ignore t :which-key "magit")
+  "gg" '(magit-status :which-key "magit-status")
+  "gp" '(magit-pull-from-upstream :which-key "magit-pull"))
 ;; ============================ ;;
 
 
@@ -342,6 +401,13 @@
   :ensure nil
   :custom ((project-list-file "~/.emacs.d/project-list.el")
 	   (project-switch-commands #'project-dired)))
+
+(myrc/leader-keys
+  "p"  '(:ignore t :which-key "project")
+  "pp" '(project-switch-project "~/dev/rust/genp" :which-key "switch project")
+  "ps" '(consult-ripgrep :which-key "search project")
+  "pd" '(project-dired :which-key "project-dired")
+  "SPC" '(project-find-file :which-key "project-find-file"))
 
 ;; Turn off vc
 ;; (with-eval-after-load 'vc
@@ -365,15 +431,10 @@
 ;;     (setq projectile-project-search-path '("~/dev" "~/dev/rust")))
 ;;   (setq projectile-switch-project-action #'projectile-dired)) ;; projectile-dired is run when switching projects
 
-(myrc/leader-keys
- "p"  '(:ignore t :which-key "projectile")
- "pp" '(project-switch-project "~/dev/rust/genp" :which-key "switch project")
- ;; "pa" '(projectile-add-known-project :which-key "add project")
- "ps" '(consult-ripgrep :which-key "search project")
- ;; "pd" '(projectile-remove-known-project :which-key "remove known project")
- ;; "pr" '(projectile-recentf :which-key "recent files")
- "pd" '(project-dired :which-key "project-dired")
- "." '(project-find-file :which-key "project-find-file"))
+;; (myrc/leader-keys
+;;   "pa" '(projectile-add-known-project :which-key "add project")
+;;   "pd" '(projectile-remove-known-project :which-key "remove known project")
+;;   "pr" '(projectile-recentf :which-key "recent files"))
 
 ;; (use-package consult-projectile
 ;;   :after projectile)
@@ -387,7 +448,7 @@
   :commands (dired dired-jump)
   ;; remap "RET" and "-" to use dired-single bindings
   :bind (([remap dired-find-file] . dired-single-buffer)
-         ([remap dired-up-directory] . dired-single-up-directory))
+	 ([remap dired-up-directory] . dired-single-up-directory))
   :custom ((dired-listing-switches "-ahl -v --group-directories-first"))) ;; Flags used to run "ls"
 
 (use-package dired-single
@@ -398,7 +459,9 @@
   :config (setq all-the-icons-dired-monochrome nil))
 
 (myrc/leader-keys
- "o-" '(dired-jump :which-key "dired-jump"))
+  "o"  '(:ignore t :which-key "dired")
+  "o-" '(dired-jump :which-key "dired-jump")
+  "oo" '(dired :which-key "dired"))
 ;; ============================ ;;
 
 
@@ -406,13 +469,13 @@
 (setq compile-command "")
 (use-package compilation-mode
   :ensure nil
-  :commands (compilation-mode)
+  :commands (compile)
   :bind (("C-<return>" . compilation-display-error)))
 
 (myrc/leader-keys
- "c"  '(:ignore t :which-key "compile")
- "cc" '(compile :which-key "compile")
- "cC" '(recompile :which-key "recompile"))
+  "c"  '(:ignore t :which-key "compile")
+  "cc" '(compile :which-key "compile")
+  "cC" '(recompile :which-key "recompile"))
 ;; ============================ ;;
 
 
@@ -438,10 +501,43 @@
 ;; ============================ ;;
 
 
+;; ========= IEDIT ========= ;;
+(use-package iedit
+  :demand t
+  :bind (:map iedit-mode-occurrence-keymap
+	      ("C-j" . iedit-next-occurrence)
+	      ("C-k" . iedit-prev-occurrence)
+	      ("C-n" . iedit-expand-down-to-occurrence)
+	      ("C-p" . iedit-expand-up-to-occurrence)
+	      ("C-r" . iedit-restrict-function)
+	      ("C-l" . iedit-restrict-current-line)
+	      ("<escape>" . keyboard-quit)))
+
+;; (use-package key-chord
+;;   :init (key-chord-mode)
+;;   :config
+;;   (key-chord-define-global "fj" 'evil-normal-state)
+;;   (key-chord-define-global "jf" 'evil-normal-state))
+;; ============================ ;;
+
+
+;; ========= MOVE-TEXT ========= ;;
+(use-package move-text
+  :config
+  (define-key evil-insert-state-map (kbd "C-n") 'move-text-down)
+  (define-key evil-insert-state-map (kbd "C-p") 'move-text-up)
+  (define-key evil-normal-state-map (kbd "C-n") 'move-text-down)
+  (define-key evil-normal-state-map (kbd "C-p") 'move-text-up)
+  (define-key evil-visual-state-map (kbd "C-n") 'move-text-region-down)
+  (define-key evil-visual-state-map (kbd "C-p") 'move-text-region-up))
+;; ============================ ;;
+
+
 ;; ========= MISCELLANEOUS ========= ;;
-(use-package recentf
-  :init (recentf-mode)
-  :custom ((recentf-save-file "~/.cache/emacs/var/recentf-save.el")))
+;; Dynamically shows evil-search-{forward,backward} results on modeline
+(use-package anzu
+  :diminish
+  :init (global-anzu-mode))
 
 ;; turn on manually when needed
 (use-package rainbow-mode
@@ -453,8 +549,8 @@
 
 ;; Apply various settings for inferior process buffers (e.g. python interpreter, eshell, term)
 (dolist (mode '(term-mode-hook
-                eshell-mode-hook
-                comint-mode-hook)) ;; general command-interpreter-in-buffer
+		eshell-mode-hook
+		comint-mode-hook)) ;; general command-interpreter-in-buffer
   (add-hook mode #'myrc/inferior-process-mode))
 ;; ============================ ;;
 
@@ -462,3 +558,16 @@
 ;; ========= STARTUP ========= ;;
 (add-hook 'emacs-startup-hook #'myrc/display-startup-time)
 ;; ============================ ;;
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(iedit anzu yaml-mode which-key vertico use-package tree-sitter rust-mode rainbow-mode rainbow-delimiters python-mode orderless no-littering marginalia magit helpful gruber-darker-theme general evil-nerd-commenter evil-collection doom-themes doom-modeline dired-single corfu consult-projectile all-the-icons-dired)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
