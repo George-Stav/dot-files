@@ -11,15 +11,15 @@
 (electric-indent-mode 1) ;; dynamically indent text
 (size-indication-mode 1) ;; show file size in modeline
 (winner-mode 1) ;; enable window-undo/redo
+(toggle-word-wrap 1)
 ;; (global-visual-line-mode 1)
 
 ;; font
-;; (setq myrc/font "Fira Code Retina")
-;; (setq myrc/font "JetBrains Mono")
-(setq myrc/font "Iosevka")
-(set-face-attribute 'default nil :font myrc/font :height 180)
-(set-face-attribute 'fixed-pitch nil :font myrc/font :weight 'regular)
-(set-face-attribute 'variable-pitch nil :font myrc/font :weight 'regular)
+;; (defun myrc/font () "Fira Code Retina-18")
+;; (defun myrc/font () "JetBrains Mono-18")
+(defun myrc/font () "Iosevka-18")
+(add-to-list 'default-frame-alist `(font . ,(myrc/font)))
+(set-face-attribute 'variable-pitch nil :font (myrc/font) :weight 'regular) ;; required for org-mode
 
 ;; remove startup message
 (setq inhibit-startup-message t)
@@ -123,10 +123,10 @@
 ;; (evil-set-initial-state 'messages-buffer-mode 'normal)
 ;; (evil-set-initial-state 'dashboard-mode 'normal))
 
-(use-package evil-nerd-commenter
-  :after evil
-  :config
-  (evil-global-set-key 'motion "gc" 'evilnc-comment-operator))
+ (use-package evil-nerd-commenter
+   :after evil
+   :init (evilnc-default-hotkeys))
+;;   :config (evil-global-set-key 'motion "gc" 'evilnc-comment-operator))
 ;; ============================ ;;
 
 
@@ -135,14 +135,15 @@
 ;; https://github.com/emacs-evil/evil-collection
 (use-package evil-collection
   :after evil
-  :config
-  (evil-collection-init))
+  :custom ((evil-want-Y-yank-to-eol t)) ;; can't set in evil configuration because it's probably altered by evil-collection
+;; (evil-collection-setup-minibuffer t)
+  :config (evil-collection-init))
 ;; ============================ ;;
 
 
 ;; ========= STANDALONE KEYBINDS ========= ;;
 ;; Make ESC quit prompts
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+;; (global-set-key (kbd "<escape>") 'keyboard-quit)
 (global-set-key (kbd "C--") 'text-scale-decrease)
 (global-set-key (kbd "C-=") 'text-scale-increase)
 ;; use (define-key x-mode-map ...) to define a keybinding for a specific mode (e.g. python-mode/rust-mode)
@@ -152,7 +153,7 @@
   "u"  '(universal-argument :which-key "universal-argument")
   ;; TOGGLE
   "t"  '(:ignore t :which-key "toggle")
-  "tw" '(visual-line-mode :which-key "line wrap")
+  "tw" '(toggle-word-wrap :which-key "line wrap")
   "tr" '(read-only-mode :which-key "read-only-mode")
   "tt" '(toggle-truncate-lines :which-key "toggle-truncate-lines")
 
@@ -165,6 +166,7 @@
   "hm" '(describe-mode :which-key "describe-mode")
   "ht" '(consult-theme :which-key "load-theme")
   "hb" '(describe-bindings :which-key "describe-bindings")
+  "hp" '(describe-package :which-key "describe-package")
 
   ;; FILE
   "f"  '(:ignore t :which-key "file")
@@ -211,6 +213,8 @@
   ;; adjust size
   "w-" '(evil-window-decrease-height 10 :which-key "decrease window height")
   "w=" '(evil-window-increase-height 10 :which-key "increase window height")
+  "w<" '(evil-window-decrease-width 20 :which-key "decrease window width")
+  "w>" '(evil-window-increase-width 20 :which-key "increase window width")
   "wB" '(balance-windows :which-key "balance-windows")
   "w C-r" '(evil-window-rotate-upwards :which-key "rorate windows")
   ;; undo-redo
@@ -233,7 +237,6 @@
   "x"  '(evil-buffer-new :which-key "temp buffer")
   "/"  '(consult-line :which-key "search")
   "qq" '(evil-save-and-quit :which-key "save and quit"))
-  ;; "se" '(evil-iedit-state/iedit-mode :which-key "evil-iedit-state")
 ;; ============================ ;;
 
 
@@ -275,15 +278,20 @@
 	completion-category-defaults nil
 	completion-category-overrides '((file (styles . (partial-completion))))))
 
-(use-package corfu
-  :init (global-corfu-mode)
-  :bind (:map corfu-map
-	      ("C-j" . corfu-next)
-	      ("C-k" . corfu-previous)
-	      ("C-f" . corfu-insert))
-  :custom
-  (corfu-auto t)
-  (corfu-cycle t))
+(use-package company
+  :init (global-company-mode)
+  :custom ((company-selection-wrap-around t))
+  :bind (:map evil-insert-state-map
+	      ("<tab>" . company-complete)))
+;; (use-package corfu
+;;   :init (global-corfu-mode)
+;;   :bind (:map corfu-map
+;; 	      ("C-j" . corfu-next)
+;; 	      ("C-k" . corfu-previous)
+;; 	      ("C-f" . corfu-insert))
+;;   :custom
+;;   (corfu-auto t)
+;;   (corfu-cycle t))
 
 (use-package embark
   :bind (("C-," . embark-act)
@@ -371,6 +379,7 @@
 
 ;; ========= ORG-MODE ========= ;;
 (defun myrc/org-mode-setup ()
+  (set-face-attribute 'variable-pitch nil :font (myrc/font) :weight 'regular)
   (org-indent-mode)
   (variable-pitch-mode 1)
   (auto-fill-mode 0)
@@ -379,9 +388,12 @@
 
 (use-package org
   :hook (org-mode . myrc/org-mode-setup)
+  :bind (([remap org-insert-heading-respect-content] . org-insert-item))
   :config
   ;; org-ellipsis " ▾"
   (setq org-hide-emphasis-markers t))
+
+(advice-add 'evil-yank :around 'myrc/evil-yank-pulse)
 ;; ============================ ;;
 
 
@@ -482,12 +494,13 @@
 
 
 ;; ========= TREE-SITTER ========= ;;
-;; (use-package tree-sitter-langs)
 (use-package tree-sitter
   :hook ((prog-mode . global-tree-sitter-mode))
   :config
   ;; (global-tree-sitter-mode)
   (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
+(use-package tree-sitter-langs
+  :after tree-sitter)
 ;; ============================ ;;
 
 
@@ -512,8 +525,8 @@
 	      ("C-n" . iedit-expand-down-to-occurrence)
 	      ("C-p" . iedit-expand-up-to-occurrence)
 	      ("C-r" . iedit-restrict-function)
-	      ("C-l" . iedit-restrict-current-line)
-	      ("<escape>" . keyboard-quit)))
+	      ("C-l" . iedit-restrict-current-line)))
+	      ;; ("<escape>" . keyboard-quit)))
 
 ;; (use-package key-chord
 ;;   :init (key-chord-mode)

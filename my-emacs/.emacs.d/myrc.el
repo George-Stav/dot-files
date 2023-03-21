@@ -21,6 +21,8 @@ If `evil-split-window-below' is non-nil, the new window isn't focused."
   (display-line-numbers-mode 0))
 
 (defun myrc/display-startup-time ()
+  "Display emacs startup time and garbage collection."
+  (interactive)
   (message
    "Emacs loaded in %s with %d garbage collections."
    (format
@@ -85,3 +87,7 @@ targets."
          (remq #'embark-which-key-indicator embark-indicators)))
       (apply fn args)))
 
+(defun myrc/evil-yank-pulse (orig-fn beg end &rest args)
+  "Advice to add momentary pulse upon yank."
+  (pulse-momentary-highlight-region beg end)
+  (apply orig-fn beg end args))

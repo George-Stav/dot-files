@@ -149,8 +149,8 @@ keys = [
     Key([mod], "c", lazy.spawn("google-chrome-stable")),
 
     # Emacs
-    Key([mod, "shift"], "e", lazy.spawn("emacsclient -c")),
-    Key([mod], "e", lazy.spawn("emacs")),
+    Key([mod, "shift"], "e", lazy.spawn("emacs")),
+    Key([mod], "e", lazy.spawn("emacsclient -c -a emacs")), 
     # Key([mod], "e", lazy.spawn("emacs -Q -l ~/repos/dotfiles/my-emacs/init.el")),
     Key([mod], "d", lazy.spawn(f"{scripts_path}/dict")),
 
