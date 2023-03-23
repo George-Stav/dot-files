@@ -91,3 +91,9 @@ targets."
   "Advice to add momentary pulse upon yank."
   (pulse-momentary-highlight-region beg end)
   (apply orig-fn beg end args))
+
+(defun myrc/frame-title ()
+  "Set frame title."
+  (if (boundp 'server-name)
+      (setq frame-title-format (concat "%b - [" server-name "] workspace"))
+    (setq frame-title-format (concat "%b - [standalone] workspace"))))

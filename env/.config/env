@@ -1,11 +1,12 @@
 #!/bin/sh
 
 #~~~ -{DEFAULT APPLICATIONS}- ~~~#
+export EMACS_DAEMONS="main secondary tertiary"
 export BROWSER="firefox"
 export TERMINAL="alacritty"
 export EDITOR="nvim"
 export FONT_NAME="Jetbrains Mono"
-export VISUAL="emacsclient -c"
+export VISUAL="emacsclient -c -a emacs"
 
 #~~~ -{PATHS}- ~~~#
 export SCRIPTS="$HOME/.local/bin"

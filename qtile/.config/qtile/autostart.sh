@@ -8,6 +8,7 @@
 # optimus-manager-qt &
 # ~/.local/bin/monitor-setup
 eval "$SCRIPTS/xconf reload"
+eval "$SCRIPTS/em startup"
 openrgb --profile white.orp
 picom &
 flameshot &

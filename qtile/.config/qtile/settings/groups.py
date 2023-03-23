@@ -13,7 +13,7 @@ from libqtile.log_utils import logger
 # Get the icons at https://www.nerdfonts.com/cheat-sheet (you need a Nerd Font)
 
 def games(client):
-    games = ["factorio", "PapersPlease", "osu!.exe", "dota2", "minecraft launcher", "TIS-100", "Celeste", "Dead Cells", "deadcells", "Slay the Spire"]
+    games = ["factorio", "PapersPlease", "osu!.exe", "dota2", "minecraft launcher", "TIS-100", "Celeste", "Dead Cells", "deadcells", "Slay the Spire", "EXAPUNKS"]
     # get_wm_class() = (instance, class), may exist
     # get_name() = str, assume it always exists
     l = [client.window.get_name()]

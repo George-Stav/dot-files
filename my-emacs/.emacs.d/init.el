@@ -51,6 +51,8 @@
 
 (add-hook 'help-mode-hook 'visual-line-mode)
 (myrc/keychain-refresh-environment)
+
+(advice-add 'evil-yank :around 'myrc/evil-yank-pulse)
 ;; ============================ ;;
 
 
@@ -107,6 +109,7 @@
   (evil-want-integration t)
   (evil-want-C-u-scroll t)
   (evil-want-C-d-scroll t)
+  (evil-want-fine-undo t)
   :config
   (evil-mode 1)
   ;; (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state) ;; enter normal mode using C-g while in insert mode
@@ -118,7 +121,9 @@
   ;; Use visual line motions even outside of visual-line-mode buffers (i.e. when a long line is wrapped, use j/k to get to the wrapped part of it instead of the next/prev line)
   (evil-global-set-key 'motion "j" 'evil-next-visual-line)
   (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
-  (evil-global-set-key 'motion "ag" 'mark-page))
+  (evil-global-set-key 'motion "ag" 'mark-page)
+  (evil-global-set-key 'motion "g=" 'evil-numbers/inc-at-pt)
+  (evil-global-set-key 'motion "g-" 'evil-numbers/dec-at-pt))
 
 ;; (evil-set-initial-state 'messages-buffer-mode 'normal)
 ;; (evil-set-initial-state 'dashboard-mode 'normal))
@@ -142,12 +147,10 @@
 
 
 ;; ========= STANDALONE KEYBINDS ========= ;;
-;; Make ESC quit prompts
-;; (global-set-key (kbd "<escape>") 'keyboard-quit)
+;; use (define-key x-mode-map ...) to define a keybinding for a specific mode (e.g. python-mode/rust-mode)
 (global-set-key (kbd "C--") 'text-scale-decrease)
 (global-set-key (kbd "C-=") 'text-scale-increase)
-;; use (define-key x-mode-map ...) to define a keybinding for a specific mode (e.g. python-mode/rust-mode)
-;; (define-key emacs-lisp-mode-map (kbd "C-x M-t") 'counsel-load-theme)
+(global-set-key (kbd "C-<tab>") 'indent-for-tab-command)
 
 (myrc/leader-keys
   "u"  '(universal-argument :which-key "universal-argument")
@@ -156,6 +159,7 @@
   "tw" '(toggle-word-wrap :which-key "line wrap")
   "tr" '(read-only-mode :which-key "read-only-mode")
   "tt" '(toggle-truncate-lines :which-key "toggle-truncate-lines")
+  "ts" '(tree-sitter-mode :which-key "tree-sitter-mode")
 
   ;; HELP
   "h"  '(:ignore t :which-key "help")
@@ -174,6 +178,12 @@
   "fr" '(consult-recent-file :which-key "recent file")
   "." '(find-file :which-key "find-file")
   "ff" '(find-file :which-key "find-file")
+
+  ;; SUDO
+  "s"  '(:ignore t :which-key "sudo")
+  "s/" '((lambda () (interactive) (find-file (expand-file-name "/sudo::/"))) :which-key "dired sudoedit /")
+  "s~" '((lambda () (interactive) (find-file (expand-file-name "/sudo::/home/neeto"))) :which-key "dired sudoedit ~")
+  "s." '((lambda () (interactive) (find-file (expand-file-name (concat "/sudo::" (buffer-file-name))))) :which-key "sudoedit current buffer")
 
   ;; CONFIG
   "d"  '(:ignore t :which-key "config files")
@@ -235,6 +245,7 @@
 
   ;; MISC
   "x"  '(evil-buffer-new :which-key "temp buffer")
+  "m"  '(man :which-key "man")
   "/"  '(consult-line :which-key "search")
   "qq" '(evil-save-and-quit :which-key "save and quit"))
 ;; ============================ ;;
@@ -383,17 +394,16 @@
   (org-indent-mode)
   (variable-pitch-mode 1)
   (auto-fill-mode 0)
-  (visual-line-mode 1)
-  (setq evil-auto-indent nil))
+  (visual-line-mode 1))
+  ;; (setq evil-auto-indent nil))
 
 (use-package org
   :hook (org-mode . myrc/org-mode-setup)
-  :bind (([remap org-insert-heading-respect-content] . org-insert-item))
+  :bind (([remap org-insert-heading-respect-content] . org-insert-item)
+	 ([remap org-table-copy-down] . org-insert-heading))
   :config
   ;; org-ellipsis " ▾"
   (setq org-hide-emphasis-markers t))
-
-(advice-add 'evil-yank :around 'myrc/evil-yank-pulse)
 ;; ============================ ;;
 
 
@@ -475,7 +485,9 @@
 (myrc/leader-keys
   "o"  '(:ignore t :which-key "dired")
   "o-" '(dired-jump :which-key "dired-jump")
-  "oo" '(dired :which-key "dired"))
+  "o~" '((lambda () (interactive) (find-file (expand-file-name "/home/neeto/"))) :which-key "dired ~")
+  "o/" '((lambda () (interactive) (find-file (expand-file-name "/home/neeto/"))) :which-key "dired /")
+  "oo" '(dired :which-key "dired choose"))
 ;; ============================ ;;
 
 
@@ -497,7 +509,6 @@
 (use-package tree-sitter
   :hook ((prog-mode . global-tree-sitter-mode))
   :config
-  ;; (global-tree-sitter-mode)
   (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
 (use-package tree-sitter-langs
   :after tree-sitter)
@@ -525,14 +536,9 @@
 	      ("C-n" . iedit-expand-down-to-occurrence)
 	      ("C-p" . iedit-expand-up-to-occurrence)
 	      ("C-r" . iedit-restrict-function)
-	      ("C-l" . iedit-restrict-current-line)))
-	      ;; ("<escape>" . keyboard-quit)))
-
-;; (use-package key-chord
-;;   :init (key-chord-mode)
-;;   :config
-;;   (key-chord-define-global "fj" 'evil-normal-state)
-;;   (key-chord-define-global "jf" 'evil-normal-state))
+	      ("C-l" . iedit-restrict-current-line)
+	      :map evil-normal-state-map ;; needed so that when attempting to enter normal mode from insert mode it doesn't exit altogether
+	      ("<escape>" . iedit--quit)))
 ;; ============================ ;;
 
 
@@ -567,10 +573,10 @@
 		eshell-mode-hook
 		comint-mode-hook)) ;; general command-interpreter-in-buffer
   (add-hook mode #'myrc/inferior-process-mode))
-;; ============================ ;;
 
-
-;; ========= STARTUP ========= ;;
+;; STARTUP HOOKS
+(add-hook 'server-mode-hook #'myrc/frame-title)
+(add-hook 'emacs-startup-hook #'myrc/frame-title)
 (add-hook 'emacs-startup-hook #'myrc/display-startup-time)
 ;; ============================ ;;
 (custom-set-variables
