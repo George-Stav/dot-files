@@ -6,10 +6,11 @@
 
 from libqtile.config import Key, KeyChord
 from libqtile.config import Match
-from libqtile.lazy import lazy
+from libqtile.command import lazy
 from libqtile.utils import send_notification
 from .helpers import get_monitor_position
 from .path import scripts_path
+
 
 mod = "mod1"
 windows = "mod4"
@@ -149,7 +150,6 @@ keys = [
 
     # Emacs
     Key([mod], "e", lazy.spawn("emacsclient -c")),
-    # Key([mod], "e", lazy.spawn("emacsclient -c -s /tmp/emacs1000/server")),
     Key([mod, "shift"], "e", lazy.spawn("systemctl --user restart emacs")),
     # Key([mod], "d", lazy.spawn("emacsclient -c -a 'emacs' --eval '(dired nil)'")),
     # Key([mod], "d", lazy.spawn(f"alacritty -e {scripts_path}/lfrun")),
@@ -160,7 +160,6 @@ keys = [
 
     # Terminal
     Key([mod], "Return", lazy.spawn("alacritty")),
-    # Key([new_mod], "Return", lazy.spawn("alacritty")),
 
     # Redshift
     # Key([mod], "r", lazy.spawn("redshift -O 2400")),
@@ -172,13 +171,26 @@ keys = [
     Key([mod, "shift"], "s", lazy.spawn("flameshot gui")),
     # Key([], "print", lazy.spawn("flameshot gui")),
 
+    KeyChord([windows], "x", [
+        Key([], "t", lazy.spawn("xpad -t")),
+        Key([], "n", lazy.spawn("xpad -n"))
+    ]),
+
     # ------------ Utility Configs ------------
 
     Key([mod, "control"], "space", lazy.spawn(f'{scripts_path}/cycle-kb-layout')),
     Key(["shift"], "XF86AudioMute", mic_toggle),
     Key([], "XF86AudioMicMute", mic_toggle),
     Key([], "XF86Favorites", mic_toggle),
+    Key([mod, "shift"], "Caps_Lock", lazy.spawn("setxkbmap -option caps:escape")),
     # Key([], "f6", mic_toggle),
+
+    # ------------ Power Settings ------------
+
+    Key([mod, "control", "shift"], "s", lazy.spawn("systemctl suspend")),
+    Key([mod, "control", "shift"], "h", lazy.spawn("systemctl hibernate")),
+    Key([mod, "control", "shift"], "r", lazy.spawn("reboot")),
+    Key([mod, "control", "shift"], "u", lazy.spawn("shutdown now")),
 
     # ------------ Hardware Configs ------------
 
