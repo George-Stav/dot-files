@@ -8,11 +8,13 @@
 # optimus-manager-qt &
 # ~/.local/bin/monitor-setup
 eval "$SCRIPTS/xconf reload"
+eval "$SCRIPTS/em startup"
 openrgb --profile white.orp
 picom &
 flameshot &
 qbittorrent &
 nitrogen --restore &
+emacs --daemon &
 # xrandr --output HDMI-1-0 --mode 1920x1080 --primary --output eDP-1 --mode 1920x1080 --left-of HDMI-1-0
 # source ~/.fehbg
 # "$SCRIPTS"/monitor-setup
