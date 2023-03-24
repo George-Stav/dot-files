@@ -158,6 +158,7 @@
 
 ;; ========= STANDALONE KEYBINDS ========= ;;
 ;; use (define-key x-mode-map ...) to define a keybinding for a specific mode (e.g. python-mode/rust-mode)
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 (global-set-key (kbd "C--") 'text-scale-decrease)
 (global-set-key (kbd "C-=") 'text-scale-increase)
 (global-set-key (kbd "C-<tab>") 'indent-for-tab-command)

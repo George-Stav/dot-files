@@ -110,9 +110,13 @@ targets."
   (message "Set myrc/compilation-window-kill-on-success-var to %s" myrc/compilation-window-kill-on-success-var))
 
 (defun myrc/compilation-window-kill-on-success (buf str)
-  "Hook for myrc/compilation-window-kill-on-success."
+  "Hook for myrc/compilation-window-kill-on-success.
+Needs to contain a `finished' message, as well as have 0 errors, warnings and infos. Can be toggled."
   (interactive)
-  (if (and (null (string-match ".*exited abnormally.*" str))
+  (if (and (not (null (string-match ".*finished.*" str)))
+	   compilation-num-errors-found
+	   compilation-num-infos-found
+	   compilation-num-warnings-found
 	   myrc/compilation-window-kill-on-success-var)
       ;; no errors; kill compilation window
       (progn (delete-windows-on
