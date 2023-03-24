@@ -97,3 +97,28 @@ targets."
   (if (boundp 'server-name)
       (setq frame-title-format (concat "%b - [" server-name "]"))
     (setq frame-title-format (concat "%b - [standalone]"))))
+
+(defcustom myrc/compilation-window-kill-on-success-var nil
+  "Close compilation window on success."
+  :type 'boolean)
+
+(defun myrc/toggle-compilation-window-kill-on-success ()
+  "Toggle myrc/compilation-window-kill-on-success."
+  (interactive)
+  (setq myrc/compilation-window-kill-on-success-var
+	(not myrc/compilation-window-kill-on-success-var))
+  (message "Set myrc/compilation-window-kill-on-success-var to %s" myrc/compilation-window-kill-on-success-var))
+
+(defun myrc/compilation-window-kill-on-success (buf str)
+  "Hook for myrc/compilation-window-kill-on-success.
+Needs to contain a `finished' message, as well as have 0 errors, warnings and infos. Can be toggled."
+  (interactive)
+  (if (and (not (null (string-match ".*finished.*" str)))
+	   compilation-num-errors-found
+	   compilation-num-infos-found
+	   compilation-num-warnings-found
+	   myrc/compilation-window-kill-on-success-var)
+      ;; no errors; kill compilation window
+      (progn (delete-windows-on
+	      (get-buffer-create "*compilation*"))
+	     (message "Compilation finished successfully"))))

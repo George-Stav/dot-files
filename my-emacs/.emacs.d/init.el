@@ -58,6 +58,9 @@
 ;; No need to save since it sticks for the daemon's lifetime
 ;; Default behaviour is to ask
 (setq auth-source-save-behavior nil)
+
+;; Make the compilation window automatically disappear - from enberg on #emacs
+(setq compilation-finish-functions 'myrc/compilation-window-kill-on-success)
 ;; ============================ ;;
 
 
@@ -155,6 +158,7 @@
 
 ;; ========= STANDALONE KEYBINDS ========= ;;
 ;; use (define-key x-mode-map ...) to define a keybinding for a specific mode (e.g. python-mode/rust-mode)
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 (global-set-key (kbd "C--") 'text-scale-decrease)
 (global-set-key (kbd "C-=") 'text-scale-increase)
 (global-set-key (kbd "C-<tab>") 'indent-for-tab-command)
@@ -167,6 +171,7 @@
   "tr" '(read-only-mode :which-key "read-only-mode")
   "tt" '(toggle-truncate-lines :which-key "toggle-truncate-lines")
   "ts" '(tree-sitter-mode :which-key "tree-sitter-mode")
+  "tc" '(myrc/toggle-compilation-window-kill-on-success :which-key "compilation-window-kill-on-success")
 
   ;; HELP
   "h"  '(:ignore t :which-key "help")
@@ -493,6 +498,7 @@
 (myrc/leader-keys
   "o"  '(:ignore t :which-key "dired")
   "o-" '(dired-jump :which-key "dired-jump")
+  "od" '(dired-jump :which-key "dired-jump")
   "o~" '((lambda () (interactive) (find-file (expand-file-name "/home/neeto/"))) :which-key "dired ~")
   "o/" '((lambda () (interactive) (find-file (expand-file-name "/"))) :which-key "dired /")
   "oo" '(dired :which-key "dired choose"))
@@ -553,20 +559,31 @@
 ;; ========= MOVE-TEXT ========= ;;
 (use-package move-text
   :config
-  (define-key evil-insert-state-map (kbd "C-n") 'move-text-down)
   (define-key evil-insert-state-map (kbd "C-p") 'move-text-up)
+  (define-key evil-insert-state-map (kbd "C-n") 'move-text-down)
   (define-key evil-normal-state-map (kbd "C-n") 'move-text-down)
   (define-key evil-normal-state-map (kbd "C-p") 'move-text-up)
   (define-key evil-motion-state-map (kbd "C-n") 'move-text-region-down)
   (define-key evil-motion-state-map (kbd "C-p") 'move-text-region-up))
 ;; ============================ ;;
 
+;; (use-package pdf-tools
+;;   :commands (pdf-tools-enable-minor-modes)
+;;   :config
+;;   (pdf-view-mode)
+;;   (pdf-tools-install)
+;;   (pdf-loader-install))
 
 ;; ========= MISCELLANEOUS ========= ;;
 ;; Dynamically shows evil-search-{forward,backward} results on modeline
 (use-package anzu
   :diminish
   :init (global-anzu-mode))
+
+;; Latex mode stuff
+(use-package tex-mode
+  :hook ((latex-mode . myrc/toggle-compilation-window-kill-on-success))
+  :config (setq compile-command (format "pdflatex %s" (buffer-name))))
 
 ;; turn on manually when needed
 (use-package rainbow-mode
