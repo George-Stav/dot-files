@@ -1,9 +1,9 @@
 ;;; -*- lisp-data -*-
-(("~/repos/scripts/")
- ("~/repos/dotfiles/")
+(("~/repos/dotfiles/")
+ ("~/dev/rust/genp/")
+ ("~/repos/scripts/")
  ("~/dev/qtile/")
  ("~/repos/notes/")
- ("~/dev/rust/genp/")
  ("~/dev/rust/minicel/")
  ("~/dev/rust/aoc21/")
  ("~/repos/cv/")

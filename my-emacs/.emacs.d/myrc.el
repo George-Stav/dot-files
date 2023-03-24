@@ -95,5 +95,5 @@ targets."
 (defun myrc/frame-title ()
   "Set frame title."
   (if (boundp 'server-name)
-      (setq frame-title-format (concat "%b - [" server-name "] workspace"))
-    (setq frame-title-format (concat "%b - [standalone] workspace"))))
+      (setq frame-title-format (concat "%b - [" server-name "]"))
+    (setq frame-title-format (concat "%b - [standalone]"))))
