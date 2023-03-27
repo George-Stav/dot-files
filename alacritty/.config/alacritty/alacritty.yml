@@ -23,7 +23,7 @@ window:
     instance: Alacritty
     general: Alacritty
 
-  decorations_theme_variant: dark
+  decorations_theme_variant: Dark
 
 # SCROLLING
 scrolling:

@@ -161,7 +161,6 @@
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 (global-set-key (kbd "C--") 'text-scale-decrease)
 (global-set-key (kbd "C-=") 'text-scale-increase)
-(global-set-key (kbd "C-<tab>") 'indent-for-tab-command)
 
 (myrc/leader-keys
   "u"  '(universal-argument :which-key "universal-argument")
@@ -171,6 +170,7 @@
   "tr" '(read-only-mode :which-key "read-only-mode")
   "tt" '(toggle-truncate-lines :which-key "toggle-truncate-lines")
   "ts" '(tree-sitter-mode :which-key "tree-sitter-mode")
+  "tp" '(prettify-symbols-mode :which-key "prettify-symbols-mode")
   "tc" '(myrc/toggle-compilation-window-kill-on-success :which-key "compilation-window-kill-on-success")
 
   ;; HELP
@@ -305,7 +305,7 @@
   :init (global-company-mode)
   :custom ((company-selection-wrap-around t))
   :bind (:map evil-insert-state-map
-	      ("<tab>" . company-complete)))
+	      ("C-<tab>" . company-complete)))
 ;; (use-package corfu
 ;;   :init (global-corfu-mode)
 ;;   :bind (:map corfu-map
@@ -528,6 +528,8 @@
   :after tree-sitter)
 ;; ============================ ;;
 
+;; (use-package eglot)
+;; (add-hook 'rust-mode-hook 'eglot-ensure)
 
 ;; ========= PROGRAMMING-MODES ========= ;;
 (use-package prog-mode
