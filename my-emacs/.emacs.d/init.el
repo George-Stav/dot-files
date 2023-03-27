@@ -61,6 +61,9 @@
 
 ;; Make the compilation window automatically disappear - from enberg on #emacs
 (setq compilation-finish-functions 'myrc/compilation-window-kill-on-success)
+
+(setq shell-file-name "/bin/bash")
+(setq explicit-shell-file-name "/bin/bash")
 ;; ============================ ;;
 
 
@@ -443,6 +446,7 @@
   "p"  '(:ignore t :which-key "project")
   "pp" '(project-switch-project "~/dev/rust/genp" :which-key "switch project")
   "ps" '(consult-ripgrep :which-key "search project")
+  "pr" '(vc-register :which-key "vc-register")
   "pd" '(project-dired :which-key "project-dired")
   "SPC" '(project-find-file :which-key "project-find-file"))
 
@@ -510,7 +514,9 @@
 (use-package compilation-mode
   :ensure nil
   :commands (compile)
-  :bind (("C-<return>" . compilation-display-error)))
+  :bind (("C-<return>" . compilation-display-error))
+  :config
+  (setq compilation-search-path (lambda () (project-root (project-current)))))
 
 (myrc/leader-keys
   "c"  '(:ignore t :which-key "compile")
@@ -569,12 +575,14 @@
   (define-key evil-motion-state-map (kbd "C-p") 'move-text-region-up))
 ;; ============================ ;;
 
-;; (use-package pdf-tools
-;;   :commands (pdf-tools-enable-minor-modes)
-;;   :config
-;;   (pdf-view-mode)
-;;   (pdf-tools-install)
-;;   (pdf-loader-install))
+(use-package pdf-tools
+  :custom
+  (pdf-view-display-size 'fit-page)
+  (pdf-view-image-relief 2)
+  (pdf-view-use-scaling t)
+  :config
+  (pdf-tools-install)
+  (pdf-loader-install))
 
 ;; ========= MISCELLANEOUS ========= ;;
 ;; Dynamically shows evil-search-{forward,backward} results on modeline
