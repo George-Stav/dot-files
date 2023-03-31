@@ -94,8 +94,8 @@ keys = [
     Key([mod], "k", lazy.layout.up()),
     Key([mod], "h", lazy.layout.left()),
     Key([mod], "l", lazy.layout.right()),
-    Key([mod], "Tab", lazy.layout.next()),
-    Key([mod, "shift"], "Tab", lazy.layout.previous()),
+    Key([mod], "Tab", lazy.group.next_window()),
+    Key([mod, "shift"], "Tab", lazy.group.previous_window()),
 
     # Grow windows. If current window is on the edge of screen and direction
     # will be to screen edge - window would shrink.

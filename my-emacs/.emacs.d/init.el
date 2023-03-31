@@ -42,18 +42,34 @@
 (setq display-line-numbers-type 'relative)
 (global-display-line-numbers-mode t)
 
+;; (defvar display-buffer-same-window-commands
+;;   '(occur-mode-goto-occurrence compile-goto-error))
+;; (setq 'display-buffer-alist '((lambda (&rest _)
+;; 				(memq this-command display-buffer-same-window-commands))
+;; 			      (display-buffer-reuse-window
+;; 			       display-buffer-same-window)
+;; 			      (inhibit-same-window . nil)))
+
 ;; set specific splits for Compilation (horizontal) and Help (vertical) windows
 (setq display-buffer-alist '(("\\*compilation" (display-buffer-reuse-window display-buffer-at-bottom)
 			      (window-height . 13))
 			     ("\\*Help" (display-buffer-reuse-window display-buffer-in-direction)
 			      (direction . right))
 			     ;; split documentation windows below *Help* windows
-			     (".*\\.gz" (display-buffer-reuse-window display-buffer-below-selected))))
+			     (".*\\.\\(el\\|gz\\)" (display-buffer-reuse-window display-buffer-below-selected))
+			     ;; force compile-goto-error to open buffer in existing window
+			     ;; if compilation window is the only one then create new window at top
+			     ((lambda (&rest _) (eq this-command 'compile-goto-error))
+			      (display-buffer-reuse-window display-buffer-use-some-window display-buffer-in-direction)
+			      (direction . top)
+			      (window-height . 20))))
 
 (add-hook 'help-mode-hook 'visual-line-mode)
 (myrc/keychain-refresh-environment)
 
 (advice-add 'evil-yank :around 'myrc/evil-yank-pulse)
+(advice-add 'project-switch-project
+	    :after '(lambda (dir) (setq compilation-search-path (list dir))))
 
 ;; No need to save since it sticks for the daemon's lifetime
 ;; Default behaviour is to ask
@@ -151,11 +167,15 @@
 ;; ========= EVIL-COLLECTION ========= ;;
 ;; A collection of Evil bidning for the parts of Emacs that Evil does not cover properly by default (e.g. help-mode calendar, eshell etc.)
 ;; https://github.com/emacs-evil/evil-collection
+(general-unbind 'normal "C-p" "C-n")
 (use-package evil-collection
   :after evil
   :custom ((evil-want-Y-yank-to-eol t)) ;; can't set in evil configuration because it's probably altered by evil-collection
   ;; (evil-collection-setup-minibuffer t)
-  :config (evil-collection-init))
+  :config
+  (evil-collection-init)
+  (define-key evil-motion-state-map (kbd "C-n") 'evil-collection-unimpaired-move-text-down) 
+  (define-key evil-motion-state-map (kbd "C-p") 'evil-collection-unimpaired-move-text-up))
 ;; ============================ ;;
 
 
@@ -514,9 +534,7 @@
 (use-package compilation-mode
   :ensure nil
   :commands (compile)
-  :bind (("C-<return>" . compilation-display-error))
-  :config
-  (setq compilation-search-path (lambda () (project-root (project-current)))))
+  :bind (("C-<return>" . compilation-display-error)))
 
 (myrc/leader-keys
   "c"  '(:ignore t :which-key "compile")
@@ -561,18 +579,6 @@
 	      ("C-l" . iedit-restrict-current-line)
 	      :map evil-normal-state-map ;; needed so that when attempting to enter normal mode from insert mode it doesn't exit altogether
 	      ("<escape>" . iedit--quit)))
-;; ============================ ;;
-
-
-;; ========= MOVE-TEXT ========= ;;
-(use-package move-text
-  :config
-  (define-key evil-insert-state-map (kbd "C-p") 'move-text-up)
-  (define-key evil-insert-state-map (kbd "C-n") 'move-text-down)
-  (define-key evil-normal-state-map (kbd "C-n") 'move-text-down)
-  (define-key evil-normal-state-map (kbd "C-p") 'move-text-up)
-  (define-key evil-motion-state-map (kbd "C-n") 'move-text-region-down)
-  (define-key evil-motion-state-map (kbd "C-p") 'move-text-region-up))
 ;; ============================ ;;
 
 (use-package pdf-tools
