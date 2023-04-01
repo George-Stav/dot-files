@@ -1,5 +1,6 @@
 ;;; -*- lisp-data -*-
-(("~/dev/rust/genp/")
+(("~/dev/rust/spotiver/")
+ ("~/dev/rust/genp/")
  ("~/repos/scripts/")
  ("~/repos/cv/")
  ("~/repos/dotfiles/")
@@ -19,5 +20,4 @@
  ("~/dev/rust/nannou/")
  ("~/dev/rust/nannou-tut/")
  ("~/dev/rust/rust-tut/")
- ("~/dev/rust/spotiver/")
  ("~/dev/rust/testing/"))

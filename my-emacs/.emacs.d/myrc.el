@@ -92,6 +92,11 @@ targets."
   (pulse-momentary-highlight-region beg end)
   (apply orig-fn beg end args))
 
+(defun myrc/set-compilation-search-path (&rest _r)
+  "Advice to set compilation-search-path upon switching projects.",
+  (message "test"))
+  ;; (setq compilation-search-path "test"))
+
 (defun myrc/frame-title ()
   "Set frame title."
   (if (boundp 'server-name)
