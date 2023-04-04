@@ -69,7 +69,7 @@
 
 (advice-add 'evil-yank :around 'myrc/evil-yank-pulse)
 (advice-add 'project-switch-project
-	    :after '(lambda (dir) (setq compilation-search-path (list dir))))
+	    :after #'(lambda (dir) (setq compilation-search-path (list dir))))
 
 ;; No need to save since it sticks for the daemon's lifetime
 ;; Default behaviour is to ask
@@ -194,6 +194,7 @@
   "tt" '(toggle-truncate-lines :which-key "toggle-truncate-lines")
   "ts" '(tree-sitter-mode :which-key "tree-sitter-mode")
   "tp" '(prettify-symbols-mode :which-key "prettify-symbols-mode")
+  "tl" '(display-line-numbers-mode :which-key "display-line-numbers-mode")
   "tc" '(myrc/toggle-compilation-window-kill-on-success :which-key "compilation-window-kill-on-success")
 
   ;; HELP
@@ -211,8 +212,10 @@
   "f"  '(:ignore t :which-key "file")
   "fs" '(save-buffer :which-key "save file")
   "fr" '(consult-recent-file :which-key "recent file")
-  "." '(find-file :which-key "find-file")
+  "."  '(find-file :which-key "find-file")
   "ff" '(find-file :which-key "find-file")
+  "fy" '((lambda () (interactive) (myrc/yank-file-name nil)) :which-key "yank file name")
+  "fY" '((lambda () (interactive) (myrc/yank-file-name t)) :which-key "yank file name")
 
   ;; SUDO
   "s"  '(:ignore t :which-key "sudo")

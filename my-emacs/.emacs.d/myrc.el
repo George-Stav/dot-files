@@ -127,3 +127,12 @@ Needs to contain a `finished' message, as well as have 0 errors, warnings and in
       (progn (delete-windows-on
 	      (get-buffer-create "*compilation*"))
 	     (message "Compilation finished successfully"))))
+
+(defun myrc/yank-file-name (full)
+  "Place filename in kill-ring. Only filename if FULL is nil, else full path."
+  (interactive)
+  (let ((filename (if full
+		      (buffer-file-name)
+		    (f-filename (buffer-file-name)))))
+    (kill-new filename)
+    (message filename)))
