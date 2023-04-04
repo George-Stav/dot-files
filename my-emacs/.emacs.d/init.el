@@ -42,17 +42,44 @@
 (setq display-line-numbers-type 'relative)
 (global-display-line-numbers-mode t)
 
+;; (defvar display-buffer-same-window-commands
+;;   '(occur-mode-goto-occurrence compile-goto-error))
+;; (setq 'display-buffer-alist '((lambda (&rest _)
+;; 				(memq this-command display-buffer-same-window-commands))
+;; 			      (display-buffer-reuse-window
+;; 			       display-buffer-same-window)
+;; 			      (inhibit-same-window . nil)))
+
 ;; set specific splits for Compilation (horizontal) and Help (vertical) windows
 (setq display-buffer-alist '(("\\*compilation" (display-buffer-reuse-window display-buffer-at-bottom)
 			      (window-height . 13))
-			     ("\\*help" (display-buffer-reuse-window display-buffer-in-side-window)
-			      (side . right)
-			      (window-width . 80))))
+			     ("\\*Help" (display-buffer-reuse-window display-buffer-in-direction)
+			      (direction . right))
+			     ;; split documentation windows below *Help* windows
+			     (".*\\.\\(el\\|gz\\)" (display-buffer-reuse-window display-buffer-below-selected))
+			     ;; force compile-goto-error to open buffer in existing window
+			     ;; if compilation window is the only one then create new window at top
+			     ((lambda (&rest _) (eq this-command 'compile-goto-error))
+			      (display-buffer-reuse-window display-buffer-use-some-window display-buffer-in-direction)
+			      (direction . top)
+			      (window-height . 20))))
 
 (add-hook 'help-mode-hook 'visual-line-mode)
 (myrc/keychain-refresh-environment)
 
 (advice-add 'evil-yank :around 'myrc/evil-yank-pulse)
+(advice-add 'project-switch-project
+	    :after #'(lambda (dir) (setq compilation-search-path (list dir))))
+
+;; No need to save since it sticks for the daemon's lifetime
+;; Default behaviour is to ask
+(setq auth-source-save-behavior nil)
+
+;; Make the compilation window automatically disappear - from enberg on #emacs
+(setq compilation-finish-functions 'myrc/compilation-window-kill-on-success)
+
+(setq shell-file-name "/bin/bash")
+(setq explicit-shell-file-name "/bin/bash")
 ;; ============================ ;;
 
 
@@ -60,6 +87,7 @@
 (require 'package)
 
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
+			 ("melpa-stable" . "https://stable.melpa.org/packages/")
 			 ("org" . "https://orgmode.org/elpa/")
 			 ("elpa" . "https://elpa.gnu.org/packages/")))
 
@@ -72,7 +100,7 @@
 
 (require 'use-package)
 ;; use-package will always download package dependencies for you
-;; otherwise, :ensure t would have to be included in every use-package usage
+;; otherwise, :ensure t would have to be specified in every use-package usage
 (setq use-package-always-ensure t)
 ;; ============================ ;;
 
@@ -125,32 +153,37 @@
   (evil-global-set-key 'motion "g=" 'evil-numbers/inc-at-pt)
   (evil-global-set-key 'motion "g-" 'evil-numbers/dec-at-pt))
 
-;; (evil-set-initial-state 'messages-buffer-mode 'normal)
-;; (evil-set-initial-state 'dashboard-mode 'normal))
-
- (use-package evil-nerd-commenter
-   :after evil
-   :init (evilnc-default-hotkeys))
-;;   :config (evil-global-set-key 'motion "gc" 'evilnc-comment-operator))
+(general-unbind 'normal "g,")
+(use-package evil-nerd-commenter
+  :after evil
+  :config
+  (evil-global-set-key 'motion "g," 'evilnc-comment-operator)
+  (evil-global-set-key 'motion "g." 'evilnc-copy-and-comment-operator)
+  (evil-global-set-key 'motion "g'" 'evilnc-yank-and-comment-operator))
+;; :init (evilnc-default-hotkeys)) ;; this binds ',' which is normal used for evil-repeat-find-char-reverse
 ;; ============================ ;;
 
 
 ;; ========= EVIL-COLLECTION ========= ;;
 ;; A collection of Evil bidning for the parts of Emacs that Evil does not cover properly by default (e.g. help-mode calendar, eshell etc.)
 ;; https://github.com/emacs-evil/evil-collection
+(general-unbind 'normal "C-p" "C-n")
 (use-package evil-collection
   :after evil
   :custom ((evil-want-Y-yank-to-eol t)) ;; can't set in evil configuration because it's probably altered by evil-collection
-;; (evil-collection-setup-minibuffer t)
-  :config (evil-collection-init))
+  ;; (evil-collection-setup-minibuffer t)
+  :config
+  (evil-collection-init)
+  (define-key evil-motion-state-map (kbd "C-n") 'evil-collection-unimpaired-move-text-down) 
+  (define-key evil-motion-state-map (kbd "C-p") 'evil-collection-unimpaired-move-text-up))
 ;; ============================ ;;
 
 
 ;; ========= STANDALONE KEYBINDS ========= ;;
 ;; use (define-key x-mode-map ...) to define a keybinding for a specific mode (e.g. python-mode/rust-mode)
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 (global-set-key (kbd "C--") 'text-scale-decrease)
 (global-set-key (kbd "C-=") 'text-scale-increase)
-(global-set-key (kbd "C-<tab>") 'indent-for-tab-command)
 
 (myrc/leader-keys
   "u"  '(universal-argument :which-key "universal-argument")
@@ -160,6 +193,9 @@
   "tr" '(read-only-mode :which-key "read-only-mode")
   "tt" '(toggle-truncate-lines :which-key "toggle-truncate-lines")
   "ts" '(tree-sitter-mode :which-key "tree-sitter-mode")
+  "tp" '(prettify-symbols-mode :which-key "prettify-symbols-mode")
+  "tl" '(display-line-numbers-mode :which-key "display-line-numbers-mode")
+  "tc" '(myrc/toggle-compilation-window-kill-on-success :which-key "compilation-window-kill-on-success")
 
   ;; HELP
   "h"  '(:ignore t :which-key "help")
@@ -176,8 +212,10 @@
   "f"  '(:ignore t :which-key "file")
   "fs" '(save-buffer :which-key "save file")
   "fr" '(consult-recent-file :which-key "recent file")
-  "." '(find-file :which-key "find-file")
+  "."  '(find-file :which-key "find-file")
   "ff" '(find-file :which-key "find-file")
+  "fy" '((lambda () (interactive) (myrc/yank-file-name nil)) :which-key "yank file name")
+  "fY" '((lambda () (interactive) (myrc/yank-file-name t)) :which-key "yank file name")
 
   ;; SUDO
   "s"  '(:ignore t :which-key "sudo")
@@ -293,7 +331,7 @@
   :init (global-company-mode)
   :custom ((company-selection-wrap-around t))
   :bind (:map evil-insert-state-map
-	      ("<tab>" . company-complete)))
+	      ("C-<tab>" . company-complete)))
 ;; (use-package corfu
 ;;   :init (global-corfu-mode)
 ;;   :bind (:map corfu-map
@@ -315,12 +353,12 @@
   :hook (embark-collect-mode . embark-consult-preview-minor-mode))
 
 (setq embark-indicators
-  '(myrc/embark-which-key-indicator
-    embark-highlight-indicator
-    embark-isearch-highlight-indicator))
+      '(myrc/embark-which-key-indicator
+	embark-highlight-indicator
+	embark-isearch-highlight-indicator))
 
 (advice-add #'embark-completing-read-prompter
-            :around #'myrc/embark-hide-which-key-indicator)
+	    :around #'myrc/embark-hide-which-key-indicator)
 ;; ============================ ;;
 
 
@@ -356,7 +394,8 @@
 (use-package gruber-darker-theme
   :commands (consult-theme))
 
-(load-theme 'wombat t) ;; t at the end is needed to avoid a warning message
+;; wombat
+(load-theme 'gruber-darker t) ;; t at the end is needed to avoid a warning message
 ;; ============================ ;;
 
 
@@ -395,7 +434,7 @@
   (variable-pitch-mode 1)
   (auto-fill-mode 0)
   (visual-line-mode 1))
-  ;; (setq evil-auto-indent nil))
+;; (setq evil-auto-indent nil))
 
 (use-package org
   :hook (org-mode . myrc/org-mode-setup)
@@ -430,6 +469,7 @@
   "p"  '(:ignore t :which-key "project")
   "pp" '(project-switch-project "~/dev/rust/genp" :which-key "switch project")
   "ps" '(consult-ripgrep :which-key "search project")
+  "pr" '(vc-register :which-key "vc-register")
   "pd" '(project-dired :which-key "project-dired")
   "SPC" '(project-find-file :which-key "project-find-file"))
 
@@ -485,8 +525,9 @@
 (myrc/leader-keys
   "o"  '(:ignore t :which-key "dired")
   "o-" '(dired-jump :which-key "dired-jump")
+  "od" '(dired-jump :which-key "dired-jump")
   "o~" '((lambda () (interactive) (find-file (expand-file-name "/home/neeto/"))) :which-key "dired ~")
-  "o/" '((lambda () (interactive) (find-file (expand-file-name "/home/neeto/"))) :which-key "dired /")
+  "o/" '((lambda () (interactive) (find-file (expand-file-name "/"))) :which-key "dired /")
   "oo" '(dired :which-key "dired choose"))
 ;; ============================ ;;
 
@@ -514,6 +555,8 @@
   :after tree-sitter)
 ;; ============================ ;;
 
+;; (use-package eglot)
+;; (add-hook 'rust-mode-hook 'eglot-ensure)
 
 ;; ========= PROGRAMMING-MODES ========= ;;
 (use-package prog-mode
@@ -541,24 +584,25 @@
 	      ("<escape>" . iedit--quit)))
 ;; ============================ ;;
 
-
-;; ========= MOVE-TEXT ========= ;;
-(use-package move-text
+(use-package pdf-tools
+  :custom
+  (pdf-view-display-size 'fit-page)
+  (pdf-view-image-relief 2)
+  (pdf-view-use-scaling t)
   :config
-  (define-key evil-insert-state-map (kbd "C-n") 'move-text-down)
-  (define-key evil-insert-state-map (kbd "C-p") 'move-text-up)
-  (define-key evil-normal-state-map (kbd "C-n") 'move-text-down)
-  (define-key evil-normal-state-map (kbd "C-p") 'move-text-up)
-  (define-key evil-motion-state-map (kbd "C-n") 'move-text-region-down)
-  (define-key evil-motion-state-map (kbd "C-p") 'move-text-region-up))
-;; ============================ ;;
-
+  (pdf-tools-install)
+  (pdf-loader-install))
 
 ;; ========= MISCELLANEOUS ========= ;;
 ;; Dynamically shows evil-search-{forward,backward} results on modeline
 (use-package anzu
   :diminish
   :init (global-anzu-mode))
+
+;; Latex mode stuff
+(use-package tex-mode
+  :hook ((latex-mode . myrc/toggle-compilation-window-kill-on-success))
+  :config (setq compile-command (format "pdflatex %s" (buffer-name))))
 
 ;; turn on manually when needed
 (use-package rainbow-mode

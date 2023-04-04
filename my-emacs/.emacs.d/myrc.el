@@ -92,8 +92,47 @@ targets."
   (pulse-momentary-highlight-region beg end)
   (apply orig-fn beg end args))
 
+(defun myrc/set-compilation-search-path (&rest _r)
+  "Advice to set compilation-search-path upon switching projects.",
+  (message "test"))
+  ;; (setq compilation-search-path "test"))
+
 (defun myrc/frame-title ()
   "Set frame title."
   (if (boundp 'server-name)
-      (setq frame-title-format (concat "%b - [" server-name "] workspace"))
-    (setq frame-title-format (concat "%b - [standalone] workspace"))))
+      (setq frame-title-format (concat "%b - [" server-name "]"))
+    (setq frame-title-format (concat "%b - [standalone]"))))
+
+(defcustom myrc/compilation-window-kill-on-success-var nil
+  "Close compilation window on success."
+  :type 'boolean)
+
+(defun myrc/toggle-compilation-window-kill-on-success ()
+  "Toggle myrc/compilation-window-kill-on-success."
+  (interactive)
+  (setq myrc/compilation-window-kill-on-success-var
+	(not myrc/compilation-window-kill-on-success-var))
+  (message "Set myrc/compilation-window-kill-on-success-var to %s" myrc/compilation-window-kill-on-success-var))
+
+(defun myrc/compilation-window-kill-on-success (buf str)
+  "Hook for myrc/compilation-window-kill-on-success.
+Needs to contain a `finished' message, as well as have 0 errors, warnings and infos. Can be toggled."
+  (interactive)
+  (if (and (not (null (string-match ".*finished.*" str)))
+	   compilation-num-errors-found
+	   compilation-num-infos-found
+	   compilation-num-warnings-found
+	   myrc/compilation-window-kill-on-success-var)
+      ;; no errors; kill compilation window
+      (progn (delete-windows-on
+	      (get-buffer-create "*compilation*"))
+	     (message "Compilation finished successfully"))))
+
+(defun myrc/yank-file-name (full)
+  "Place filename in kill-ring. Only filename if FULL is nil, else full path."
+  (interactive)
+  (let ((filename (if full
+		      (buffer-file-name)
+		    (f-filename (buffer-file-name)))))
+    (kill-new filename)
+    (message filename)))
