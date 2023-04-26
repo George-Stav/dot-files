@@ -24,9 +24,9 @@ def games(client):
     return any([c.startswith("steam_app") or c in games for c in l])
 
 groups = [
-    Group(name="1", label="", layout="max"), #, matches=[Match(wm_class="firefox")]
+    Group(name="1", label="", layout="max"), #, matches=[Match(wm_class="firefox")],
     Group(name="2", label=""),
-    Group(name="3", label="", matches=[Match(wm_class="Emacs")]),
+    Group(name="3", label=""), #, matches=[Match(wm_class="Emacs")]),
     Group(name="4", label=""),
     Group(name="5", label="", matches=[Match(wm_class="virt-manager")]),
     Group(name="6", label="", matches=[Match(wm_class="qbittorrent"), Match(wm_class="pentablet")]),

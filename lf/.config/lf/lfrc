@@ -22,7 +22,8 @@ cmd open ${{
 cmd test ${{
     # echo "mpv "$(echo $fx | tr '\n' ' ' | sed "s/ /\\ /g")""
     # echo "echo "$fx" | tr '\n' ' '"
-    echo mpv --no-terminal --sub-files=$(find \( -name '*.srt' -o -name '*.sub' -o -name '*.idx' \) -printf '%p:') $fx
+    # echo mpv --no-terminal --sub-files=$(find \( -name '*.srt' -o -name '*.sub' -o -name '*.idx' \) -printf '%p:') $fx
+    # convert "$f" -resize 300x300 small_cover.png
 }}
 
 # Archive bindings
@@ -142,6 +143,7 @@ map rp rename_snake_case
 map rm rename_snake_pascal
 map r_ rename_underscore
 map rb $vimv $fx
+map br $emacsclient -c . &
 
 # Backup
 map bb $cp -r $f $f.bkp

@@ -468,6 +468,7 @@
 (myrc/leader-keys
   "p"  '(:ignore t :which-key "project")
   "pp" '(project-switch-project "~/dev/rust/genp" :which-key "switch project")
+  "pc" '((lambda () (interactive) (setq compilation-search-path (list (project-root (project-current))))) :which-key "reset compilation search path")
   "ps" '(consult-ripgrep :which-key "search project")
   "pr" '(vc-register :which-key "vc-register")
   "pd" '(project-dired :which-key "project-dired")
@@ -555,7 +556,9 @@
   :after tree-sitter)
 ;; ============================ ;;
 
-;; (use-package eglot)
+;; (use-package eglot
+;;   :config
+;;   (add-to-list 'eglot-server-programs '(rust-mode . ("rust-analyzer"))))
 ;; (add-hook 'rust-mode-hook 'eglot-ensure)
 
 ;; ========= PROGRAMMING-MODES ========= ;;
@@ -591,7 +594,8 @@
   (pdf-view-use-scaling t)
   :config
   (pdf-tools-install)
-  (pdf-loader-install))
+  (pdf-loader-install)
+  (display-line-numbers-mode -1))
 
 ;; ========= MISCELLANEOUS ========= ;;
 ;; Dynamically shows evil-search-{forward,backward} results on modeline

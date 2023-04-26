@@ -5,7 +5,7 @@
 # [ -f "$DOTFILES/.fehbg" ] && source "$DOTFILES/.fehbg"
 setxkbmap -option caps:escape
 # turn of [s]creen-saver control and Energy Star (DPMS) features
- xset s off -dpms
+xset s off -dpms
 # exec xmonad
 dunst & # notification daemon
 # picom -CG & # compositor for rounded corners and such

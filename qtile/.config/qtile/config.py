@@ -14,7 +14,7 @@ from settings.layouts import layouts, floating_layout
 from settings.widgets import widget_defaults, extension_defaults
 from settings.screens import screens
 from settings.mouse import mouse
-from settings.path import qtile_path
+from settings.path import qtile_path, scripts_path
 
 from os import path
 import subprocess
@@ -22,8 +22,11 @@ import subprocess
 
 @hook.subscribe.startup_once
 def autostart():
-    subprocess.call([path.join(qtile_path, 'autostart.sh')])
+    subprocess.call([path.join(qtile_path, "autostart.sh")])
 
+@hook.subscribe.shutdown
+def kill_emacs():
+    subprocess.call([path.join(scripts_path, "em"), "p"])
 
 main = None
 dgroups_key_binder = None

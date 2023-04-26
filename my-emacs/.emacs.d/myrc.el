@@ -92,11 +92,6 @@ targets."
   (pulse-momentary-highlight-region beg end)
   (apply orig-fn beg end args))
 
-(defun myrc/set-compilation-search-path (&rest _r)
-  "Advice to set compilation-search-path upon switching projects.",
-  (message "test"))
-  ;; (setq compilation-search-path "test"))
-
 (defun myrc/frame-title ()
   "Set frame title."
   (if (boundp 'server-name)
@@ -136,3 +131,15 @@ Needs to contain a `finished' message, as well as have 0 errors, warnings and in
 		    (f-filename (buffer-file-name)))))
     (kill-new filename)
     (message filename)))
+
+(defun myrc/rustdoc-view ()
+  "Generate Rust documentation and view it in eww."
+  (interactive)
+  (let ((source-file (buffer-file-name))
+        (rustdoc-output (make-temp-file "rustdoc" nil ".html")))
+    (async-shell-command
+     (concat "rustdoc --html " source-file " --output " rustdoc-output)
+     (lambda (status)
+       (if (zerop (process-exit-status status))
+           (eww-open-file rustdoc-output)
+         (message "rustdoc failed with status %s" (process-exit-status status)))))))
