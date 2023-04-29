@@ -12,7 +12,8 @@ dunst & # notification daemon
 # . "$HOME/.fehbg" # wallpaper
 # nitrogen --restore & # wallpaper
 /usr/bin/easystroke &
-qtile start # WM
+# qtile start # WM
+i3
 
 # read session_type
 # export SESSION_TYPE=$session_type

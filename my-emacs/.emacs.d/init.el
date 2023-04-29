@@ -24,6 +24,9 @@
 ;; remove startup message
 (setq inhibit-startup-message t)
 
+;; disable beeping
+(setq ring-bell-function #'ignore)
+
 ;; cleaner ~/.emacs.d
 ;; moving these lines runs the risk of re-downloading all packages from scratch
 (setq user-emacs-directory "~/.cache/emacs")
@@ -395,7 +398,7 @@
   :commands (consult-theme))
 
 ;; wombat
-(load-theme 'gruber-darker t) ;; t at the end is needed to avoid a warning message
+(load-theme 'wombat t) ;; t at the end is needed to avoid a warning message
 ;; ============================ ;;
 
 
@@ -526,7 +529,7 @@
   "o"  '(:ignore t :which-key "dired")
   "o-" '(dired-jump :which-key "dired-jump")
   "od" '(dired-jump :which-key "dired-jump")
-  "o~" '((lambda () (interactive) (find-file (expand-file-name "/home/neeto/"))) :which-key "dired ~")
+  "o~" '((lambda () (interactive) (find-file (expand-file-name "/home/george/"))) :which-key "dired ~")
   "o/" '((lambda () (interactive) (find-file (expand-file-name "/"))) :which-key "dired /")
   "oo" '(dired :which-key "dired choose"))
 ;; ============================ ;;
@@ -591,7 +594,8 @@
   (pdf-view-use-scaling t)
   :config
   (pdf-tools-install)
-  (pdf-loader-install))
+  (pdf-loader-install)
+  (display-line-numbers-mode -1))
 
 ;; ========= MISCELLANEOUS ========= ;;
 ;; Dynamically shows evil-search-{forward,backward} results on modeline
