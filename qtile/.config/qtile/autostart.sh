@@ -7,13 +7,13 @@
 # optimus-manager --status > /dev/null # for some reason opt-man-qt doesn't run otherwise
 # optimus-manager-qt &
 # ~/.local/bin/monitor-setup
-eval "$SCRIPTS/xconf reload"
-eval "$SCRIPTS/em startup"
-picom &
-flameshot &
+# eval "$SCRIPTS/xconf reload"
+# eval "$SCRIPTS/em startup"
+# picom &
+# flameshot &
 # qbittorrent &
-nitrogen --restore &
-nm-applet &
+# nitrogen --restore &
+# nm-applet &
 # xrandr --output HDMI-1-0 --mode 1920x1080 --primary --output eDP-1 --mode 1920x1080 --left-of HDMI-1-0
 # source ~/.fehbg
 # "$SCRIPTS"/monitor-setup

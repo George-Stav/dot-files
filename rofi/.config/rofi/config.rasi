@@ -4,6 +4,10 @@ configuration {
   show-icons:         true;
   icon-theme:         "candy-icons";
   font:               "Jetbrains Mono Bold 12";
+  kb-element-next: "Control+j";
+  kb-accept-entry: "Control+m,Return,KP_Enter";
+  kb-element-prev: "Control+k";
+  kb-remove-to-eol: "";
 }
 //@theme "/usr/share/rofi/themes/Arc-Dark.rasi"
 @theme "/usr/share/rofi/themes/gruvbox-dark-soft.rasi"

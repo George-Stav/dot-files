@@ -207,6 +207,7 @@
   "hv" '(describe-variable :which-key "describe-variable")
   "hk" '(describe-key :which-key "describe-key")
   "hm" '(describe-mode :which-key "describe-mode")
+  "hs" '(describe-symbol :which-key "describe-symbol")
   "ht" '(consult-theme :which-key "load-theme")
   "hb" '(describe-bindings :which-key "describe-bindings")
   "hp" '(describe-package :which-key "describe-package")

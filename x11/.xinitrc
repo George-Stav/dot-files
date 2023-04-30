@@ -1,19 +1,15 @@
 #! /bin/sh
 
-# xrandr --output "HDMI-1-0" --primary --mode 1920x1080 --output "DP-1" --mode 1920x1080 --left-of "HDMI-1-0"
-
-# [ -f "$DOTFILES/.fehbg" ] && source "$DOTFILES/.fehbg"
 setxkbmap -option caps:escape
-# turn of [s]creen-saver control and Energy Star (DPMS) features
-xset s off -dpms
-# exec xmonad
-dunst & # notification daemon
-# picom -CG & # compositor for rounded corners and such
-# . "$HOME/.fehbg" # wallpaper
-# nitrogen --restore & # wallpaper
-/usr/bin/easystroke &
-# qtile start # WM
+xset s off -dpms # turn of [s]creen-saver control and Energy Star (DPMS) features
+prime-offload &> /dev/null
+eval "$SCRIPTS/xconf reload"	# reload xrandr configuration
+eval "$SCRIPTS/em startup"	# emacs servers
+picom &				# compositor for transparency
+nm-applet &			# nmcli widget
+flameshot &			# screenshot software
+dunst &				# notification daemon
+/usr/bin/easystroke &           # mouse gestures on browser
+nitrogen --restore &		# wallpaper
+# qtile start
 i3
-
-# read session_type
-# export SESSION_TYPE=$session_type
