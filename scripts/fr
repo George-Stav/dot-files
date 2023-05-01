@@ -1,0 +1,16 @@
+#!/bin/sh
+
+file=$(find -L \
+	"$HOME/dev" \
+	"$HOME/repos" \
+	"$HOME/.config" | fzf --reverse --height=40% --preview='preview {}')
+
+[ -z "$file" -o ! -e "$file" ] && exit 1
+
+case "$file" in
+	*.org) "$VISUAL" "$file" ;;
+	*.jpg|*.png|*.gif) sxiv "$file" ;;
+	*.mkv|*.mp3|*.mp4|*.flac|*.webp) mpv "$file" ;;
+	*.pdf) zathura "$file" ;;
+	*) [ -d "$file" ] && lf "$file" || "$EDITOR" "$file" ;;
+esac

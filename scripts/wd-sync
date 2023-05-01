@@ -1,0 +1,28 @@
+#!/bin/sh
+
+UUID="DE4E485B4E482E99"
+SYNCS=""
+
+while getopts "ampus" o; do
+    case "$o" in
+        a) SYNCS="${SYNCS} ANIME" ;;
+        m) SYNCS="${SYNCS} MOVIES-SERIES" ;;
+        p) SYNCS="${SYNCS} PHOTOS" ;;
+        u) SYNCS="${SYNCS} MUSIC" ;;
+        s) SYNCS="${SYNCS} spare-car-parts.bkp" ;;
+        *) echo "Invalid option" ;;
+    esac
+done
+
+# trim whitespace
+SYNCS="$(echo "$SYNCS" | xargs)"
+
+# check if WD is mounted
+# if not, mount it
+[ "$(lsusb | grep -E "Western Digital .* Elements 2667")" ] || { printf "WD is currently not plugged in. \nExiting...\n"; exit 1; }
+[ "$(lsblk | grep "WD")" ] || { echo "Mounting WD..."; udisksctl mount -b "$(lsblk -po NAME,UUID | awk -v uuid="$UUID" '$0 ~ uuid {print $1}' | grep -Eo "[a-z0-9/]*")"; }
+
+for s in $SYNCS; do # $SYNCS is not quoted on purpose
+    rsync -ahP "/mnt/HDD/$s/" "/mnt/WD/$s"
+done
+

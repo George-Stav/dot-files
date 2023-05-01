@@ -1,0 +1,7 @@
+#!/bin/sh
+# ueberzug integration with lf
+# courtesy of cirala (https://github.com/cirala/lfimg)
+
+if [ -n "$FIFO_UEBERZUG" ]; then
+	printf '{"action": "remove", "identifier": "PREVIEW"}\n' > "$FIFO_UEBERZUG"
+fi

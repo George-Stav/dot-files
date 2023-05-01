@@ -1,0 +1,8 @@
+#!/bin/sh
+
+state=$(amixer get Capture | grep Left: | awk -F '[][]' '{print $4}')
+if [[ "$1" == "-w" ]]; then
+    [ "$state" == "off" ] && echo "" || echo ""
+else
+    echo $state
+fi

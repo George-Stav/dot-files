@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# icons: https://www.flaticon.com/packs/countrys-flags
+
+set -e
+
+declare -A layouts
+
+layouts[us]="gr"
+# layouts[gr]="gb"
+layouts[gr]="us"
+
+current=$(xkblayout-state print "%s")
+next=${layouts[$current]}
+
+setxkbmap $next
+notify-send -t 2000 -i "$HOME/.local/share/icons/flags/$next.png" "Keyboard Layout"

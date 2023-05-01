@@ -1,0 +1,29 @@
+#!/bin/sh
+
+# Custom function to apply specified player through script
+pctl() {
+	playerctl -p "$player" "$@"
+}
+
+# Returns path to cover image
+# If CDN, download if new, otherwise do print path
+# If file, return path
+get_cover() {
+	cdn="$(pctl metadata mpris:artUrl)"
+	if [ "$(echo "$cdn" | awk -F':' '{print $1}')" = "https" ]; then
+		[ "$cdn" != "$(cat $DIR/cdn)" ] && echo "$cdn" > "$DIR/cdn" && curl -s "$cdn" --output "$DIR/cover.png" &
+		echo "$DIR/cover.png"
+	else
+		echo "$cdn" | awk -F'file://' '{print $2}'
+	fi
+}
+
+player="$1"
+DIR="$HOME/.local/share/media-notif" && [ ! -d "$DIR" ] && mkdir -p "$DIR"
+
+contents="$(pctl metadata artist)"
+[ -n "$(pctl metadata album)" ] && contents="$contents - $(pctl metadata album)"
+
+# wait for curl to finish so cover is ready before notification is pushed
+wait "$!"
+dunstify -t 5000 -a "media-notif" -u low -i "$(get_cover)" -h string:x-dunst-stack-tag:"media-notif" "$(pctl metadata title)" "$contents"

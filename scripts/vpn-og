@@ -1,0 +1,203 @@
+#!/bin/sh
+
+choose() {
+	fzf --reverse \
+		--ansi \
+		--no-bold \
+		--min-height=7 --height=7% \
+		--cycle -m --marker="*" \
+		--bind 'tab:down' --bind 'btab:up' \
+		--bind 'shift-down:toggle+down' --bind 'shift-up:toggle+up'
+	}
+
+get_rand() {
+	# read allows for piping into the function since it reads standard input
+	code="$1"
+	[ -z "$code" ] && read code
+	[ -z "$(available_conns)" ] && find "$CONF/trackers_block_dns/" -exec basename {} .conf ';' | grep "mullvad-$code[0-9]\+" | shuf -n 1 && return 0
+	while [ -n "$(available_conns | grep "$rand")" ]; do
+		rand=$(find "$CONF/trackers_block_dns/" -exec basename {} .conf ';' | grep "mullvad-$code[0-9]\+" | shuf -n 1)
+	done
+	printf "$rand"
+}
+
+get_country() {
+	# read allows for piping into the function since it reads standard input
+	conn="$1"
+	[ -z "$conn" ] && read conn
+	echo "$conn" | awk -F '-' '{print $2}' | grep '[a-z]\+' -o
+}
+
+import() {
+	# replace trackers_block_dns with variable
+	nmcli connection import type wireguard file "$CONF/trackers_block_dns/$1.conf" > /dev/null && printf "%s\n" "${GREEN}$1  ${NORMAL}"
+}
+
+activate() {
+	nmcli connection up "$1" > /dev/null && printf "%s\n" "${GREEN}$1  ${NORMAL}"
+	set_autoconnect "$1" "yes"
+}
+
+deactivate() {
+	nmcli connection down "$1" > /dev/null && printf "%s\n" "${RED}$1  ${NORMAL}"
+	if ! set_autoconnect "$1" "no"; then
+		printf "%s\n%s\n" "Autoconnect could not be turned off for ${RED}$1" "Removing connection instead..." && remove "$1"
+	fi
+}
+
+remove() {
+	nmcli connection delete "$1" > /dev/null && printf "%s\n" "Connection ${RED}$1 ${NORMAL}was removed."
+}
+
+available_conns() {
+	nmcli connection show | awk '/mullvad/ {print $1}'
+}
+
+active_conn() {
+	nmcli device show | awk '/mullvad/ {print $2}' | head -1
+}
+
+set_autoconnect() {
+	nmcli connection modify "$1" connection.autoconnect "$2"
+}
+
+get_autoconnect() {
+	nmcli connection show "$1" | awk '/autoconnect:/ {print $2}'
+}
+
+autoconnect_status() {
+	conns=$(available_conns)
+	[ -z "$conns" ] && printf "%s\n" "${RED}No registered connections found." && exit 1
+	echo "$conns" | while read c; do
+		printf "$c $(get_autoconnect $c)" | awk -v yes="${GREEN}yes${NORMAL}" -v no="${RED}no${NORMAL}" '{ gsub("yes",yes,$2); gsub("no",no,$2); printf ("%s\t%s\n",$1,$2) }'
+	done
+}
+
+status() {
+	[ "$1" = "auto" ] && autoconnect_status && exit 0
+	[ "$1" = "force" ] && curl https://am.i.mullvad.net/connected
+	if [ -z "$(active_conn)" ]; then
+		printf "%s\n" "${RED}No active connection was found."
+	else
+		printf "%s\n" "${RED}[$(active_conn)] ${NORMAL}connection ${GREEN}confirmed"
+	fi
+}
+
+existing_connection() {
+	[ -z "$(available_conns)" ] && printf "No mullvad connection was found\n" && exit 1
+	[ -n "$(active_conn)" ] && printf "%s\n" "Already connected to ${GREEN}$(active_conn)" && exit 0
+	[ "$(available_conns | wc -l)" = 1 ] && activate "$(available_conns)" && exit 0
+
+	printf "Choose which connection you want to activate:\n"
+	conn=$(list | choose | awk '{print $1}')
+
+	[ "$(active_conn)" = "$conn" -a -n "$conn" ] && printf "%s\n" "${GREEN}$(active_conn) ${NORMAL}is already active." && exit 0
+	[ -z "$conn" ] && printf "%s\n" "No connection provided, exiting..." && exit 0
+	[ -n "$(active_conn)" ] && deactivate "$(active_conn)"
+
+	activate "$conn"
+}
+
+new_connection() {
+	if [ -z "$1" ]; then
+		country=$(cat "$CONF/country_codes" | choose)
+		[ -z "$country" ] && printf "%s\n" "No country selected, exiting..." && exit 0
+		new_conn=$(echo "$country" | awk -F '-' '{print $1}' | get_rand)
+		[ -n "$(active_conn)" ] && deactivate "$(active_conn)"
+		import "$new_conn"
+	else
+		code="$1"
+		[ -z "$(find "$CONF/trackers_block_dns/" -exec basename {} .conf ';' | grep "mullvad-$code[0-9]\+")" ] && printf "%s\n" "${RED}$code ${NORMAL}is an invalid country code." && exit 1
+		new_conn=$(get_rand $code)
+		[ -n "$(active_conn)" ] && deactivate "$(active_conn)"
+		import "$new_conn"
+	fi
+}
+
+disconnect() {
+	[ -z "$(available_conns)" ] && printf "No connection found to deactivate." && exit 1
+	prev_conn="$(active_conn)"
+	deactivate "$(active_conn)"
+
+	[ -z "$(autoconnect_status | awk '/yes/ {print $2}')" ] && set_autoconnect "$prev_conn" "yes"
+}
+
+randomise() {
+	if [ -z "$(active_conn)" ]; then
+		printf "%s\n" "Which of the following servers do you want to randomise?"
+		old_conn=$(available_conns | choose)
+	else
+		old_conn="$(active_conn)"
+	fi
+
+	new_conn="$(get_country $old_conn | get_rand)"
+	printf "%s\n" "Removing ${RED}$old_conn${NORMAL}"
+	remove "$old_conn"
+	printf "%s\n" "Importing ${GREEN}$new_conn${NORMAL}..."
+	import "$new_conn"
+}
+
+purge() {
+	if [ -z "$1" ]; then
+		printf "%s\n" "Choose which connection you want to ${RED}purge${NORMAL}:"
+		conns=$(list | choose | awk '{print $1}')
+		[ -z "$conns" ] && printf "%s\n" "No connection chosen, exiting..." && exit 0
+	else
+		printf "%s\n%s\n" "Are you sure you want to ${RED}PURGE ${NORMAL}the following connections?" "${RED}$(available_conns)${NORMAL}"
+		choice=$(printf "Yes\nNo\n" | choose)
+		[ -z "$choice" -o "$choice" = "No" ] && printf "%s\n" "Wise choice..." && exit 0
+		conns="$(available_conns)"
+	fi
+	echo "$conns" | while read c; do
+		remove "$c"
+	done
+}
+
+list() {
+	conns=$(nmcli connection show | grep mullvad)
+	[ -z "$conns" ] && printf "%s\n" "${RED}No registered connections found." && exit 1
+	printf "$conns" | awk -v yes="${GREEN}${NORMAL}" -v no="${RED}${NORMAL}" '{ gsub("--",no,$4); gsub("mullvad-[a-z0-9]+",yes,$4); printf ("%s\t%s\n",$1,$4) }'
+}
+
+docs() {
+	printf "CLI utility to interact with mullvad-vpn. \nAvailable commands:\n"
+# ~~~ STATUS ~~~ #
+	printf "\t${ACCENT}> %s\n" "${GREEN}s${ACCENT}|${GREEN}status${ACCENT}: ${NORMAL}check local connection status"
+	printf "\t${ACCENT}> %s\n" "${GREEN}sf${ACCENT}|${GREEN}force${ACCENT}|${GREEN}sforce${ACCENT}: ${NORMAL}force call to mullvad API to check remote connection"
+	printf "\t${ACCENT}> %s\n" "${GREEN}sa${ACCENT}|${GREEN}lsa${ACCENT}|${GREEN}auto${ACCENT}: ${NORMAL}check autoconnect status of all available connections"
+# ~~~ CONNECT ~~~ #
+	printf "\t${ACCENT}> %s\n" "${GREEN}c${ACCENT}|${GREEN}connect${ACCENT}: ${NORMAL}activate an existing connection"
+	printf "\t${ACCENT}> %s\n" "${GREEN}cn${ACCENT}|${GREEN}new${ACCENT}|${GREEN}nconnect${ACCENT}: ${NORMAL}import and activate a connection to a new server"
+	printf "\t\t%s\n" "${RED}{country_code}${ACCENT}: ${NORMAL}location of new server; check \$HOME/.local/share/vpn/country_codes for more details"
+	printf "\t\t%s\n" "${RED}{}${ACCENT}: ${NORMAL}ask user to choose the country of the new server using fzf"
+# ~~~ DISCONNECT ~~~ #
+	printf "\t${ACCENT}> %s\n" "${GREEN}d${ACCENT}|${GREEN}disconnect${ACCENT}: ${NORMAL}deactivate current connection"
+# ~~~ RANDOMISE ~~~ #
+	printf "\t${ACCENT}> %s\n" "${GREEN}r${ACCENT}|${GREEN}random${ACCENT}|${GREEN}randomise${ACCENT}: ${NORMAL}import new connection to a different server of the same country; old connection is deleted"
+# ~~~ PURGE ~~~ #
+	printf "\t${ACCENT}> %s\n" "${GREEN}p${ACCENT}|${GREEN}purge${ACCENT}: ${NORMAL}delete one or more existing connections"
+	printf "\t${ACCENT}> %s\n" "${GREEN}pa${ACCENT}|${GREEN}pall${ACCENT}|${GREEN}purgeall${ACCENT}: ${NORMAL}delete ${RED}all ${NORMAL}existing connections"
+# ~~~ LIST ~~~ #
+	printf "\t${ACCENT}> %s\n" "${GREEN}l${ACCENT}|${GREEN}ls${ACCENT}|${GREEN}list${ACCENT}: ${NORMAL}list existing connections"
+}
+
+CONF="$HOME/.local/share/vpn"
+# use custom script `colours` to find more colours
+ACCENT="$(tput setaf 12)"
+GREEN="$(tput setaf 10)"
+RED="$(tput setaf 9)"
+NORMAL="$(tput sgr0)"
+
+case "$1" in
+	s | status) status "$2" ;;
+	sf | force | sforce) status "force" ;;
+	sa | lsa | auto) status "auto" ;;
+	c | connect) existing_connection ;;
+	cn | new | nconnect) new_connection "$2" ;;
+	d | disconnect) disconnect ;;
+	r | random | randomise) randomise ;;
+	p | purge) purge ;;
+	pa | pall | purgeall) purge "all" ;;
+	l | ls | list) list ;;
+	*) docs ;;
+esac

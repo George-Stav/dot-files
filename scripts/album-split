@@ -1,0 +1,36 @@
+#!/bin/sh
+
+# DIR="$HOME/dev/ydl/black/Black_Metal_Promotion/Caladan_Brood/Echoes_of_Battle"
+DELIM="<>"
+DIR="$1"
+[ ! -d "$DIR" ] && printf "Expecting a directory but received a file instead. Exiting...\n" && exit 1
+
+mp3="$(ls "$DIR/"*.mp3)"
+[ "$(echo "$mp3" | wc -l)" -gt 1 ] && printf "No multi-file functionality implemented yet \nPass in one .mp3 file at a time\n" && exit 1
+
+tracklist="$(ls "$DIR/"*.tracklist)"
+tracks="$(cat "$tracklist" | wc -l)"
+
+i=1
+cat "$tracklist" | while read l; do
+	title="$(echo "$l" | awk -F "$DELIM" '{print $1}')"
+	ts="$(echo "$l" | awk -F "$DELIM" '{print $2}')"
+	start="$(echo $ts | awk -F "-" '{print $1}')"
+	end="$(echo $ts | awk -F "-" '{print $2}')"
+	# echo "$i/$tracks. $mp3 --> $DIR/$title"
+	# ffmpeg -y -nostdin -hide_banner -loglevel error -ss "$start" -to "$end" -i "$mp3" -c:v copy "$DIR/$title.mp3"
+
+	mkdir -vp "$DIR/Tracks"
+	printf "$i/$tracks. Processing %s -> %s..." "$(basename "$mp3")" "$title.mp3"
+	ffmpeg \
+		-y \
+		-nostdin \
+		-hide_banner -loglevel error \
+		-ss "$start" -to "$end" \
+		-i "$mp3" \
+		-c:v copy \
+		-metadata track="$i/$tracks" \
+		"$DIR/Tracks/$title.mp3"
+	printf "Done\n"
+	i=$((i+1))
+done

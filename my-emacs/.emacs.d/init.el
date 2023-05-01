@@ -229,9 +229,9 @@
 
   ;; CONFIG
   "d"  '(:ignore t :which-key "config files")
-  "di" '((lambda () (interactive) (find-file (expand-file-name "~/repos/dotfiles/my-emacs/.emacs.d/init.el"))) :which-key "init")
-  "dr" '((lambda () (interactive) (find-file (expand-file-name "~/repos/dotfiles/my-emacs/.emacs.d/myrc.el"))) :which-key "myrc")
-  "dp" '((lambda () (interactive) (find-file (expand-file-name "~/repos/dotfiles/my-emacs/.emacs.d/project-list.el"))) :which-key "project-list")
+  "di" '((lambda () (interactive) (find-file (expand-file-name "~/dotfiles/my-emacs/.emacs.d/init.el"))) :which-key "init")
+  "dr" '((lambda () (interactive) (find-file (expand-file-name "~/dotfiles/my-emacs/.emacs.d/myrc.el"))) :which-key "myrc")
+  "dp" '((lambda () (interactive) (find-file (expand-file-name "~/dotfiles/my-emacs/.emacs.d/project-list.el"))) :which-key "project-list")
 
   ;; BUFFER
   "b"  '(:ignore t :which-key "buffer")
@@ -459,7 +459,8 @@
 (myrc/leader-keys
   "g"  '(:ignore t :which-key "magit")
   "gg" '(magit-status :which-key "magit-status")
-  "gp" '(magit-pull-from-upstream :which-key "magit-pull"))
+  "gp" '(magit-pull-from-upstream :which-key "magit-pull")
+  "gf" '(magit-file-checkout :which-key "magit-file-checkout"))
 ;; ============================ ;;
 
 
@@ -530,7 +531,7 @@
   "o"  '(:ignore t :which-key "dired")
   "o-" '(dired-jump :which-key "dired-jump")
   "od" '(dired-jump :which-key "dired-jump")
-  "o~" '((lambda () (interactive) (find-file (expand-file-name "/home/george/"))) :which-key "dired ~")
+  "o~" '((lambda () (interactive) (find-file (expand-file-name "~"))) :which-key "dired ~")
   "o/" '((lambda () (interactive) (find-file (expand-file-name "/"))) :which-key "dired /")
   "oo" '(dired :which-key "dired choose"))
 ;; ============================ ;;

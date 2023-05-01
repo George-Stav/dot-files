@@ -1,0 +1,29 @@
+#!/bin/sh
+
+mountable=$(lsblk -lp | grep "part $" | awk '{print $1, "(" $4 ")"}')
+[ -z "$mountable" ] && { printf "%s\n" "No mountable drives located, exiting..."; exit 1; }
+# if there is only one mountable device, choose it automatically
+[ "$(echo "$mountable" | wc -l)" = 1 ] && u_chosen="$mountable" || u_chosen="$(echo "$mountable" | fzf --reverse --height=7% --prompt "Choose drive to mount > ")"
+[ -z "$u_chosen" ] && exit 1
+chosen="$(echo "$u_chosen" | awk '{print $1}')"
+
+# Use fstab entry if it exists
+uuid="$(lsblk -po NAME,UUID | awk -v name="$chosen" '$0 ~ name {print $2}')"
+[ "$(grep "$uuid" "/etc/fstab")" ] && { udisksctl mount -b "$chosen"; exit 0; }
+
+dirs=$(find /mnt /media /home/ -maxdepth 3 -type d -empty 2> /dev/null)
+mountpoint=$(echo "$dirs" | fzf --reverse --height=7% --print-query --prompt "Enter mountpoint for $u_chosen > ")
+# --print-query makes it so that the query of the user is printed even if a match was found
+# check number of lines and use second one (i.e. the match) if it exists
+[ "$(echo "$mountpoint" | wc -l)" = 2 ] && mountpoint="$(echo "$mountpoint" | tail -n 1)"
+
+if [ ! -d "$mountpoint" ]; then
+	mkdiryn=$(printf "Yes\nNo" | fzf --reverse --height=7% --prompt "$mountpoint does not exist; create it? > ")
+	[ "$mkdiryn" = "No" ] && exit 1
+	sudo mkdir -p "$mountpoint"
+fi
+
+sudo mount "$chosen" "$mountpoint" 
+
+msg="Mounted $chosen at $mountpoint"
+notify-send "$msg" && echo "$msg"

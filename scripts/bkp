@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# refer to the rsync man page for a more detailed description on all the following options
+# archive -> short for -rlptgoD
+rsync --archive \
+	--human-readable \
+	--progress \
+	--log-file="$HOME/.backup.log" \
+	--delete \
+	--group \
+	--exclude "/mnt/*" \
+	--exclude "/run/timeshift" \
+	--exclude "/var/lib/libvirt" \
+	"/" \
+	"/mnt/WD/backups/$hostname/$(date +'%Y_%m_%d')"
