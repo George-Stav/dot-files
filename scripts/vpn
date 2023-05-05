@@ -76,7 +76,7 @@ active_conn() {
 status() {
 	[ "$1" = "force" ] && curl https://am.i.mullvad.net/connected
 	[ -z "$(active_conn)" ] && printf "%s\n" "${RED}-No active connection was found." && exit 1
-	printf "%s\n" "${ACCENT}+$(active_conn) ${GREEN}"
+	printf "%s\n" "${ACCENT}+$(active_conn)" # ${GREEN}"
 }
 
 connect() {
@@ -132,6 +132,24 @@ purge() {
 	remove "$(available_conn)"
 }
 
+get_vpn() {
+    if [ -n "$(active_conn)" ]; then
+	echo "+$(available_conn)+"
+    elif [ -n "$(available_conn)" ]; then
+	echo "-$(available_conn)-"
+    else 
+	echo "none"
+    fi
+}
+
+toggle() {
+    if [ -n "$(active_conn)" ]; then
+	deactivate "$(active_conn)"
+    elif [ -n "$(available_conn)" ]; then
+	activate "$(available_conn)"
+    fi
+}
+
 ###~@~@~@ [DOCUMENTATION] @~@~@~###
 
 docs() {
@@ -150,6 +168,10 @@ docs() {
 	printf "\t${ACCENT}> %s\n" "${GREEN}r${ACCENT}|${GREEN}random${ACCENT}|${GREEN}randomise${ACCENT}: ${NORMAL}import new connection to a different server of the same country; old connection is deleted"
 # ~~~ GET_COUNTRY ~~~ #
 	printf "\t${ACCENT}> %s\n" "${GREEN}gc${ACCENT}|${GREEN}get-country${ACCENT}: ${NORMAL}get the two letter country ISO code of the current active connection"
+# ~~~ GET_VPN ~~~ #
+	printf "\t${ACCENT}> %s\n" "${GREEN}gv${ACCENT}|${GREEN}get-vpn${ACCENT}: ${NORMAL}get current vpn connection with simple formatting to indicate if currently connected or not"
+# ~~~ TOGGLE ~~~ #
+	printf "\t${ACCENT}> %s\n" "${GREEN}t${ACCENT}|${GREEN}toggle${ACCENT}: ${NORMAL}toggle an available connection"
 # ~~~ PURGE ~~~ #
 	printf "\t${ACCENT}> %s\n" "${GREEN}p${ACCENT}|${GREEN}purge${ACCENT}: ${NORMAL}delete the existing connection, if there is one"
 # ~~~ HELP ~~~ #
@@ -182,8 +204,10 @@ case "$1" in
 	r | random | randomise) randomise ;;
 	rf | rforce) randomise "force" ;;
 	gc | get-country) echo "$(active_conn | get_country)" ;;
+	gv | get-vpn) get_vpn ;;
 	p | purge) purge ;;
-	t) tet ;;
+	t |toggle) toggle ;;
+	tet) tet ;;
 	*) docs ;;
 esac
 
