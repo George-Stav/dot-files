@@ -170,11 +170,9 @@ map S size
 
 # Shortcuts
 map gc cd ~/.config
-map grr cd ~/repos
-map grd cd ~/repos/dotfiles
-map grc cd ~/repos/cv
-map grs cd ~/repos/scripts/scripts
-map grn cd ~/repos/notes
+map gv cd ~/cv
+map gs cd ~/dotfiles/scripts
+map gn cd ~/notes
 map gp cd ~/Packt
 map gh cd /mnt/HDD
 map gw cd /mnt/WD
@@ -182,4 +180,5 @@ map gl cd ~/wallpapers
 map g/ cd /
 map g~ cd ~
 map g. cd ~/.config
-map gd cd ~/Downloads
+map gdo cd ~/dotfiles
+map gdd cd ~/Downloads

@@ -126,7 +126,8 @@
     :states '(normal insert visual emacs)
     :keymaps 'override
     :prefix "SPC"
-    :global-prefix "C-SPC"))
+    :global-prefix "C-SPC"
+    :non-normal-prefix "C-SPC"))
 ;; ============================ ;;
 
 
@@ -174,7 +175,7 @@
 (use-package evil-collection
   :after evil
   :custom ((evil-want-Y-yank-to-eol t)) ;; can't set in evil configuration because it's probably altered by evil-collection
-  ;; (evil-collection-setup-minibuffer t)
+  ;; (evil-collection-setup-minibuffer t))
   :config
   (evil-collection-init)
   (define-key evil-motion-state-map (kbd "C-n") 'evil-collection-unimpaired-move-text-down) 
@@ -199,6 +200,7 @@
   "tp" '(prettify-symbols-mode :which-key "prettify-symbols-mode")
   "tl" '(display-line-numbers-mode :which-key "display-line-numbers-mode")
   "tc" '(myrc/toggle-compilation-window-kill-on-success :which-key "compilation-window-kill-on-success")
+  "ta" '(rainbow-mode :which-key "rainbow-mode")
 
   ;; HELP
   "h"  '(:ignore t :which-key "help")
@@ -228,10 +230,13 @@
   "s." '((lambda () (interactive) (find-file (expand-file-name (concat "/sudo::" (buffer-file-name))))) :which-key "sudoedit current buffer")
 
   ;; CONFIG
-  "d"  '(:ignore t :which-key "config files")
+  "d"  '(:ignore t :which-key "desktop & config")
   "di" '((lambda () (interactive) (find-file (expand-file-name "~/dotfiles/my-emacs/.emacs.d/init.el"))) :which-key "init")
-  "dr" '((lambda () (interactive) (find-file (expand-file-name "~/dotfiles/my-emacs/.emacs.d/myrc.el"))) :which-key "myrc")
+  "dc" '((lambda () (interactive) (find-file (expand-file-name "~/dotfiles/my-emacs/.emacs.d/myrc.el"))) :which-key "myrc")
   "dp" '((lambda () (interactive) (find-file (expand-file-name "~/dotfiles/my-emacs/.emacs.d/project-list.el"))) :which-key "project-list")
+  "ds" '((lambda () (interactive) (desktop-save "~/.cache/emacs/var/desktop" nil t)) :which-key "desktop-save")
+  "dl" '((lambda () (interactive (desktop-release-lock))) :which-key "desktop-release-lock")
+  "dr" '(desktop-read :which-key "desktop-read")
 
   ;; BUFFER
   "b"  '(:ignore t :which-key "buffer")
@@ -299,14 +304,19 @@
 	      ("C-j" . vertico-next)
 	      ("C-k" . vertico-previous))
   :custom (vertico-cycle t)
-  :init (vertico-mode))
+  :init (vertico-mode)
+  :config
+  (add-hook 'minibuffer-setup-hook #'vertico-repeat-save))
+
+(myrc/leader-keys
+  "C-r" '(vertico-repeat :which-key "vertico-repeat"))
 
 (use-package consult
   :defer t
   :bind (("C-f" . consult-line)
-	 ("C-M-l" . consult-imenu)
-	 :map minibuffer-local-map
-	 ("C-r" . consult-hitory))
+	 ("C-M-l" . consult-imenu))
+	 ;; :map minibuffer-local-map
+	 ;; ("C-r" . consult-hitory))
   :custom
   (completion-in-region-function #'consult-completion-in-region)
   (consult)
@@ -444,9 +454,20 @@
   :hook (org-mode . myrc/org-mode-setup)
   :bind (([remap org-insert-heading-respect-content] . org-insert-item)
 	 ([remap org-table-copy-down] . org-insert-heading))
+  :custom
+  ((org-agenda-files '("~/notes" "~/notes/next")))
   :config
   ;; org-ellipsis " ▾"
   (setq org-hide-emphasis-markers t))
+
+(myrc/leader-keys
+  "a"  '(:ignore t :which-key "org-agenda")
+  "aa"  '(org-agenda :which-key "org-agenda"))
+;; ============================ ;;
+
+
+;; ========= MARKDOWN-MODE ========= ;;
+(use-package markdown-mode)
 ;; ============================ ;;
 
 
@@ -531,6 +552,7 @@
   "o"  '(:ignore t :which-key "dired")
   "o-" '(dired-jump :which-key "dired-jump")
   "od" '(dired-jump :which-key "dired-jump")
+  "d." '(dired-jump :which-key "dired-jump")
   "o~" '((lambda () (interactive) (find-file (expand-file-name "~"))) :which-key "dired ~")
   "o/" '((lambda () (interactive) (find-file (expand-file-name "/"))) :which-key "dired /")
   "oo" '(dired :which-key "dired choose"))
@@ -584,9 +606,9 @@
 	      ("C-n" . iedit-expand-down-to-occurrence)
 	      ("C-p" . iedit-expand-up-to-occurrence)
 	      ("C-r" . iedit-restrict-function)
-	      ("C-l" . iedit-restrict-current-line)
-	      :map evil-normal-state-map ;; needed so that when attempting to enter normal mode from insert mode it doesn't exit altogether
-	      ("<escape>" . iedit--quit)))
+	      ("C-l" . iedit-restrict-current-line)))
+	      ;; :map evil-normal-state-map ;; needed so that when attempting to enter normal mode from insert mode it doesn't exit altogether
+	      ;; ("<escape>" . iedit--quit)))
 ;; ============================ ;;
 
 (use-package pdf-tools
@@ -598,6 +620,20 @@
   (pdf-tools-install)
   (pdf-loader-install)
   (display-line-numbers-mode -1))
+
+
+;; ========= DESKOP ========= ;;
+(use-package desktop
+  :ensure nil
+  :commands (desktop-save desktop-read)
+  ;; :defer t ;; make this better
+  :custom
+  ((desktop-base-file-name (concat (format-time-string "%Y-%m-%d") "_" server-name ".desktop"))
+   (desktop-base-lock-name (concat (format-time-string "%Y-%m-%d") "_" server-name ".lock.desktop"))))
+  ;; ((desktop-base-file-name '(concat (format-time-string "%Y-%m-%d") "_" server-name ".desktop"))
+  ;;  (desktop-base-lock-name '(concat (format-time-string "%Y-%m-%d") "_" server-name ".lock.desktop"))))
+;; ============================ ;;
+
 
 ;; ========= MISCELLANEOUS ========= ;;
 ;; Dynamically shows evil-search-{forward,backward} results on modeline
@@ -635,10 +671,12 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(iedit anzu yaml-mode which-key vertico use-package tree-sitter rust-mode rainbow-mode rainbow-delimiters python-mode orderless no-littering marginalia magit helpful gruber-darker-theme general evil-nerd-commenter evil-collection doom-themes doom-modeline dired-single corfu consult-projectile all-the-icons-dired)))
+   '(markdown-mode iedit anzu yaml-mode which-key vertico use-package tree-sitter rust-mode rainbow-mode rainbow-delimiters python-mode orderless no-littering marginalia magit helpful gruber-darker-theme general evil-nerd-commenter evil-collection doom-themes doom-modeline dired-single corfu consult-projectile all-the-icons-dired))
+ '(warning-suppress-types '((frameset))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(markdown-code-face ((t nil))))
+(put 'dired-find-alternate-file 'disabled nil)

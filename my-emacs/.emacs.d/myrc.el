@@ -101,7 +101,15 @@ targets."
   "Set frame title."
   (if (boundp 'server-name)
       (setq frame-title-format (concat "%b - [" server-name "]"))
-    (setq frame-title-format (concat "%b - [standalone]"))))
+    (setq frame-title-format (concat "%b - [server]"))))
+
+(defun myrc/desktop-variables ()
+  "Set required desktop file and lock names."
+  (let ((s-name (if (boundp 'server-name)
+		    '(server-name)
+		  "server")))
+    (setq desktop-base-file-name (concat (format-time-string "%Y-%m-%d") "_" s-name ".desktop"))
+    (setq desktop-base-lock-name (concat (format-time-string "%Y-%m-%d") "_" s-name ".lock.desktop"))))
 
 (defcustom myrc/compilation-window-kill-on-success-var nil
   "Close compilation window on success."

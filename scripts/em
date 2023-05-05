@@ -3,8 +3,9 @@
 source "$HOME/.config/env"
 startup() {
     for SOCKNAME in $EMACS_DAEMONS; do
-	emacs --daemon="$SOCKNAME"
+        emacs --daemon="$SOCKNAME"
     done
+    emacs --daemon=server # default
 }
 
 purge() {
@@ -17,10 +18,12 @@ purge() {
 
 new() {
     SOCKNAME="$(echo $EMACS_DAEMONS | sed 's/ /\n/g' | rofi -m -4 -dmenu -p "Workspace")"
-    if [ "$(ps -x | grep "emacs --daemon=$SOCKNAME" | wc -l)" = 1 ]; then
-        emacs --daemon="$SOCKNAME"
+    if [ -n "$SOCKNAME" ]; then
+        if [ "$(ps -x | grep "emacs --daemon=$SOCKNAME" | wc -l)" = 1 ]; then
+            emacs --daemon="$SOCKNAME"
+        fi
+        emacsclient -c -socket-name="$SOCKNAME"
     fi
-    emacsclient -c -socket-name="$SOCKNAME" -a "emacs"
 }
 
 case "$1" in
@@ -28,4 +31,5 @@ case "$1" in
     p | purge) purge ;;
     r | reboot) purge && startup ;;
     n | new) new ;;
+    *) emacsclient -n -c $1 ;;
 esac

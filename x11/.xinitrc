@@ -3,8 +3,8 @@
 setxkbmap -option caps:escape
 xset s off -dpms # turn of [s]creen-saver control and Energy Star (DPMS) features
 prime-offload &> /dev/null
-eval "$SCRIPTS/xconf reload"	# reload xrandr configuration
-eval "$SCRIPTS/em startup"	# emacs servers
+eval "$SCRIPTS/xconf reload" &	# reload xrandr configuration
+eval "$SCRIPTS/em startup" &  	# emacs servers
 picom &				# compositor for transparency
 nm-applet &			# nmcli widget
 flameshot &			# screenshot software
