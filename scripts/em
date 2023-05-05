@@ -1,0 +1,31 @@
+#!/bin/sh
+
+source "$HOME/.config/env"
+startup() {
+    for SOCKNAME in $EMACS_DAEMONS; do
+        emacs --daemon="$SOCKNAME"
+    done
+}
+
+purge() {
+    set IFS='\n';
+    for SOCKNAME in $(ps -x | grep "emacs --daemon" | head -n -1 | awk -F'=' '{print $2}'); do
+        emacsclient -s "$SOCKNAME" -e '(save-buffers-kill-emacs)'
+    done
+    unset IFS;
+}
+
+new() {
+    SOCKNAME="$(echo $EMACS_DAEMONS | sed 's/ /\n/g' | rofi -m -4 -dmenu -p "Workspace")"
+    if [ "$(ps -x | grep "emacs --daemon=$SOCKNAME" | wc -l)" = 1 ]; then
+        emacs --daemon="$SOCKNAME"
+    fi
+    emacsclient -c -socket-name="$SOCKNAME" -a "emacs"
+}
+
+case "$1" in
+    s | startup) startup ;;
+    p | purge) purge ;;
+    r | reboot) purge && startup ;;
+    n | new) new ;;
+esac

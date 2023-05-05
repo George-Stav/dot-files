@@ -1,0 +1,8 @@
+#!/bin/sh
+
+state="$(pactl get-source-mute @DEFAULT_SOURCE@ | awk '{print $2}')"
+if [ "$state" = "no" ]; then
+    echo "on"
+else
+    echo "off"
+fi

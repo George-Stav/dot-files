@@ -1,0 +1,16 @@
+#!/bin/sh
+
+reboot() {
+    $SCRIPTS/em p
+    reboot
+}
+
+shutdown() {
+    $SCRIPTS/em p
+    shutdown "$2"
+}
+
+case "$1" in
+    reboot) reboot ;;
+    shutdown) shutdown "$2" ;;
+esac

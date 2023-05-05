@@ -1,0 +1,139 @@
+#!/bin/sh
+
+_choose() {
+    prompt="$1"
+    [ -z "$prompt" ] && prompt="> "
+    fzf --reverse --ansi \
+        --min-height=7 --height=7% \
+        --prompt="$prompt" \
+        --cycle -m --marker="*" \
+        --bind 'tab:down' --bind 'btab:up' \
+        --bind 'shift-down:toggle+down' --bind 'shift-up:toggle+up' \
+        --bind 'ctrl-x:close'
+}
+
+_choose_preview() {
+    fzf --reverse \
+        --ansi \
+        --min-height=7 --height=7% \
+        --preview='echo {}' \
+        --preview-window wrap \
+        --cycle -m --marker="*" \
+        --bind 'tab:down' --bind 'btab:up' \
+        --bind 'shift-down:toggle+down' --bind 'shift-up:toggle+up'
+}
+
+_exit_on_empty() {
+    [ -z "$1" ] && exit 1
+}
+
+_stats() {
+    # internal function used to extract the resolution + refresh rate _stats of a given output
+    output="$1"
+    [ -z "$output" ] && read -r output
+    xrandr | awk -v monitor="^$output connected" \
+        '/connected/ {p=0} 
+            $0 ~ monitor {p=1} 
+            p' | tail +2 | sed 's/^[ \t]*//'
+}
+
+_run() {
+    # internal function used to run an xrandr command
+    _exit_on_empty "$1"
+    printf "%s\n" "$1"
+    eval "$1"
+}
+
+_build() {
+    # $1 -> valid output (e.g. HDMI-1)
+    output="$1"
+    [ -z "$output" ] && read -r output
+
+    xrandr="xrandr --output $output"
+    outputs="$(xrandr | awk '$2=="connected" {print $1}')"
+
+    resolutions="$(_stats "$output")"
+
+    mode="$(printf "%s\n%s\n%s\n" "$(echo "$resolutions" | head -n 1)" "off" "$(echo "$resolutions" | tail +2)" | _choose "$xrandr > ")"
+
+    [ "$mode" = "off" ] && _run "xrandr --output $output --off" && exit 0
+    _exit_on_empty "$mode"
+
+    xrandr="$xrandr --mode $(echo "$mode" | awk '{print $1}')"
+    rate="$(echo "$mode" | grep -o -E '[0-9]{2,3}\.[0-9]{2}' | sort -n -r | _choose "$xrandr > ")" && xrandr="$xrandr --rate $rate"
+    _exit_on_empty "$rate"
+
+    positions="$(echo "$outputs" | while read out; do
+        printf "%s\n%s\n%s\n%s\n%s\n" "--left-of" "--right-of" "--above" "--below" "--same-as" | while read pos; do
+            [ "$out" != "$output" ] && echo "$pos $out"
+        done
+    done)"
+    pos="$(printf "%s\n%s" "none" "$positions" | _choose "$xrandr > ")"
+    [ "$pos" != "none" ] && xrandr="$xrandr $pos"
+    _exit_on_empty "$pos"
+
+    primary="$(printf "Yes\nNo" | _choose "Is this the primary output? > ")"
+    [ "$primary" = "Yes" ] && xrandr="$xrandr --primary"
+
+    echo "$xrandr"
+}
+
+configure() {
+    # sequentially go through all connected outputs in order to build up an xrandr command
+    commands="xrandr"
+    for out in $(xrandr | awk '$2=="connected" {print $1}'); do
+        commands="$commands$(_build "$out" | sed 's/xrandr//')"
+        [ "$commands" = "xrandr" ] && exit 1
+        echo "$commands"
+    done
+
+    _run "$commands" > /dev/null
+
+    if [ "$(printf "No\nYes" | _choose "Would you like to save this command? > ")" = "Yes" ]; then
+        if [ "$(printf "No\nYes" | _choose "Set as primary? > ")" = "Yes" ]; then
+            printf "$commands\n$(cat "$CONF")" > "$CONF"
+        else
+            printf "$commands\n" >> "$CONF"
+        fi
+    fi
+}
+
+ammend() {
+    # edit one of the outputs chosen by the user
+    output="$(xrandr | awk '$2=="connected" {print $1}' | _choose)"
+    _exit_on_empty "$output"
+    _run "$(_build "$output")"
+}
+
+docs() {
+    printf "%s\n%s\n" "CLI utility to interact with xrandr." "Available commands:"
+    # ~~~ CONFIGURE ~~~ #
+    printf "\t${ACCENT}> %s\n" "${GREEN}c${ACCENT}|${GREEN}configure${ACCENT}: ${NORMAL}sequentially go through all connected outputs in order to build up the final xrandr command"
+    # ~~~ AMMEND ~~~ #
+    printf "\t${ACCENT}> %s\n" "${GREEN}a${ACCENT}|${GREEN}ammend${ACCENT}: ${NORMAL}ammend one of the current outputs"
+    # ~~~ RELOAD ~~~ #
+    printf "\t${ACCENT}> %s\n" "${GREEN}r${ACCENT}|${GREEN}reload${ACCENT}: ${NORMAL}run the xrandr command that appears on the first line of ${ACCENT}$CONF${NORMAL}"
+    # ~~~ BROWSE ~~~ #
+    printf "\t${ACCENT}> %s\n" "${GREEN}b${ACCENT}|${GREEN}browse${ACCENT}: ${NORMAL}browse saved configurations in and run one of them" 
+    # ~~~ EDIT ~~~ #
+    printf "\t${ACCENT}> %s\n" "${GREEN}e${ACCENT}|${GREEN}edit${ACCENT}: ${NORMAL}edit ${ACCENT}$CONF ${NORMAL}using ${ACCENT}$EDITOR${NORMAL}"
+}
+
+###~@~@~@ [MAIN] @~@~@~###
+
+CONF="$HOME/.local/share/xconf/xconf.rc" 
+ACCENT="$(tput setaf 12)"
+GREEN="$(tput setaf 10)"
+RED="$(tput setaf 9)"
+NORMAL="$(tput sgr0)"
+
+mkdir -p "$HOME/.local/share/xconf" && touch "$CONF"
+
+case "$1" in
+    c | configure) configure ;;
+    a | ammend) ammend ;;
+    r | reload) _run "$(head -n 1 $CONF)" ;;
+    b | browse) _run "$(cat "$CONF" | _choose_preview)" ;;
+    e | edit) "$EDITOR" "$CONF" ;;
+    *) docs ;;
+esac

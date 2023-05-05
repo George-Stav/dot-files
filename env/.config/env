@@ -10,7 +10,7 @@ export VISUAL="emacsclient -c -a emacs"
 
 #~~~ -{PATHS}- ~~~#
 export SCRIPTS="$HOME/.local/bin"
-export DOTFILES="$HOME/repos/dotfiles"
+export DOTFILES="$HOME/dotfiles"
 export TRASH="$HOME/.local/share/Trash"
 
 #~~~ -{ICONS}- ~~~#

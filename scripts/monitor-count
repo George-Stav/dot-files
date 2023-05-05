@@ -1,0 +1,9 @@
+#!/bin/sh
+
+PRIMARY='eDP-1'
+SECONDARY='DP-1'
+TERTIARY='HDMI-1-0'
+
+# xrandr | grep -wv "$PRIMARY" | grep -w 'connected' | cut -d ' ' -f 2 | wc -l
+# xrandr | grep -w 'connected' | cut -d ' ' -f 2 | wc -l
+xrandr --listactivemonitors | awk 'NR==1 {print $2}'

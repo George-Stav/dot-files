@@ -1,0 +1,15 @@
+#!/bin/sh
+
+symlinks="$SCRIPTS"
+sdir="$HOME/dotfiles"
+find "$sdir/scripts/" -type f | while read -r s; do
+	[ ! -x "$s" ] && chmod +x "$s"
+    echo "linking $s"
+	ln -sf "$s" "$symlinks"
+done
+ln -sf "$sdir/$(basename "$0")" "$symlinks"
+
+# remove broken symlinks
+find -L "$symlinks" \
+	-type l \
+	-exec rm {} \;

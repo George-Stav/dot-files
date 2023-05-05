@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# Get name of monitor that is on the left
+# The way this works is using the virtual monitor position set by X11
+# In this case, my two monitors both have a resolution of 1920x1080
+# Thus, the virtual monitor positions will look like this: 1920x1080+virtual_x+virtual_y
+# Virtual_x corresponds to the virtual position of the monitor starting from the top left corner (0,0)
+# If it's 0 it means that it's on the left, otherwise it's on the right
+left_id=$(xrandr --listmonitors | egrep '\+0\+[0-9]+' | cut -c2)
+right_id=$(xrandr --listmonitors | egrep '\+[1-9]+' | cut -c2)
+
+echo "left: $left_id"
+echo "right: $right_id"

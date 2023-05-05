@@ -1,0 +1,41 @@
+#!/bin/sh
+
+# Playlists:
+# black-yt-exclusive --> ydl-music "https://www.youtube.com/playlist?list=PLaHISR4HQ5FLllUJGsqyh78ZF4ER7BJsZ"
+# black --> ydl-music "https://www.youtube.com/playlist?list=PLaHISR4HQ5FKu2gwnitVsjwz8gspafYJY"
+
+# Given a directory (DIR) containing .mp3 and .description files of full albums uploaded by "Black Metal Promotion" on YT
+# move them to appropriate sub-directories and create a tracklist using the .description file.
+
+DELIM="<>"
+DIR="$1"
+[ -z "$DIR" ] && DIR="/mnt/HDD/MUSIC/black/Black_Metal_Promotion"
+
+create_tracklist() {
+	file="$(echo "$1" | sed 's/\.description/\.tracklist/')"
+	tracks="$(sed -n '/^Tracklist:/,/^$/p' "$1" | sed '1d;$d')"
+	lagged="$(echo "$tracks\n99:59:59" | awk '{print $NF}' | sed 'x; 1d; G; s/\n/-/')"
+	echo "$tracks" | sed -E "s/(.*) .*/\1/; s/^[0-9]{1,2}\. //; s/$/$DELIM/" > "$file"
+
+	# Can't combine the two lines below into one
+	# The file ends up containing just the timestamps
+	# Don't know why
+	tracklist="$(echo "$lagged" | paste -d "" "$file" -)"
+	echo "$tracklist" > "$file"
+	printf "%s\n" "Created tracklist...Done"
+}
+
+find "$DIR" -maxdepth 1 -type f -name '*.mp3' -printf '%f\n' | sed 's/\.mp3//g' | while read f; do
+	printf "Processing %s... " "$f"
+	clean="$(echo "$f" | sed 's/ ([^)]*)//g ; s/ /_/g')"
+	band="$(echo "$clean" | awk -F '_-_' '{print $1}')"
+	album="$(echo "$clean" | cut -f 2- -d '-' | sed 's/^_//g')"
+
+	# echo "$band<|>$album<|>$clean<|>$f"
+	create_tracklist "$DIR/$f.description"
+
+	mkdir -p "$DIR/$band/$album"
+	mv "$DIR/$(echo "$f" | sed 's/\.*$//')".* "$DIR/$band/$album"
+
+	album-split "$DIR/$band/$album"
+done

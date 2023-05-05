@@ -1,0 +1,37 @@
+#!/bin/sh
+
+# Uninstall pip package and all of of their dependencies
+
+# Get dependencies of a given package
+# $1: package name
+# $2: "Requires"    -> get package dependencies
+#     "Required-by" -> get any other installed packages that have this package as a dependency
+get_deps() {
+    echo $(pip show "$1" | grep "$2" | sed "s/$2: //g; s/,//g")
+}
+
+uninstall() {
+	printf "Uninstalling $1..."
+	pip uninstall --quiet -y "$1"
+	printf "%s\n" " "
+}
+
+for p in "$@"; do
+	# Check that the given package exists/is installed
+	package=$(pip list --no-color | awk '{print $1}' | grep -x -i "$p")
+	[ -z "$package" ] && printf "Package %s could not be found. \nAre you sure you've typed it correctly?\n" "$1" && continue
+
+	# Uninstall main package first so that it
+	# doesn't appear in the "Required-by" list for the packages in $deps
+	deps=$(get_deps "$package" "Requires")
+	uninstall "$package"
+
+	printf "%s\n" "-- Dependencies:"
+	for dep in $deps; do
+		# Check if the given $dep is required by any other installed packages
+		# Skip $dep if true
+		[ -n "$(get_deps "$dep" "Required-by")" ] && continue
+		uninstall "$dep"
+	done
+	printf "%s\n" "=========="
+done

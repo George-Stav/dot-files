@@ -1,0 +1,3 @@
+#!/bin/sh
+
+sh "$SCRIPTS/$(find "$HOME/repos/scripts/scripts" -type f -printf "%f\n" | rofi -m -4 -dmenu -p "Scripts")"

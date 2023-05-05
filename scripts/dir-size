@@ -1,0 +1,22 @@
+#!/bin/sh
+
+# Defaults
+DIR="$1"
+DEPTH="1"
+COMBINE="0"
+while getopts ":d:D:c" o; do
+	case "$o" in
+		d) DIR="$(echo "$OPTARG" | sed -z 's/\n/ /;s/ $//')" ;;
+		D) DEPTH="$OPTARG" ;;
+		c) COMBINE="1" ;;
+		*) echo "Invalid usage of dir-size" ;;
+	esac
+done
+
+res="$(du -bd "$DEPTH" $DIR 2> /dev/null | sort -n)"
+
+if [ "$COMBINE" = 0 -o "$(echo "$res" | wc -l)" = 1 ]; then
+	echo "$res" | numfmt --to iec
+else
+	echo "$res" | awk '{s+=$1} END {print s}' | numfmt --to iec
+fi
