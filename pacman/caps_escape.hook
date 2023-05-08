@@ -1,0 +1,9 @@
+[Trigger]
+Operation=Upgrade
+Type=Package
+Target=*
+
+[Action]
+Description=Reset caps-lock to escape
+When=PostTransaction
+Exec=/bin/sh -c 'setxkbmap -option caps:escape'

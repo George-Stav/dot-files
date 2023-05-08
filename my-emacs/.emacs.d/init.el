@@ -1,6 +1,6 @@
 ;; ========= STANDARD SETUP ========= ;;
 (load "~/.emacs.d/myrc.el")
-
+asdf
 ;; clean
 (menu-bar-mode 0)
 (scroll-bar-mode 0)
@@ -227,13 +227,19 @@
   "s." '((lambda () (interactive) (find-file (expand-file-name (concat "/sudo::" (buffer-file-name))))) :which-key "sudoedit current buffer")
 
   ;; CONFIG
-  "d"  '(:ignore t :which-key "desktop & config")
+  "d"  '(:ignore t :which-key "dired & desktop")
   "di" '((lambda () (interactive) (find-file (expand-file-name "~/dotfiles/my-emacs/.emacs.d/init.el"))) :which-key "init")
   "dc" '((lambda () (interactive) (find-file (expand-file-name "~/dotfiles/my-emacs/.emacs.d/myrc.el"))) :which-key "myrc")
   "dp" '((lambda () (interactive) (find-file (expand-file-name "~/dotfiles/my-emacs/.emacs.d/project-list.el"))) :which-key "project-list")
   "ds" '((lambda () (interactive) (desktop-save "~/.cache/emacs/var/desktop" nil t)) :which-key "desktop-save")
   "dl" '((lambda () (interactive (desktop-release-lock))) :which-key "desktop-release-lock")
   "dr" '(desktop-read :which-key "desktop-read")
+  "d-" '(dired-jump :which-key "dired-jump")
+  "dd" '(dired-jump :which-key "dired-jump")
+  "d." '(dired-jump :which-key "dired-jump")
+  "d~" '((lambda () (interactive) (find-file (expand-file-name "~"))) :which-key "dired ~")
+  "d/" '((lambda () (interactive) (find-file (expand-file-name "/"))) :which-key "dired /")
+  "do" '(dired :which-key "dired choose")
 
   ;; BUFFER
   "b"  '(:ignore t :which-key "buffer")
@@ -458,8 +464,13 @@
   (setq org-hide-emphasis-markers t))
 
 (myrc/leader-keys
-  "a"  '(:ignore t :which-key "org-agenda")
-  "aa"  '(org-agenda :which-key "org-agenda"))
+  "o"  '(:ignore t :which-key "org-mode")
+  "oa" '(org-agenda :which-key "org-agenda")
+  "ot" '(org-toggle-checkbox :which-key "org-toggle-checkbox")
+  ;; "os" '(org-schedule :which-key "org-schedule")
+  ;; "od" '(org-deadline :which-key "org-deadline")
+  ;; "op" '(org-toggle-checkbox :which-key "org-toggle-checkbox")
+  )
 ;; ============================ ;;
 
 
@@ -545,15 +556,6 @@
 (use-package all-the-icons-dired
   :hook (dired-mode . all-the-icons-dired-mode)
   :config (setq all-the-icons-dired-monochrome nil))
-
-(myrc/leader-keys
-  "o"  '(:ignore t :which-key "dired")
-  "o-" '(dired-jump :which-key "dired-jump")
-  "od" '(dired-jump :which-key "dired-jump")
-  "d." '(dired-jump :which-key "dired-jump")
-  "o~" '((lambda () (interactive) (find-file (expand-file-name "~"))) :which-key "dired ~")
-  "o/" '((lambda () (interactive) (find-file (expand-file-name "/"))) :which-key "dired /")
-  "oo" '(dired :which-key "dired choose"))
 ;; ============================ ;;
 
 
