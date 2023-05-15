@@ -1,0 +1,12 @@
+[Unit]
+Description="Kill all emacs daemons before shutdown"
+DefaultDependencies=no
+Before=shutdown.target reboot.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c "/home/george/.local/bin/em p"
+TimeoutStartSec=0
+
+[Install]
+WantedBy=shutdown.target reboot.target
