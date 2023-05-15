@@ -2,9 +2,12 @@
 
 msgTag="micstate"
 
-state=$(amixer set Capture toggle | grep Left: | awk -F '[][]' '{print $4}')
-if [ "$state" = "on" ]; then
+pactl set-source-mute @DEFAULT_SOURCE@ toggle
+state=$(pactl get-source-mute @DEFAULT_SOURCE@ | awk '{print $2}')
+if [ "$state" = "no" ]; then
 	notify-send -t 3000 -a "micToggle" -u low -i "~/.local/share/icons/sound/check.png" -h string:x-dunst-stack-tag:$msgTag "Mic active"
+	echo "on"
 else
 	notify-send -t 3000 -a "micToggle" -u low -i "~/.local/share/icons/sound/remove.png" -h string:x-dunst-stack-tag:$msgTag "Mic muted"
+	echo "off"
 fi

@@ -16,6 +16,7 @@ set $mod Mod1
 floating_modifier $mod
 
 focus_follows_mouse no
+mouse_warping none
 hide_edge_borders smart_no_gaps
 default_border pixel 1
 default_floating_border normal
@@ -56,8 +57,8 @@ bindsym $mod+Shift+l move right
 bindsym $mod+Shift+f fullscreen toggle
 
 # toggle tiling / floating
-bindsym $mod+Shift+n floating toggle
-bindsym $mod+n focus mode_toggle
+bindsym $mod+Ctrl+f floating toggle
+bindsym $mod+f focus mode_toggle
 
 # switch to workspace
 bindsym $mod+1 workspace 1
@@ -152,20 +153,36 @@ bindsym $mod+Ctrl+l resize grow width 100 px or 10 ppt
 
 # Assign
 assign [class="virt-manager"] number 5
-assign [class="qbittorrent"] number 6
+assign [class="qBittorrent"] number 6
+assign [class="pentablet"] number 6
 assign [class="Steam" title="Steam"] number 7
 assign [class="discord"] number 7
 # assign [class="Google-chrome"] number 8
 assign [class="Spotify"] number 9
-assign [title="TIS-100"] number 11
-assign [class="^steam_app.*"] number 11
+assign [class="TIS-100"] number 11
+assign [class="factorio"] number 11
+assign [class="PapersPlease"] number 11
+assign [title="osu!"] number 11
+assign [class="minecraft launcher"] number 11
+assign [class="TIS-100"] number 11
+assign [class="Celeste"] number 11
+assign [class="Dead Cells"] number 11
+assign [class="deadcells"] number 11
+assign [class="Slay the SPire"] number 11
+assign [class="EXAPUNKS"] number 11
+assign [title="Risk of Rain 2"] number 11
+assign [title="Furi"] number 11
+assign [class=".*steam_app.*" title=".*steam_app.*"] number 11 
+assign [class="WizardOfLegend.x86_64"] number 11
 
-bindsym $mod+Shift+equal move scratchpad
+
+bindsym $mod+Ctrl+equal move scratchpad
 bindsym $mod+equal scratchpad show
 
 no_focus [window_role="pop_up"]
 for_window [class="Galculator"] floating enable
 for_window [class="genp"] floating enable
+for_window [class="pentablet"] floating enable
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -197,5 +214,11 @@ mode "resize" {
 # finds out, if available)
 bar {
         # status_command i3status --config ~/.config/i3/i3status.conf
+	output primary
         status_command i3blocks -c ~/.config/i3/i3blocks.conf
+}
+
+bar {
+	output nonprimary
+        status_command i3blocks -c ~/.config/i3/i3blocks-simple.conf
 }
