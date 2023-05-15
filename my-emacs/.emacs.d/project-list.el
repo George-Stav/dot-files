@@ -1,8 +1,8 @@
 ;;; -*- lisp-data -*-
-(("~/Next/ga-entities/")
+(("~/dotfiles/")
+ ("~/Next/ga-entities/")
  ("~/notes/")
  ("~/dev/rust/genp/")
- ("~/dotfiles/")
  ("~/dev/rust/testing/")
  ("~/dev/rust/rust-tut/")
  ("~/dev/rust/spotiver/")
