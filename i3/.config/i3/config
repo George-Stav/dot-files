@@ -120,7 +120,8 @@ bindsym Shift+XF86AudioRaiseVolume exec "$HOME/.local/bin/change-volume +10%"
 bindsym XF86AudioMute exec "$HOME/.local/bin/change-volume 0"
 # bindsym Shift+XF86AudioMute exec "$HOME/.local/bin/mic-toggle && pkill -SIGRTMIN+10 i3blocks"
 bindsym Shift+XF86AudioMute exec "pkill -SIGRTMIN+10 i3blocks"
-bindsym $mod+v exec "$HOME/.local/bin/vpn t && pkill -SIGRTMIN+11 i3blocks"
+# bindsym $mod+v exec "$HOME/.local/bin/vpn t && pkill -SIGRTMIN+11 i3blocks"
+bindsym $mod+v exec "$HOME/.local/bin/vpn toggle && pkill -SIGRTMIN+11 i3blocks"
 
 # Player
 bindsym XF86AudioPlay exec "playerctl play-pause && $HOME/.local/bin/media-notif"
@@ -159,20 +160,24 @@ assign [class="Steam" title="Steam"] number 7
 assign [class="discord"] number 7
 # assign [class="Google-chrome"] number 8
 assign [class="Spotify"] number 9
-assign [title="TIS-100"] number 11
-assign [title="factorio"] number 11
-assign [title="PapersPlease"] number 11
-assign [class="osu!.exe"] number 11
-assign [title="minecraft launcher"] number 11
-assign [title="TIS-100"] number 11
-assign [title="Celeste"] number 11
-assign [title="Dead Cells"] number 11
-assign [title="deadcells"] number 11
-assign [title="Slay the SPire"] number 11
-assign [title="EXAPUNKS"] number 11
-assign [class="^steam_app.*"] number 11
+assign [class="TIS-100"] number 11
+assign [class="factorio"] number 11
+assign [class="PapersPlease"] number 11
+assign [title="osu!"] number 11
+assign [class="minecraft launcher"] number 11
+assign [class="TIS-100"] number 11
+assign [class="Celeste"] number 11
+assign [class="Dead Cells"] number 11
+assign [class="deadcells"] number 11
+assign [class="Slay the SPire"] number 11
+assign [class="EXAPUNKS"] number 11
+assign [title="Risk of Rain 2"] number 11
+assign [title="Furi"] number 11
+assign [class=".*steam_app.*" title=".*steam_app.*"] number 11 
+assign [class="WizardOfLegend.x86_64"] number 11
 
-bindsym $mod+Shift+equal move scratchpad
+
+bindsym $mod+Ctrl+equal move scratchpad
 bindsym $mod+equal scratchpad show
 
 no_focus [window_role="pop_up"]
@@ -210,5 +215,11 @@ mode "resize" {
 # finds out, if available)
 bar {
         # status_command i3status --config ~/.config/i3/i3status.conf
+	output primary
         status_command i3blocks -c ~/.config/i3/i3blocks.conf
+}
+
+bar {
+	output nonprimary
+        status_command i3blocks -c ~/.config/i3/i3blocks-simple.conf
 }

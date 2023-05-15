@@ -25,5 +25,15 @@ contents="$(pctl metadata artist)"
 [ -n "$(pctl metadata album)" ] && contents="$contents - $(pctl metadata album)"
 
 # wait for curl to finish so cover is ready before notification is pushed
-wait "$!"
-dunstify -t 5000 -a "media-notif" -u low -i "$(get_cover)" -h string:x-dunst-stack-tag:"media-notif" "$(pctl metadata title)" "$contents"
+# wait $$
+action=$(dunstify -A "default,follow" -t 5000 -a "media-notif" -u low -i "$(get_cover)" -h string:x-dunst-stack-tag:"media-notif" "$(pctl metadata title)" "$contents")
+
+handle_follow() {
+    if [ $(ps -u | grep i3 | wc -l) -gt 1 ]; then
+	[ "$player" == "spotify" ] && i3-msg '[class="Spotify"]' focus || i3-msg workspace 1
+    fi > /dev/null
+}
+
+case "$action" in
+    "default") handle_follow ;;
+esac

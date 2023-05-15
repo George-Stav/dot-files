@@ -1,5 +1,6 @@
 #!/bin/sh
 
+# $SCRIPTS/vpn toggle > /dev/null
 state=$($SCRIPTS/vpn gv)
 if [ $(echo $state | grep -E '^\+') ]; then
     color="#91E78B"

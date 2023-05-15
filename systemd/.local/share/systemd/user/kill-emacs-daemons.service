@@ -1,0 +1,12 @@
+[Unit]
+Description="Kill all emacs daemons before shutdown"
+DefaultDependencies=no
+Before=shutdown.target reboot.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c "~/.local/bin/em purge"
+TimeoutStartSec=0
+
+[Install]
+WantedBy=shutdown.target reboot.target

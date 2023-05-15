@@ -1,0 +1,9 @@
+[Unit]
+Description="Timer to remind me to change position"
+
+[Timer]
+OnUnitActiveSec=3600
+OnBootSec=60
+
+[Install]
+WantedBy=timers.target

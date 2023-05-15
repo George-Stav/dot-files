@@ -1,6 +1,6 @@
 ;; ========= STANDARD SETUP ========= ;;
 (load "~/.emacs.d/myrc.el")
-asdf
+
 ;; clean
 (menu-bar-mode 0)
 (scroll-bar-mode 0)
@@ -28,9 +28,6 @@ asdf
 ;; moving these lines runs the risk of re-downloading all packages from scratch
 (setq user-emacs-directory "~/.cache/emacs")
 (setq package-user-dir "~/.cache/emacs/elpa")
-
-;; don't show git information on modeline
-(setq vc-display-status 0)
 
 ;; breathing room
 (setq scroll-margin 10)
@@ -384,10 +381,10 @@ asdf
   :init (doom-modeline-mode 1)
   :custom ((doom-modeline-icon t)
 	   (doom-modeline-major-mode-icon t)
+	   (doom-modeline-major-mode-color-icon t)
 	   (doom-modeline-minor-modes nil)
 	   (doom-modeline-height 12)
-	   (doom-modeline-github nil)
-	   (doom-modeline-project-detection nil)))
+	   (doom-modeline-project-detection 'auto)))
 ;; ============================ ;;
 
 
@@ -502,7 +499,7 @@ asdf
 (myrc/leader-keys
   "p"  '(:ignore t :which-key "project")
   "pp" '(project-switch-project "~/dev/rust/genp" :which-key "switch project")
-  "pc" '((lambda () (interactive) (setq compilation-search-path (list (project-root (project-current))))) :whick-key "reset compilation search path")
+  "pc" '((lambda () (interactive) (setq compilation-search-path (list (project-root (project-current))))) :which-key "reset compilation search path")
   "ps" '(consult-ripgrep :which-key "search project")
   "pr" '(vc-register :which-key "vc-register")
   "pd" '(project-dired :which-key "project-dired")
@@ -639,7 +636,7 @@ asdf
 
 ;; ========= MISCELLANEOUS ========= ;;
 ;; Dynamically shows evil-search-{forward,backward} results on modeline
-(use-package anzu
+(use-package evil-anzu
   :diminish
   :init (global-anzu-mode))
 
@@ -673,7 +670,7 @@ asdf
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(markdown-mode iedit anzu yaml-mode which-key vertico use-package tree-sitter rust-mode rainbow-mode rainbow-delimiters python-mode orderless no-littering marginalia magit helpful gruber-darker-theme general evil-nerd-commenter evil-collection doom-themes doom-modeline dired-single corfu consult-projectile all-the-icons-dired))
+   '(markdown-mode iedit yaml-mode which-key vertico use-package tree-sitter rust-mode rainbow-mode rainbow-delimiters python-mode orderless no-littering marginalia magit helpful gruber-darker-theme general evil-nerd-commenter evil-collection doom-themes doom-modeline dired-single corfu consult-projectile all-the-icons-dired))
  '(warning-suppress-types '((frameset))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
