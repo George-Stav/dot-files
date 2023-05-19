@@ -1,9 +1,9 @@
 ;;; -*- lisp-data -*-
 (("~/dotfiles/")
  ("~/notes/")
+ ("~/shared/ga-entities/")
  ("~/dev/rust/genp/")
  ("~/dev/rust/spotiver/")
- ("~/shared/ga-entities/")
  ("~/dev/rust/aoc21/")
  ("~/dev/rust/testing/")
  ("~/dev/rust/rustlings/")

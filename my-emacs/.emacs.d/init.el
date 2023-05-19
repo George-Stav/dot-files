@@ -39,6 +39,9 @@
 (setq display-line-numbers-type 'relative)
 (global-display-line-numbers-mode t)
 
+;; Relocate backup files (e.g. ./foo~) to a dedicated directory
+(setq backup-directory-alist '(("." . "~/.cache/emacs/backups")))
+
 ;; (defvar display-buffer-same-window-commands
 ;;   '(occur-mode-goto-occurrence compile-goto-error))
 ;; (setq 'display-buffer-alist '((lambda (&rest _)

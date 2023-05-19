@@ -1,0 +1,14 @@
+[Unit]
+Description="Set lighting scheme after wakeup"
+After=basic.target
+After=suspend.target
+After=hibernate.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c "openrgb --profile white.orp"
+
+[Install]
+WantedBy=basic.target
+WantedBy=suspend.target
+WantedBy=hibernate.target

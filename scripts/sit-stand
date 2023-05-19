@@ -1,0 +1,18 @@
+#!/bin/sh
+
+time_left() {
+    NEXT_EPOCH="$(date -d "$(systemctl --user list-timers --all | awk '/stand.timer/{print $2, $3}')" +"%s")"
+    MINUTES="$((($NEXT_EPOCH - $(date +"%s")) / 60))"
+    SECONDS="$((($NEXT_EPOCH - $(date +"%s")) % 60))"
+
+    case "$1" in
+	"minutes") printf "%02d" "$MINUTES" ;;
+	"seconds") printf "%02d:%02d" "$MINUTES" "$SECONDS" ;;
+	*) printf "%02d" "$MINUTES" ;;
+    esac
+}
+
+case "$1" in
+    left) time_left "$2" ;;
+    reset) systemctl --user restart stand.service ;;
+esac

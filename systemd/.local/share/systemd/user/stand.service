@@ -3,4 +3,4 @@ Description="Timer to remind me to change position"
 
 [Service]
 Type=oneshot
-ExecStart=/bin/sh -c "notify-send -t 60000 -u critical 'STAND/SIT'"
+ExecStart=/bin/sh -c "notify-send -t 30000 -u critical 'STAND/SIT'"
