@@ -24,10 +24,15 @@
 ;; remove startup message
 (setq inhibit-startup-message t)
 
+;; disable beeping
+(setq ring-bell-function #'ignore)
+
 ;; cleaner ~/.emacs.d
 ;; moving these lines runs the risk of re-downloading all packages from scratch
 (setq user-emacs-directory "~/.cache/emacs")
 (setq package-user-dir "~/.cache/emacs/elpa")
+(setq trash-directory "~/.cache/emacs/var/trash")
+(setq delete-by-moving-to-trash t)
 
 ;; breathing room
 (setq scroll-margin 10)
@@ -38,9 +43,6 @@
 ;; line numbers
 (setq display-line-numbers-type 'relative)
 (global-display-line-numbers-mode t)
-
-;; Relocate backup files (e.g. ./foo~) to a dedicated directory
-(setq backup-directory-alist '(("." . "~/.cache/emacs/backups")))
 
 ;; (defvar display-buffer-same-window-commands
 ;;   '(occur-mode-goto-occurrence compile-goto-error))
@@ -231,7 +233,7 @@
   "di" '((lambda () (interactive) (find-file (expand-file-name "~/dotfiles/my-emacs/.emacs.d/init.el"))) :which-key "init")
   "dc" '((lambda () (interactive) (find-file (expand-file-name "~/dotfiles/my-emacs/.emacs.d/myrc.el"))) :which-key "myrc")
   "dp" '((lambda () (interactive) (find-file (expand-file-name "~/dotfiles/my-emacs/.emacs.d/project-list.el"))) :which-key "project-list")
-  "ds" '((lambda () (interactive) (desktop-save "~/.cache/emacs/var/desktop" nil t)) :which-key "desktop-save")
+  "ds" '((lambda () (interactive) (myrc/desktop-save nil t)) :which-key "desktop-save")
   "dl" '((lambda () (interactive (desktop-release-lock))) :which-key "desktop-release-lock")
   "dr" '(desktop-read :which-key "desktop-read")
   "d-" '(dired-jump :which-key "dired-jump")
@@ -297,7 +299,8 @@
   "x"  '(evil-buffer-new :which-key "temp buffer")
   "m"  '(man :which-key "man")
   "/"  '(consult-line :which-key "search")
-  "qq" '(evil-save-and-quit :which-key "save and quit"))
+  "qq" '((lambda () (interactive) (myrc/kill-emacs nil)):which-key "save buffers and quit")
+  "qQ" '((lambda () (interactive) (myrc/kill-emacs t)):which-key "save buffers and desktop and quit"))
 ;; ============================ ;;
 
 
@@ -412,7 +415,7 @@
   :commands (consult-theme))
 
 ;; wombat
-(load-theme 'wombat t) ;; t at the end is needed to avoid a warning message
+(load-theme 'light-blue t) ;; t at the end is needed to avoid a warning message
 ;; ============================ ;;
 
 
@@ -624,14 +627,16 @@
   (display-line-numbers-mode -1))
 
 
-;; ========= DESKOP ========= ;;
+;; ========= DESKTOP ========= ;;
 (use-package desktop
   :ensure nil
-  :commands (desktop-save desktop-read)
-  ;; :defer t ;; make this better
+  :commands (desktop-save desktop-read desktop-full-file-name)
   :custom
-  ((desktop-base-file-name (concat (format-time-string "%Y-%m-%d") "_" server-name ".desktop"))
-   (desktop-base-lock-name (concat (format-time-string "%Y-%m-%d") "_" server-name ".lock.desktop"))))
+  ((desktop-save t)
+   (desktop-base-file-name (concat server-name ".desktop"))
+   (desktop-base-lock-name (concat server-name ".lock.desktop"))
+   (desktop-dirname (concat "~/.cache/emacs/var/desktop/" (format-time-string "%Y-%m-%d")))
+   (desktop-path (list desktop-dirname))))
   ;; ((desktop-base-file-name '(concat (format-time-string "%Y-%m-%d") "_" server-name ".desktop"))
   ;;  (desktop-base-lock-name '(concat (format-time-string "%Y-%m-%d") "_" server-name ".lock.desktop"))))
 ;; ============================ ;;

@@ -2,7 +2,7 @@
 
 file=$(find -L \
 	"$HOME/dev" \
-	"$HOME/repos" \
+	"$HOME/dotfiles" \
 	"$HOME/.config" | fzf --reverse --height=40% --preview='preview {}')
 
 [ -z "$file" -o ! -e "$file" ] && exit 1
