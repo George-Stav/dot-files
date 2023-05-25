@@ -15,7 +15,7 @@ cmd open ${{
 		*.mp3|*.wav) mpv --no-terminal $fx & ;;
 		*.csv|*.xls|*.xlsx|*.gnumeric) gnumeric $f & ;;
 		*.pdf) zathura "$f" & ;;
-		*) $EDITOR "$f" ;;
+		*) nvim $f ;;
 	esac
 }}
 

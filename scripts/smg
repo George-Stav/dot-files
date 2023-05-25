@@ -1,0 +1,43 @@
+#!/bin/sh
+
+save() {
+    for ((i=1; i<12; i++)); do
+	# save all workspaces
+	i3-save-tree --workspace $i > $i.json
+
+	# simulate manual modification by removing comments
+	sed -i -E 's/\/\/ "(class.*|instance.*|machine.*|title.*|window_role.*)/"\1/g' $i.json
+
+	# remove empty files
+	[ $(wc -l $i.json | awk '{print $1}') -eq 1 ] && rm $i.json
+    done
+    # $SCRIPTS/em p
+}
+
+restore() {
+    # TODO: create list of commands that restores applications
+    rm $path/commands && touch $path/commands
+    for f in $path/*; do
+	awk -F ':' '/class/{print tolower($2)}' $f | tr -cd '[:alnum:]-\n' | while read -r c; do
+	    [ $(grep -c $c $path/commands) -eq 0 ] && echo $c >> $path/commands
+	done
+    done
+}
+
+docs() {
+    echo "Docs pending..."
+}
+
+. "$HOME/.config/env"
+path="$HOME/dev/i3" && cd $path
+# rm $path/*.json 2>/dev/null
+
+
+case "$1" in
+    s | save) save ;;
+    r | restore)
+	restore
+	# startx
+	;;
+    *) docs ;;
+esac

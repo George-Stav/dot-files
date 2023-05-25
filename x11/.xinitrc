@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/sh
 
 setxkbmap -option caps:escape
 xset s off -dpms # turn of [s]creen-saver control and Energy Star (DPMS) features
