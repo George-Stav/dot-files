@@ -1,0 +1,24 @@
+# [Unit]
+# Description="[CUSTOM]: Emacs daemons"
+# Documentation=info:emacs man:emacs(1) https://gnu.org/software/emacs/
+
+# [Service]
+# Type=forking
+# # RemainAfterExit=yes
+# Restart=no
+# ExecStart=%h/.local/bin/em startup service
+# ExecStop=%h/.local/bin/em purge service
+
+# [Install]
+# WantedBy=default.target
+[Unit]
+Description="Kill emacs daemons before shutdown/reboot"
+Before=shutdown.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStop=%h/.local/bin/em purge
+
+[Install]
+WantedBy=multi-user.target

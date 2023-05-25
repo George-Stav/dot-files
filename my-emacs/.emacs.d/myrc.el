@@ -87,29 +87,20 @@ targets."
          (remq #'embark-which-key-indicator embark-indicators)))
       (apply fn args)))
 
+(defun myrc/desktop-save-autoconfirm (orig-fn &rest args)
+  "Advice to autoconfirm when saving desktop state."
+  (apply orig-fn args))
+
 (defun myrc/evil-yank-pulse (orig-fn beg end &rest args)
   "Advice to add momentary pulse upon yank."
   (pulse-momentary-highlight-region beg end)
   (apply orig-fn beg end args))
 
-(defun myrc/set-compilation-search-path (&rest _r)
-  "Advice to set compilation-search-path upon switching projects.",
-  (message "test"))
-  ;; (setq compilation-search-path "test"))
-
 (defun myrc/frame-title ()
-  "Set frame title."
-  (if (boundp 'server-name)
-      (setq frame-title-format (concat "%b - [" server-name "]"))
-    (setq frame-title-format (concat "%b - [server]"))))
-
-(defun myrc/desktop-variables ()
-  "Set required desktop file and lock names."
-  (let ((s-name (if (boundp 'server-name)
-		    '(server-name)
-		  "server")))
-    (setq desktop-base-file-name (concat (format-time-string "%Y-%m-%d") "_" s-name ".desktop"))
-    (setq desktop-base-lock-name (concat (format-time-string "%Y-%m-%d") "_" s-name ".lock.desktop"))))
+  "Set frame title and server name."
+  (unless (boundp 'server-name)
+    (setq server-name "server"))
+  (setq frame-title-format (concat "%b - [" server-name "]")))
 
 (defcustom myrc/compilation-window-kill-on-success-var nil
   "Close compilation window on success."
@@ -144,3 +135,19 @@ Needs to contain a `finished' message, as well as have 0 errors, warnings and in
 		    (f-filename (buffer-file-name)))))
     (kill-new filename)
     (message filename)))
+
+(defun myrc/desktop-save (&optional RELEASE ONLY-IF-CHANGED VERSION)
+  "My version of desktop-save that sets DIRNAME automatically."
+  (unless (f-exists-p desktop-dirname)
+    (make-directory desktop-dirname t))
+  (desktop-save desktop-dirname RELEASE ONLY-IF-CHANGED VERSION))
+
+(defun myrc/kill-emacs (&optional FORCE)
+  "Gracefully kill emacs after saving buffers. If FORCE is t, then save desktop state as well."
+  (interactive)
+  (if FORCE
+      (progn
+	(delete-file (desktop-full-file-name))
+	(myrc/desktop-save t)))
+  (let ((current-prefix-arg 4)) ;; simulate call with universal prefix (C-u/SPC-u)
+    (call-interactively 'save-buffers-kill-emacs)))

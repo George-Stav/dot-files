@@ -12,4 +12,5 @@ dunst &				# notification daemon
 /usr/bin/easystroke &           # mouse gestures on browser
 nitrogen --restore &		# wallpaper
 # qtile start
-i3
+i3 
+eval "$SCRIPTS/em purge"

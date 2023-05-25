@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #~~~ -{DEFAULT APPLICATIONS}- ~~~#
-export EMACS_DAEMONS="main secondary tertiary"
+export EMACS_DAEMONS="main secondary tertiary server"
 export BROWSER="firefox"
 export TERMINAL="alacritty"
 export EDITOR="nvim"

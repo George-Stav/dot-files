@@ -1,17 +1,34 @@
 #!/bin/sh
 
-source "$HOME/.config/env"
 startup() {
+    source "$HOME/.config/env"
     for SOCKNAME in $EMACS_DAEMONS; do
-        emacs --daemon="$SOCKNAME"
+	emacs --daemon="$SOCKNAME"
+	# doesn't restore frame setup, run it manually
+	# if [ "$1" = "state" ]; then
+	#     emacsclient -s "$SOCKNAME" -e '(desktop-read)'
+	# fi
     done
-    emacs --daemon=server # default
+}
+
+reboot() {
+    if [ "$1" = "state" ]; then
+	purge "state"
+    else
+	purge
+    fi
+    startup
 }
 
 purge() {
+    save="$1"
     set IFS='\n';
     for SOCKNAME in $(ps -x | grep "emacs --daemon" | head -n -1 | awk -F'=' '{print $2}'); do
-        emacsclient -s "$SOCKNAME" -e '(save-buffers-kill-emacs)'
+	if [ "$save" = "state" ]; then
+	    emacsclient -s "$SOCKNAME" -e '(myrc/kill-emacs t)'
+	else 
+	    emacsclient -s "$SOCKNAME" -e '(myrc/kill-emacs nil)'
+	fi
     done
     unset IFS;
 }
@@ -26,10 +43,18 @@ new() {
     fi
 }
 
+# Behaviour changes when ran interactively (i.e. go through systemctl).
+# When $2 is set to "service" the command is considered to be ran in non-interactive mode.
+# When $3 is set to "state" the state of emacs desktops is saved
+SERVICE="emacs.service"
 case "$1" in
-    s | startup) startup ;;
-    p | purge) purge ;;
-    r | reboot) purge && startup ;;
+    # s | startup) [ "$2" = "service"] && _st "$3" || startup "$2" ;;
+    # p | purge  ) [ "$2" = "service"] && _pu "$3" || purge "$2" ;;
+    # r | reboot ) [ "$2" = "service"] && _rb "$3" || reboot "$2" ;;
+    s | startup) startup "$2" ;;
+    p | purge  ) purge "$2" ;;
+    r | reboot ) reboot "$2" ;;
     n | new) new ;;
-    *) emacsclient -n -c $1 ;;
+    *) emacsclient -s server -c $1 ;;
 esac
+    

@@ -31,9 +31,8 @@
 ;; moving these lines runs the risk of re-downloading all packages from scratch
 (setq user-emacs-directory "~/.cache/emacs")
 (setq package-user-dir "~/.cache/emacs/elpa")
-
-;; don't show git information on modeline
-(setq vc-display-status 0)
+(setq trash-directory "~/.cache/emacs/var/trash")
+(setq delete-by-moving-to-trash t)
 
 ;; breathing room
 (setq scroll-margin 10)
@@ -226,17 +225,23 @@
   ;; SUDO
   "s"  '(:ignore t :which-key "sudo")
   "s/" '((lambda () (interactive) (find-file (expand-file-name "/sudo::/"))) :which-key "dired sudoedit /")
-  "s~" '((lambda () (interactive) (find-file (expand-file-name "/sudo::/home/neeto"))) :which-key "dired sudoedit ~")
+  "s~" '((lambda () (interactive) (find-file (expand-file-name "/sudo::~"))) :which-key "dired sudoedit ~")
   "s." '((lambda () (interactive) (find-file (expand-file-name (concat "/sudo::" (buffer-file-name))))) :which-key "sudoedit current buffer")
 
   ;; CONFIG
-  "d"  '(:ignore t :which-key "desktop & config")
+  "d"  '(:ignore t :which-key "dired & desktop")
   "di" '((lambda () (interactive) (find-file (expand-file-name "~/dotfiles/my-emacs/.emacs.d/init.el"))) :which-key "init")
   "dc" '((lambda () (interactive) (find-file (expand-file-name "~/dotfiles/my-emacs/.emacs.d/myrc.el"))) :which-key "myrc")
   "dp" '((lambda () (interactive) (find-file (expand-file-name "~/dotfiles/my-emacs/.emacs.d/project-list.el"))) :which-key "project-list")
-  "ds" '((lambda () (interactive) (desktop-save "~/.cache/emacs/var/desktop" nil t)) :which-key "desktop-save")
+  "ds" '((lambda () (interactive) (myrc/desktop-save nil t)) :which-key "desktop-save")
   "dl" '((lambda () (interactive (desktop-release-lock))) :which-key "desktop-release-lock")
   "dr" '(desktop-read :which-key "desktop-read")
+  "d-" '(dired-jump :which-key "dired-jump")
+  "dd" '(dired-jump :which-key "dired-jump")
+  "d." '(dired-jump :which-key "dired-jump")
+  "d~" '((lambda () (interactive) (find-file (expand-file-name "~"))) :which-key "dired ~")
+  "d/" '((lambda () (interactive) (find-file (expand-file-name "/"))) :which-key "dired /")
+  "do" '(dired :which-key "dired choose")
 
   ;; BUFFER
   "b"  '(:ignore t :which-key "buffer")
@@ -294,7 +299,8 @@
   "x"  '(evil-buffer-new :which-key "temp buffer")
   "m"  '(man :which-key "man")
   "/"  '(consult-line :which-key "search")
-  "qq" '(evil-save-and-quit :which-key "save and quit"))
+  "qq" '((lambda () (interactive) (myrc/kill-emacs nil)):which-key "save buffers and quit")
+  "qQ" '((lambda () (interactive) (myrc/kill-emacs t)):which-key "save buffers and desktop and quit"))
 ;; ============================ ;;
 
 
@@ -381,10 +387,10 @@
   :init (doom-modeline-mode 1)
   :custom ((doom-modeline-icon t)
 	   (doom-modeline-major-mode-icon t)
+	   (doom-modeline-major-mode-color-icon t)
 	   (doom-modeline-minor-modes nil)
 	   (doom-modeline-height 12)
-	   (doom-modeline-github nil)
-	   (doom-modeline-project-detection nil)))
+	   (doom-modeline-project-detection 'auto)))
 ;; ============================ ;;
 
 
@@ -409,7 +415,7 @@
   :commands (consult-theme))
 
 ;; wombat
-(load-theme 'wombat t) ;; t at the end is needed to avoid a warning message
+(load-theme 'light-blue t) ;; t at the end is needed to avoid a warning message
 ;; ============================ ;;
 
 
@@ -461,8 +467,13 @@
   (setq org-hide-emphasis-markers t))
 
 (myrc/leader-keys
-  "a"  '(:ignore t :which-key "org-agenda")
-  "aa"  '(org-agenda :which-key "org-agenda"))
+  "o"  '(:ignore t :which-key "org-mode")
+  "oa" '(org-agenda :which-key "org-agenda")
+  "ot" '(org-toggle-checkbox :which-key "org-toggle-checkbox")
+  ;; "os" '(org-schedule :which-key "org-schedule")
+  ;; "od" '(org-deadline :which-key "org-deadline")
+  ;; "op" '(org-toggle-checkbox :which-key "org-toggle-checkbox")
+  )
 ;; ============================ ;;
 
 
@@ -494,6 +505,7 @@
 (myrc/leader-keys
   "p"  '(:ignore t :which-key "project")
   "pp" '(project-switch-project "~/dev/rust/genp" :which-key "switch project")
+  "pc" '((lambda () (interactive) (setq compilation-search-path (list (project-root (project-current))))) :which-key "reset compilation search path")
   "ps" '(consult-ripgrep :which-key "search project")
   "pr" '(vc-register :which-key "vc-register")
   "pd" '(project-dired :which-key "project-dired")
@@ -547,15 +559,6 @@
 (use-package all-the-icons-dired
   :hook (dired-mode . all-the-icons-dired-mode)
   :config (setq all-the-icons-dired-monochrome nil))
-
-(myrc/leader-keys
-  "o"  '(:ignore t :which-key "dired")
-  "o-" '(dired-jump :which-key "dired-jump")
-  "od" '(dired-jump :which-key "dired-jump")
-  "d." '(dired-jump :which-key "dired-jump")
-  "o~" '((lambda () (interactive) (find-file (expand-file-name "~"))) :which-key "dired ~")
-  "o/" '((lambda () (interactive) (find-file (expand-file-name "/"))) :which-key "dired /")
-  "oo" '(dired :which-key "dired choose"))
 ;; ============================ ;;
 
 
@@ -582,7 +585,9 @@
   :after tree-sitter)
 ;; ============================ ;;
 
-;; (use-package eglot)
+;; (use-package eglot
+;;   :config
+;;   (add-to-list 'eglot-server-programs '(rust-mode . ("rust-analyzer"))))
 ;; (add-hook 'rust-mode-hook 'eglot-ensure)
 
 ;; ========= PROGRAMMING-MODES ========= ;;
@@ -622,14 +627,16 @@
   (display-line-numbers-mode -1))
 
 
-;; ========= DESKOP ========= ;;
+;; ========= DESKTOP ========= ;;
 (use-package desktop
   :ensure nil
-  :commands (desktop-save desktop-read)
-  ;; :defer t ;; make this better
+  :commands (desktop-save desktop-read desktop-full-file-name)
   :custom
-  ((desktop-base-file-name (concat (format-time-string "%Y-%m-%d") "_" server-name ".desktop"))
-   (desktop-base-lock-name (concat (format-time-string "%Y-%m-%d") "_" server-name ".lock.desktop"))))
+  ((desktop-save t)
+   (desktop-base-file-name (concat server-name ".desktop"))
+   (desktop-base-lock-name (concat server-name ".lock.desktop"))
+   (desktop-dirname (concat "~/.cache/emacs/var/desktop/" (format-time-string "%Y-%m-%d")))
+   (desktop-path (list desktop-dirname))))
   ;; ((desktop-base-file-name '(concat (format-time-string "%Y-%m-%d") "_" server-name ".desktop"))
   ;;  (desktop-base-lock-name '(concat (format-time-string "%Y-%m-%d") "_" server-name ".lock.desktop"))))
 ;; ============================ ;;
@@ -637,7 +644,7 @@
 
 ;; ========= MISCELLANEOUS ========= ;;
 ;; Dynamically shows evil-search-{forward,backward} results on modeline
-(use-package anzu
+(use-package evil-anzu
   :diminish
   :init (global-anzu-mode))
 
@@ -671,7 +678,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(markdown-mode iedit anzu yaml-mode which-key vertico use-package tree-sitter rust-mode rainbow-mode rainbow-delimiters python-mode orderless no-littering marginalia magit helpful gruber-darker-theme general evil-nerd-commenter evil-collection doom-themes doom-modeline dired-single corfu consult-projectile all-the-icons-dired))
+   '(markdown-mode iedit yaml-mode which-key vertico use-package tree-sitter rust-mode rainbow-mode rainbow-delimiters python-mode orderless no-littering marginalia magit helpful gruber-darker-theme general evil-nerd-commenter evil-collection doom-themes doom-modeline dired-single corfu consult-projectile all-the-icons-dired))
  '(warning-suppress-types '((frameset))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
