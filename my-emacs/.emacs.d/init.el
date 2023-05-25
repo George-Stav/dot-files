@@ -24,9 +24,6 @@
 ;; remove startup message
 (setq inhibit-startup-message t)
 
-;; disable beeping
-(setq ring-bell-function #'ignore)
-
 ;; cleaner ~/.emacs.d
 ;; moving these lines runs the risk of re-downloading all packages from scratch
 (setq user-emacs-directory "~/.cache/emacs")
@@ -43,6 +40,9 @@
 ;; line numbers
 (setq display-line-numbers-type 'relative)
 (global-display-line-numbers-mode t)
+
+;; Relocate backup files (e.g. ./foo~) to a dedicated directory
+(setq backup-directory-alist '(("." . "~/.cache/emacs/backups")))
 
 ;; (defvar display-buffer-same-window-commands
 ;;   '(occur-mode-goto-occurrence compile-goto-error))
@@ -415,7 +415,7 @@
   :commands (consult-theme))
 
 ;; wombat
-(load-theme 'light-blue t) ;; t at the end is needed to avoid a warning message
+(load-theme 'wombat t) ;; t at the end is needed to avoid a warning message
 ;; ============================ ;;
 
 
