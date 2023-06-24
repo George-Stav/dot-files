@@ -617,6 +617,7 @@
 ;; ============================ ;;
 
 (use-package pdf-tools
+  :commands (pdf-view-mode)
   :custom
   (pdf-view-display-size 'fit-page)
   (pdf-view-image-relief 2)

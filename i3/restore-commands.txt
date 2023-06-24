@@ -1,0 +1,10 @@
+alacritty alacritty
+firefox firefox
+google-chrome google-chrome-stable
+pentablet /usr/lib/pentablet/pentablet.sh
+discord discord
+steam steam-runtime %U
+osu!exe osu-stable %F
+spotify spotify --uri=%U
+galculator galculator
+emacs emacsclient -s main -c

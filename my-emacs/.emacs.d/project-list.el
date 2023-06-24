@@ -1,9 +1,10 @@
 ;;; -*- lisp-data -*-
 (("~/dotfiles/")
+ ("~/notes/")
+ ("~/shared/marketing-webanalytics/")
+ ("~/shared/ga-entities/")
  ("~/dev/rust/genp/")
  ("~/dev/rust/spotiver/")
- ("~/notes/")
- ("~/shared/ga-entities/")
  ("~/dev/rust/aoc21/")
  ("~/dev/rust/testing/")
  ("~/dev/rust/rustlings/")

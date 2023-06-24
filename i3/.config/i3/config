@@ -104,7 +104,7 @@ bindsym $mod+Return exec alacritty
 bindsym $mod+m exec --no-startup-id "rofi -m -4 -modi drun -show drun" 
 bindsym $mod+space exec --no-startup-id "rofi -m -4 -show window"
 bindsym $mod+Shift+s exec "flameshot gui" 
-bindsym $mod+b exec firefox
+bindsym $mod+b exec "firefox"
 bindsym $mod+c exec "google-chrome-stable"
 bindsym $mod+a exec "$HOME/.local/bin/run"
 
@@ -170,6 +170,7 @@ bindsym $mod+Ctrl+equal move scratchpad
 bindsym $mod+equal scratchpad show
 
 no_focus [window_role="pop_up"]
+for_window [class="firefox"] layout tabbed
 for_window [class="Galculator"] floating enable
 for_window [class="genp"] floating enable
 for_window [class="pentablet"] floating enable
@@ -209,6 +210,8 @@ bar {
 	# output primary
         status_command i3blocks -c ~/.config/i3/i3blocks.conf
 }
+
+# exec --no-startup-id "$HOME/.local/bin/smg r"
 
 # bar {
 # 	output nonprimary

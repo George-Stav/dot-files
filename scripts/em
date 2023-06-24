@@ -48,9 +48,6 @@ new() {
 # When $3 is set to "state" the state of emacs desktops is saved
 SERVICE="emacs.service"
 case "$1" in
-    # s | startup) [ "$2" = "service"] && _st "$3" || startup "$2" ;;
-    # p | purge  ) [ "$2" = "service"] && _pu "$3" || purge "$2" ;;
-    # r | reboot ) [ "$2" = "service"] && _rb "$3" || reboot "$2" ;;
     s | startup) startup "$2" ;;
     p | purge  ) purge "$2" ;;
     r | reboot ) reboot "$2" ;;

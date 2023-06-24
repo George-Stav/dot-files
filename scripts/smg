@@ -1,27 +1,43 @@
 #!/bin/sh
 
 save() {
+    rm $CONF_PATH/*.json 2>/dev/null
     for ((i=1; i<12; i++)); do
 	# save all workspaces
 	i3-save-tree --workspace $i > $i.json
 
+	# remove empty files
+	[ $(wc -l $i.json | awk '{print $1}') -eq 1 ] && rm $i.json && continue
+
 	# simulate manual modification by removing comments
 	sed -i -E 's/\/\/ "(class.*|instance.*|machine.*|title.*|window_role.*)/"\1/g' $i.json
-
-	# remove empty files
-	[ $(wc -l $i.json | awk '{print $1}') -eq 1 ] && rm $i.json
     done
-    # $SCRIPTS/em p
+    $SCRIPTS/em p state
 }
 
 restore() {
     # TODO: create list of commands that restores applications
-    rm $path/commands && touch $path/commands
-    for f in $path/*; do
-	awk -F ':' '/class/{print tolower($2)}' $f | tr -cd '[:alnum:]-\n' | while read -r c; do
-	    [ $(grep -c $c $path/commands) -eq 0 ] && echo $c >> $path/commands
+
+    for f in $CONF_PATH/*.json; do
+	workspace="$(basename $f | awk -F '.' '{print $1}')"
+	i3-msg "workspace $workspace; append_layout $f"
+
+	# collect all instances of: "class": ...
+	# within the workspace file
+	awk -F ':' '/class/{print tolower($2)}' $f | tr -cd '[:alnum:]-!_\n' | while read -r c; do
+	    # command hasn't ran yet; prevent multiple browser windows opening when it's not needed
+	    if [ $(grep -c $c $COM_FILE) -eq 0 ]; then
+		echo $c >> $COM_FILE
+		# echo used for testing purposes (instead of `eval`)
+		new_c="$(awk -v com="$c" '$1 == com' $HOME/dotfiles/i3/restore-commands.txt | cut -f 2- -d ' ')"
+		echo "[$c->$new_c]"
+		eval "$new_c" &
+	    fi
 	done
     done
+    echo "~~~~~~File~~~~~~"
+    cat $COM_FILE
+    cat /dev/null > $COM_FILE
 }
 
 docs() {
@@ -29,15 +45,17 @@ docs() {
 }
 
 . "$HOME/.config/env"
-path="$HOME/dev/i3" && cd $path
-# rm $path/*.json 2>/dev/null
-
+CONF_PATH="$HOME/dev/i3" && cd $CONF_PATH
+COM_FILE="$CONF_PATH/commands"
 
 case "$1" in
     s | save) save ;;
     r | restore)
-	restore
-	# startx
+        restore
+	# if [ -f "/tmp/vm-teardown-finished" ]; then
+	#     restore
+	#     rm /tmp/vm-teardown-finished
+	# fi
 	;;
     *) docs ;;
 esac
