@@ -24,7 +24,7 @@
 ;; remove startup message
 (setq inhibit-startup-message t)
 
-;; disable beeping
+;; disable beeping on laptop
 (setq ring-bell-function #'ignore)
 
 ;; cleaner ~/.emacs.d
@@ -43,6 +43,9 @@
 ;; line numbers
 (setq display-line-numbers-type 'relative)
 (global-display-line-numbers-mode t)
+
+;; Relocate backup files (e.g. ./foo~) to a dedicated directory
+(setq backup-directory-alist '(("." . "~/.cache/emacs/backups")))
 
 ;; (defvar display-buffer-same-window-commands
 ;;   '(occur-mode-goto-occurrence compile-goto-error))
@@ -275,7 +278,7 @@
   "w<" '(evil-window-decrease-width 20 :which-key "decrease window width")
   "w>" '(evil-window-increase-width 20 :which-key "increase window width")
   "wB" '(balance-windows :which-key "balance-windows")
-  "wR" '(evil-window-rotate-upwards :which-key "rotate windows")
+  "w C-r" '(evil-window-rotate-upwards :which-key "rorate windows")
   ;; undo-redo
   "wu" '(winner-undo :which-key "winner-undo")
   "wr" '(winner-redo :which-key "winner-redo")
@@ -623,6 +626,7 @@
 ;; ============================ ;;
 
 (use-package pdf-tools
+  :commands (pdf-view-mode)
   :custom
   (pdf-view-display-size 'fit-page)
   (pdf-view-image-relief 2)
@@ -684,7 +688,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(evil-anzu pdf-tools tree-sitter-langs embark-consult embark company consult terraform-mode markdown-mode iedit yaml-mode which-key vertico use-package tree-sitter rust-mode rainbow-mode rainbow-delimiters python-mode orderless no-littering marginalia magit helpful gruber-darker-theme general evil-nerd-commenter evil-collection doom-themes doom-modeline dired-single corfu consult-projectile all-the-icons-dired))
+   '(markdown-mode iedit yaml-mode which-key vertico use-package tree-sitter rust-mode rainbow-mode rainbow-delimiters python-mode orderless no-littering marginalia magit helpful gruber-darker-theme general evil-nerd-commenter evil-collection doom-themes doom-modeline dired-single corfu consult-projectile all-the-icons-dired))
  '(warning-suppress-types '((frameset))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
