@@ -77,9 +77,6 @@
 ;; Default behaviour is to ask
 (setq auth-source-save-behavior nil)
 
-;; Make the compilation window automatically disappear - from enberg on #emacs
-(setq compilation-finish-functions 'myrc/compilation-window-kill-on-success)
-
 (setq shell-file-name "/bin/bash")
 (setq explicit-shell-file-name "/bin/bash")
 ;; ============================ ;;
@@ -278,7 +275,7 @@
   "w<" '(evil-window-decrease-width 20 :which-key "decrease window width")
   "w>" '(evil-window-increase-width 20 :which-key "increase window width")
   "wB" '(balance-windows :which-key "balance-windows")
-  "w C-r" '(evil-window-rotate-upwards :which-key "rorate windows")
+  "wR" '(evil-window-rotate-upwards :which-key "rotate windows")
   ;; undo-redo
   "wu" '(winner-undo :which-key "winner-undo")
   "wr" '(winner-redo :which-key "winner-redo")
@@ -390,7 +387,8 @@
 	   (doom-modeline-major-mode-color-icon t)
 	   (doom-modeline-minor-modes nil)
 	   (doom-modeline-height 12)
-	   (doom-modeline-project-detection 'auto)))
+	   (doom-modeline-project-detection 'auto)
+	   (doom-modeline-env-python-executable "python")))
 ;; ============================ ;;
 
 
@@ -564,6 +562,13 @@
 
 ;; ========= COMPILATION-MODE ========= ;;
 (setq compile-command "")
+;; Make the compilation window automatically disappear - from enberg on #emacs
+(setq compilation-finish-functions 'myrc/compilation-window-kill-on-success)
+;; Enable ansi colors in compilation window
+(add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
+;; Follow compilation buffer output and stop at first error
+(setq compilation-scroll-output 'first-error)
+
 (use-package compilation-mode
   :ensure nil
   :commands (compile)
@@ -599,6 +604,7 @@
 (use-package rust-mode :hook (rust-mode-hook . (setq indent-tabs-mode nil)))
 (use-package python-mode :commands (python-mode))
 (use-package yaml-mode :commands (yaml-mode))
+(use-package terraform-mode :commands (terraform-mode))
 ;; ============================ ;;
 
 
@@ -678,7 +684,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(markdown-mode iedit yaml-mode which-key vertico use-package tree-sitter rust-mode rainbow-mode rainbow-delimiters python-mode orderless no-littering marginalia magit helpful gruber-darker-theme general evil-nerd-commenter evil-collection doom-themes doom-modeline dired-single corfu consult-projectile all-the-icons-dired))
+   '(evil-anzu pdf-tools tree-sitter-langs embark-consult embark company consult terraform-mode markdown-mode iedit yaml-mode which-key vertico use-package tree-sitter rust-mode rainbow-mode rainbow-delimiters python-mode orderless no-littering marginalia magit helpful gruber-darker-theme general evil-nerd-commenter evil-collection doom-themes doom-modeline dired-single corfu consult-projectile all-the-icons-dired))
  '(warning-suppress-types '((frameset))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

@@ -119,7 +119,7 @@ bindsym XF86AudioRaiseVolume exec "$HOME/.local/bin/change-volume +5%"
 bindsym Shift+F8 exec "$HOME/.local/bin/change-volume +10%"
 bindsym XF86AudioMute exec "$HOME/.local/bin/change-volume 0"
 
-bindsym Shift+F6 exec "$HOME/.local/bin/mic-toggle && pkill -SIGRTMIN+10 i3blocks"
+bindsym Shift+F6 exec "pkill -SIGRTMIN+10 i3blocks"
 bindsym $mod+v exec "$HOME/.local/bin/vpn t && pkill -SIGRTMIN+11 i3blocks"
 
 # Player
@@ -142,8 +142,8 @@ bindsym $mod+Ctrl+q exec "i3-nagbar -t warning -m 'You pressed the exit shortcut
 
 bindsym $mod+Ctrl+Shift+s exec "systemctl suspend"
 bindsym $mod+Ctrl+Shift+h exec "systemctl hibernate"
-bindsym $mod+Ctrl+Shift+r exec "$HOME/.local/bin/em p && reboot"
-bindsym $mod+Ctrl+Shift+u exec "$HOME/.local/bin/em p && shutdown now"
+bindsym $mod+Ctrl+Shift+r exec "$HOME/.local/bin/em p state && reboot"
+bindsym $mod+Ctrl+Shift+u exec "$HOME/.local/bin/em p state && shutdown now"
 
 # px for floating | ppt for tiled
 bindsym $mod+Ctrl+h resize shrink width 100 px or 10 ppt
