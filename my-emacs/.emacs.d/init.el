@@ -416,7 +416,7 @@
   :commands (consult-theme))
 
 ;; wombat
-(load-theme 'light-blue t) ;; t at the end is needed to avoid a warning message
+(load-theme 'doom-acario-light t) ;; t at the end is needed to avoid a warning message
 ;; ============================ ;;
 
 
