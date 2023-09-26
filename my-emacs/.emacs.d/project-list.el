@@ -1,7 +1,7 @@
 ;;; -*- lisp-data -*-
-(("/home/neeto/notes/")
+(("/home/neeto/shared/marketing-webanalytics/")
+ ("/home/neeto/notes/")
  ("/home/neeto/dotfiles/")
- ("/home/neeto/shared/marketing-webanalytics/")
  ("/home/neeto/shared/ga-entities/")
  ("/home/neeto/dev/rust/genp/")
  ("/home/neeto/dev/rust/spotiver/")

@@ -77,9 +77,6 @@
 ;; Default behaviour is to ask
 (setq auth-source-save-behavior nil)
 
-;; Make the compilation window automatically disappear - from enberg on #emacs
-(setq compilation-finish-functions 'myrc/compilation-window-kill-on-success)
-
 (setq shell-file-name "/bin/bash")
 (setq explicit-shell-file-name "/bin/bash")
 ;; ============================ ;;
@@ -390,7 +387,8 @@
 	   (doom-modeline-major-mode-color-icon t)
 	   (doom-modeline-minor-modes nil)
 	   (doom-modeline-height 12)
-	   (doom-modeline-project-detection 'auto)))
+	   (doom-modeline-project-detection 'auto)
+	   (doom-modeline-env-python-executable "python")))
 ;; ============================ ;;
 
 
@@ -415,7 +413,7 @@
   :commands (consult-theme))
 
 ;; wombat
-(load-theme 'wombat t) ;; t at the end is needed to avoid a warning message
+(load-theme 'doom-gruvbox t) ;; t at the end is needed to avoid a warning message
 ;; ============================ ;;
 
 
@@ -564,6 +562,13 @@
 
 ;; ========= COMPILATION-MODE ========= ;;
 (setq compile-command "")
+;; Make the compilation window automatically disappear - from enberg on #emacs
+(setq compilation-finish-functions 'myrc/compilation-window-kill-on-success)
+;; Enable ansi colors in compilation window
+(add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
+;; Follow compilation buffer output and stop at first error
+(setq compilation-scroll-output 'first-error)
+
 (use-package compilation-mode
   :ensure nil
   :commands (compile)
@@ -599,6 +604,7 @@
 (use-package rust-mode :hook (rust-mode-hook . (setq indent-tabs-mode nil)))
 (use-package python-mode :commands (python-mode))
 (use-package yaml-mode :commands (yaml-mode))
+(use-package terraform-mode :commands (terraform-mode))
 ;; ============================ ;;
 
 
