@@ -1,8 +1,9 @@
 ﻿### MY STUFF ###
 
+source "$HOME/.config/env.fish"
+
 # set -x MANPAGER "nvim -c 'set ft=man' -"
 set TERM "xterm-256color"
-set VISUAL "emacsclient -c"
 set -x TEXMFCNF "~/.config:"
 set fish_cursor_insert underscore
 

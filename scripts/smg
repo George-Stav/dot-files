@@ -44,7 +44,7 @@ docs() {
     echo "Docs pending..."
 }
 
-. "$HOME/.config/env"
+. "$HOME/.config/env.sh"
 CONF_PATH="$HOME/dev/i3" && cd $CONF_PATH
 COM_FILE="$CONF_PATH/commands"
 

@@ -1,7 +1,7 @@
 #!/bin/sh
 
 startup() {
-    source "$HOME/.config/env"
+    source "$HOME/.config/env.sh"
     for SOCKNAME in $EMACS_DAEMONS; do
 	emacs --daemon="$SOCKNAME"
 	# doesn't restore frame setup, run it manually
@@ -52,6 +52,6 @@ case "$1" in
     p | purge  ) purge "$2" ;;
     r | reboot ) reboot "$2" ;;
     n | new) new ;;
-    *) emacsclient -s server -c $1 ;;
+    *) emacsclient -s default -c "$1" ;;
 esac
     

@@ -16,6 +16,11 @@ If `evil-split-window-below' is non-nil, the new window isn't focused."
   (when (fboundp 'projectile-project-root)
     (projectile-porject-root)))
 
+(defun myrc/project-reset-compilation-path ()
+  (interactive)
+  (setq compilation-search-path (list (project-root (project-current))))
+  (message "Project compilation search path set to: %s" compilation-search-path))
+
 (defun myrc/inferior-process-mode ()
   (setq scroll-margin 0)
   (display-line-numbers-mode 0))
@@ -151,3 +156,10 @@ Needs to contain a `finished' message, as well as have 0 errors, warnings and in
 	(myrc/desktop-save t)))
   (let ((current-prefix-arg 4)) ;; simulate call with universal prefix (C-u/SPC-u)
     (call-interactively 'save-buffers-kill-emacs)))
+
+(defun myrc/iedit-restrict-region-if-selected ()
+  (let ((bounds (car (region-bounds))))
+    (if (use-region-p)
+	(progn
+	  (message "Region is active")
+	  (iedit-restrict-region (car bounds) (cdr bounds))))))

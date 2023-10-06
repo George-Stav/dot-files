@@ -48,10 +48,10 @@ bindsym $mod+k focus up
 bindsym $mod+l focus right
 
 # move focused window
-bindsym $mod+Shift+h move left
-bindsym $mod+Shift+j move down
-bindsym $mod+Shift+k move up
-bindsym $mod+Shift+l move right
+bindsym $mod+Ctrl+h move left
+bindsym $mod+Ctrl+j move down
+bindsym $mod+Ctrl+k move up
+bindsym $mod+Ctrl+l move right
 
 # enter fullscreen mode for the focused container
 bindsym $mod+Shift+f fullscreen toggle
@@ -145,16 +145,16 @@ bindsym $mod+Ctrl+Shift+r exec "$HOME/.local/bin/em p && reboot"
 bindsym $mod+Ctrl+Shift+u exec "$HOME/.local/bin/em p && shutdown now"
 
 # px for floating | ppt for tiled
-bindsym $mod+Ctrl+h resize shrink width 100 px or 10 ppt
-bindsym $mod+Ctrl+j resize grow height 100 px or 10 ppt
-bindsym $mod+Ctrl+k resize shrink height 100 px or 10 ppt
-bindsym $mod+Ctrl+l resize grow width 100 px or 10 ppt
+bindsym $mod+Shift+h resize shrink width 100 px or 10 ppt
+bindsym $mod+Shift+j resize grow height 100 px or 10 ppt
+bindsym $mod+Shift+k resize shrink height 100 px or 10 ppt
+bindsym $mod+Shift+l resize grow width 100 px or 10 ppt
 
 # Assign
 assign [class="Virt-manager"] number 5
 assign [class="qBittorrent"] number 6
 assign [class="pentablet"] number 6
-assign [class="Steam" title="Steam"] number 7
+assign [class="steam"] number 7
 assign [class="discord"] number 7
 # assign [class="Google-chrome"] number 8
 assign [class="Spotify"] number 9
@@ -170,7 +170,10 @@ bindsym $mod+Ctrl+equal move scratchpad
 bindsym $mod+equal scratchpad show
 
 no_focus [window_role="pop_up"]
+
 for_window [class="firefox"] layout tabbed
+for_window [class="google-chrome"] layout tabbed
+
 for_window [class="Galculator"] floating enable
 for_window [class="genp"] floating enable
 for_window [class="pentablet"] floating enable

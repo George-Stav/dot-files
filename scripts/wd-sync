@@ -3,9 +3,10 @@
 UUID="DE4E485B4E482E99"
 SYNCS=""
 
-while getopts "tampus" o; do
+while getopts "tgampus" o; do
     case "$o" in
 	t) SYNCS="${SYNCS} TORRENTS" ;;
+	g) SYNCS="${SYNCS} MANGA" ;;
         a) SYNCS="${SYNCS} ANIME" ;;
         m) SYNCS="${SYNCS} MOVIES-SERIES" ;;
         p) SYNCS="${SYNCS} PHOTOS" ;;
