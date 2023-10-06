@@ -1,8 +1,9 @@
 ﻿### MY STUFF ###
 
+source "$HOME/.config/env.fish"
+
 # set -x MANPAGER "nvim -c 'set ft=man' -"
 set TERM "xterm-256color"
-set VISUAL "emacsclient -c"
 set -x TEXMFCNF "~/.config:"
 set fish_cursor_insert underscore
 
@@ -24,14 +25,15 @@ abbr battery "echo (cat /sys/class/power_supply/BAT1/capacity)%"
 abbr source-fish "source $HOME/.config/fish/config.fish"
 abbr opt-man "prime-offload &> /dev/null && optimus-manager"
 abbr enable-monitor "xrandr --output "eDP-1" --off --output "HDMI-1-0" --primary --mode 1920x1080 --rate 144"
-abbr cds "cd $HOME/repos/scripts/scripts"
-abbr cdn "cd $HOME/repos/notes"
-abbr cdd "cd $HOME/repos/dotfiles"
+abbr cds "cd $HOME/scripts/scripts"
+abbr cdn "cd $HOME/notes"
+abbr cdd "cd $HOME/dotfiles"
 abbr cdp "cd $HOME/Packt/"
 abbr cdr "cd $HOME/repos"
-abbr s 'nvim $HOME/repos/scripts/scripts/scratchpad'
+abbr s 'nvim $HOME/scripts/scripts/scratchpad'
 abbr ydl-music "youtube-dl -wc -o /mnt/HDD/MUSIC/'%(uploader)s/%(title)s.%(ext)s' --write-description --embed-thumbnail -x --audio-format 'mp3'"
 abbr ydl-clips "youtube-dl -wc -o /mnt/HDD/MOVIES-SERIES/clips/'%(title)s.%(ext)s' --embed-thumbnail -f best"
+abbr emr "emacsclient -e '(kill-emacs)' && emacs --daemon"
 
 alias paru="paru --bottomup"
 alias doom="$HOME/.emacs.d/bin/doom"
@@ -215,7 +217,3 @@ alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
 # if status --is-interactive
 #    neofetch
 # end
-
-if test -e /home/george/Next/google-cloud-sdk/path.fish.inc
-    . "/home/george/Next/google-cloud-sdk/path.fish.inc"
-end

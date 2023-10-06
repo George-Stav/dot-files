@@ -55,13 +55,18 @@
 ;; 			       display-buffer-same-window)
 ;; 			      (inhibit-same-window . nil)))
 
+(setq help-window-select t)
+
 ;; set specific splits for Compilation (horizontal) and Help (vertical) windows
-(setq display-buffer-alist '(("\\*compilation" (display-buffer-reuse-window display-buffer-at-bottom)
+(setq display-buffer-alist '(("\\*compilation"
+			      (display-buffer-reuse-window display-buffer-at-bottom)
 			      (window-height . 13))
-			     ("\\*Help" (display-buffer-reuse-window display-buffer-in-direction)
+			     ("\\*Help"
+			      (display-buffer-reuse-window display-buffer-in-direction)
 			      (direction . right))
 			     ;; split documentation windows below *Help* windows
-			     (".*\\.\\(el\\|gz\\)" (display-buffer-reuse-window display-buffer-below-selected))
+			     (".*\\.\\(el\\|gz\\)"
+			      (display-buffer-reuse-window display-buffer-below-selected))
 			     ;; force compile-goto-error to open buffer in existing window
 			     ;; if compilation window is the only one then create new window at top
 			     ((lambda (&rest _) (eq this-command 'compile-goto-error))
@@ -141,13 +146,16 @@
   (evil-want-C-u-scroll t)
   (evil-want-C-d-scroll t)
   (evil-want-fine-undo t)
+  (evil-want-minibuffer t)
   :config
   (evil-mode 1)
   ;; (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state) ;; enter normal mode using C-g while in insert mode
   ;; (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)) ;; use C-h to delete characters (same as backspace)
   ;; (define-key evil-normal-state-map (kbd "C-h") 'evil-delete-backward-char-and-join) ;; use C-h to delete characters while in normal mode
-  (define-key evil-insert-state-map (kbd "C-h") 'left-char) ;; use C-h to delete characters while in normal mode
-  (define-key evil-insert-state-map (kbd "C-l") 'right-char) ;; use C-h to delete characters while in normal mode
+  ;; (define-key evil-insert-state-map (kbd "C-h") 'left-char) ;; use C-h to delete characters while in normal mode
+  ;; (define-key evil-insert-state-map (kbd "C-l") 'right-char) ;; use C-h to delete characters while in normal mode
+  (evil-define-key 'insert evil-insert-state-map (kbd "C-h") 'left-char) ;; use C-h to delete characters while in normal mode
+  (evil-define-key 'insert evil-insert-state-map (kbd "C-l") 'right-char) ;; use C-h to delete characters while in normal mode
 
   ;; Use visual line motions even outside of visual-line-mode buffers (i.e. when a long line is wrapped, use j/k to get to the wrapped part of it instead of the next/prev line)
   (evil-global-set-key 'motion "j" 'evil-next-visual-line)
@@ -156,6 +164,10 @@
   (evil-global-set-key 'motion "g=" 'evil-numbers/inc-at-pt)
   (evil-global-set-key 'motion "g-" 'evil-numbers/dec-at-pt))
 
+;; Transpose character
+(general-unbind 'insert "C-t")
+(general-unbind 'normal "C-t")
+
 (general-unbind 'normal "g,")
 (use-package evil-nerd-commenter
   :after evil
@@ -163,7 +175,6 @@
   (evil-global-set-key 'motion "g," 'evilnc-comment-operator)
   (evil-global-set-key 'motion "g." 'evilnc-copy-and-comment-operator)
   (evil-global-set-key 'motion "g'" 'evilnc-yank-and-comment-operator))
-;; :init (evilnc-default-hotkeys)) ;; this binds ',' which is normal used for evil-repeat-find-char-reverse
 ;; ============================ ;;
 
 
@@ -173,18 +184,23 @@
 (general-unbind 'normal "C-p" "C-n")
 (use-package evil-collection
   :after evil
-  :custom ((evil-want-Y-yank-to-eol t)) ;; can't set in evil configuration because it's probably altered by evil-collection
-  ;; (evil-collection-setup-minibuffer t))
+  :custom
+  (evil-want-Y-yank-to-eol t) ;; can't set in evil configuration because it's probably altered by evil-collection
+  (evil-collection-setup-minibuffer t)
   :config
   (evil-collection-init)
-  (define-key evil-motion-state-map (kbd "C-n") 'evil-collection-unimpaired-move-text-down) 
-  (define-key evil-motion-state-map (kbd "C-p") 'evil-collection-unimpaired-move-text-up))
+  ;; (define-key evil-motion-state-map (kbd "C-n") 'evil-collection-unimpaired-move-text-down) 
+  ;; (define-key evil-motion-state-map (kbd "C-p") 'evil-collection-unimpaired-move-text-up)
+  (evil-define-key 'normal evil-motion-state-map (kbd "C-n") 'evil-collection-unimpaired-move-text-down)
+  (evil-define-key 'normal evil-motion-state-map (kbd "C-p") 'evil-collection-unimpaired-move-text-up)
+  (evil-define-key 'insert vertico-map (kbd "C-k") 'vertico-previous))
 ;; ============================ ;;
 
 
 ;; ========= STANDALONE KEYBINDS ========= ;;
 ;; use (define-key x-mode-map ...) to define a keybinding for a specific mode (e.g. python-mode/rust-mode)
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+(global-set-key (kbd "C-<escape>") 'keyboard-escape-quit)
 (global-set-key (kbd "C--") 'text-scale-decrease)
 (global-set-key (kbd "C-=") 'text-scale-increase)
 
@@ -218,7 +234,7 @@
   "fs" '(save-buffer :which-key "save file")
   "fr" '(consult-recent-file :which-key "recent file")
   "."  '(find-file :which-key "find-file")
-  "ff" '(find-file :which-key "find-file")
+  "ff" '((lambda () (interactive) (consult-find "~")) :which-key "fuzzy find")
   "fy" '((lambda () (interactive) (myrc/yank-file-name nil)) :which-key "yank file name")
   "fY" '((lambda () (interactive) (myrc/yank-file-name t)) :which-key "yank file name")
 
@@ -416,7 +432,7 @@
   :commands (consult-theme))
 
 ;; wombat
-(load-theme 'doom-acario-light t) ;; t at the end is needed to avoid a warning message
+(load-theme 'doom-gruvbox t) ;; t at the end is needed to avoid a warning message
 ;; ============================ ;;
 
 
@@ -506,7 +522,7 @@
 (myrc/leader-keys
   "p"  '(:ignore t :which-key "project")
   "pp" '(project-switch-project "~/dev/rust/genp" :which-key "switch project")
-  "pc" '((lambda () (interactive) (setq compilation-search-path (list (project-root (project-current))))) :which-key "reset compilation search path")
+  "pc" '(myrc/project-reset-compilation-path :which-key "reset compilation search path")
   "ps" '(consult-ripgrep :which-key "search project")
   "pr" '(vc-register :which-key "vc-register")
   "pd" '(project-dired :which-key "project-dired")
@@ -612,6 +628,9 @@
 
 
 ;; ========= IEDIT ========= ;;
+;; RESTRICTED TO CONTIGUOUS REGIONS
+;; (if (use-region-p (iedit-restrict-region (region-bounds))
+;;     ())
 (use-package iedit
   :demand t
   :bind (:map iedit-mode-occurrence-keymap
@@ -620,7 +639,9 @@
 	      ("C-n" . iedit-expand-down-to-occurrence)
 	      ("C-p" . iedit-expand-up-to-occurrence)
 	      ("C-r" . iedit-restrict-function)
-	      ("C-l" . iedit-restrict-current-line)))
+	      ("C-l" . iedit-restrict-current-line))
+  :config
+  (add-hook 'iedit-mode-hook #'iedit-restrict-current-line))
 	      ;; :map evil-normal-state-map ;; needed so that when attempting to enter normal mode from insert mode it doesn't exit altogether
 	      ;; ("<escape>" . iedit--quit)))
 ;; ============================ ;;
@@ -688,7 +709,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(markdown-mode iedit yaml-mode which-key vertico use-package tree-sitter rust-mode rainbow-mode rainbow-delimiters python-mode orderless no-littering marginalia magit helpful gruber-darker-theme general evil-nerd-commenter evil-collection doom-themes doom-modeline dired-single corfu consult-projectile all-the-icons-dired))
+   '(terraform-mode markdown-mode iedit yaml-mode which-key vertico use-package tree-sitter rust-mode rainbow-mode rainbow-delimiters python-mode orderless no-littering marginalia magit helpful gruber-darker-theme general evil-nerd-commenter evil-collection doom-themes doom-modeline dired-single corfu consult-projectile all-the-icons-dired))
  '(warning-suppress-types '((frameset))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
