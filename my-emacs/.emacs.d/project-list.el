@@ -1,6 +1,6 @@
 ;;; -*- lisp-data -*-
-(("~/notes/")
- ("~/dotfiles/")
+(("~/dotfiles/")
+ ("~/notes/")
  ("~/dev/rust/genp/")
  ("~/Next/marketing-webanalytics/")
  ("~/dev/rust/ml/")
