@@ -7,7 +7,7 @@ export TRASH="$HOME/.local/share/Trash"
 
 #~~~ -{DEFAULT APPLICATIONS}- ~~~#
 export EMACS_DAEMONS="personal work server default"
-export BROWSER="firefox"
+export BROWSER="mercury-browser"
 export TERMINAL="alacritty"
 export EDITOR="nvim"
 export FONT_NAME="Jetbrains Mono"

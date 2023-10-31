@@ -141,6 +141,22 @@ Needs to contain a `finished' message, as well as have 0 errors, warnings and in
     (kill-new filename)
     (message filename)))
 
+(defun myrc/today (format)
+  "Place today's date in the given format in kill ring."
+  (let ((today (format-time-string format)))
+    (kill-new today)
+    (message today)))
+
+(defun myrc/journal (&optional write)
+  "Open journal and add a new heading for tomorrow's date"
+  (interactive)
+  (find-file "~/notes/journal/again.org")
+  (let ((inhibit-message t))
+    (when write
+	(org-insert-heading-respect-content)
+	(insert (format-time-string "%A (%d/%m/%y)"
+				    (time-add (current-time) (* 60 60 24)))))))
+
 (defun myrc/desktop-save (&optional RELEASE ONLY-IF-CHANGED VERSION)
   "My version of desktop-save that sets DIRNAME automatically."
   (unless (f-exists-p desktop-dirname)
@@ -163,3 +179,10 @@ Needs to contain a `finished' message, as well as have 0 errors, warnings and in
 	(progn
 	  (message "Region is active")
 	  (iedit-restrict-region (car bounds) (cdr bounds))))))
+
+(defun myrc/toggle-theme ()
+  "Toggle between a light and dark theme."
+  (interactive)
+  (if (eq myrc/theme-light (car custom-enabled-themes))
+      (load-theme myrc/theme-dark t)
+    (load-theme myrc/theme-light t)))

@@ -14,6 +14,8 @@
 (toggle-word-wrap 1)
 ;; (global-visual-line-mode 1)
 
+(setq myrc/theme-light 'doom-solarized-light)
+(setq myrc/theme-dark 'doom-gruvbox)
 ;; font
 ;; (defun myrc/font () "Fira Code Retina-18")
 ;; (defun myrc/font () "JetBrains Mono-18")
@@ -114,7 +116,9 @@
 (use-package no-littering)
 (use-package recentf
   :init (recentf-mode)
-  :custom ((recentf-save-file "~/.cache/emacs/var/recentf-save.el")))
+  :custom
+  (recentf-save-file "~/.cache/emacs/var/recentf-save.el")
+  (recentf-max-saved-items 50))
 ;; ============================ ;;
 
 
@@ -155,8 +159,8 @@
   (evil-define-key 'insert evil-insert-state-map (kbd "C-l") 'right-char) ;; use C-h to delete characters while in normal mode
 
   ;; Use visual line motions even outside of visual-line-mode buffers (i.e. when a long line is wrapped, use j/k to get to the wrapped part of it instead of the next/prev line)
-  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
-  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+  ;; (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+  ;; (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
   (evil-global-set-key 'motion "ag" 'mark-page)
   (evil-global-set-key 'motion "g=" 'evil-numbers/inc-at-pt)
   (evil-global-set-key 'motion "g-" 'evil-numbers/dec-at-pt))
@@ -186,10 +190,10 @@
   (evil-collection-setup-minibuffer t)
   :config
   (evil-collection-init)
-  ;; (define-key evil-motion-state-map (kbd "C-n") 'evil-collection-unimpaired-move-text-down) 
-  ;; (define-key evil-motion-state-map (kbd "C-p") 'evil-collection-unimpaired-move-text-up)
-  (evil-define-key 'normal evil-motion-state-map (kbd "C-n") 'evil-collection-unimpaired-move-text-down)
-  (evil-define-key 'normal evil-motion-state-map (kbd "C-p") 'evil-collection-unimpaired-move-text-up)
+  (define-key evil-motion-state-map (kbd "C-n") 'evil-collection-unimpaired-move-text-down) 
+  (define-key evil-motion-state-map (kbd "C-p") 'evil-collection-unimpaired-move-text-up)
+  ;; (evil-define-key 'normal evil-motion-state-map (kbd "C-n") 'evil-collection-unimpaired-move-text-down)
+  ;; (evil-define-key 'normal evil-motion-state-map (kbd "C-p") 'evil-collection-unimpaired-move-text-up)
   (evil-define-key 'insert vertico-map (kbd "C-k") 'vertico-previous))
 ;; ============================ ;;
 
@@ -213,6 +217,7 @@
   "tl" '(display-line-numbers-mode :which-key "display-line-numbers-mode")
   "tc" '(myrc/toggle-compilation-window-kill-on-success :which-key "compilation-window-kill-on-success")
   "ta" '(rainbow-mode :which-key "rainbow-mode")
+  "te" '(myrc/toggle-theme :which-key "toggle theme")
 
   ;; HELP
   "h"  '(:ignore t :which-key "help")
@@ -429,7 +434,7 @@
   :commands (consult-theme))
 
 ;; wombat
-(load-theme 'doom-gruvbox t) ;; t at the end is needed to avoid a warning message
+(load-theme myrc/theme-dark t) ;; t at the end is needed to avoid a warning message
 ;; ============================ ;;
 
 
@@ -482,6 +487,8 @@
 
 (myrc/leader-keys
   "o"  '(:ignore t :which-key "org-mode")
+  "oj" '(myrc/journal :which-key "journal")
+  "oJ" '((lambda () (interactive) (myrc/journal t)) :which-key "journal with date")
   "oa" '(org-agenda :which-key "org-agenda")
   "ot" '(org-toggle-checkbox :which-key "org-toggle-checkbox")
   ;; "os" '(org-schedule :which-key "org-schedule")
@@ -506,7 +513,8 @@
   "g"  '(:ignore t :which-key "magit")
   "gg" '(magit-status :which-key "magit-status")
   "gp" '(magit-pull-from-upstream :which-key "magit-pull")
-  "gf" '(magit-file-checkout :which-key "magit-file-checkout"))
+  "gc" '(magit-file-checkout :which-key "magit-file-checkout")
+  "gf" '(magit-find-file :which-key "magit-find-file"))
 ;; ============================ ;;
 
 
@@ -561,14 +569,14 @@
 ;; Using use-package to configure dired, but not install it since it's built-in (hence :ensure nil)
 (use-package dired
   :ensure nil
-  :commands (dired dired-jump)
+  :commands (dired dired-jump dired-find-file)
   ;; remap "RET" and "-" to use dired-single bindings
-  :bind (([remap dired-find-file] . dired-single-buffer)
-	 ([remap dired-up-directory] . dired-single-up-directory))
+  ;; :bind (([remap dired-find-file] . dired-single-buffer)
+  ;; 	 ([remap dired-up-directory] . dired-single-up-directory))
   :custom ((dired-listing-switches "-ahl -v --group-directories-first"))) ;; Flags used to run "ls"
 
-(use-package dired-single
-  :after dired)
+;; (use-package dired-single
+;;   :after dired)
 
 (use-package all-the-icons-dired
   :hook (dired-mode . all-the-icons-dired-mode)

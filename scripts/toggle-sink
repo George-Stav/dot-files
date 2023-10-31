@@ -1,3 +1,4 @@
 #!/bin/sh
 
-pacmd set-default-sink "$(pacmd list-sinks | grep "  index" | shuf | head -n 1 | awk '{print $NF}')"
+pacmd set-default-sink $(pacmd list-sinks | sed -En 's/^ +index: ([0-9]+).*/\1/p')
+[ -z $(pactl get-default-sink | grep "HyperX") ] && echo "Speakers" || echo "Headphones"

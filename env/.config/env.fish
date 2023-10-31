@@ -7,7 +7,7 @@ set TRASH "$HOME/.local/share/Trash"
 
 #~~~ -{DEFAULT APPLICATIONS}- ~~~#
 set EMACS_DAEMONS "personal work server default"
-set BROWSER "firefox"
+set BROWSER "mercury-browser"
 set TERMINAL "alacritty"
 set EDITOR "nvim"
 set FONT_NAME "Jetbrains Mono"
