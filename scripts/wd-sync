@@ -12,7 +12,22 @@ while getopts "tgampus" o; do
         p) SYNCS="${SYNCS} PHOTOS" ;;
         u) SYNCS="${SYNCS} MUSIC" ;;
         s) SYNCS="${SYNCS} spare-car-parts.bkp" ;;
-        *) echo "Invalid option" ;;
+        # *) echo "Invalid option" ;;
+	*) cat <<EOF
+		while getopts "tgampus" o; do
+		    case "$o" in
+			t) SYNCS="${SYNCS} TORRENTS" ;;
+			g) SYNCS="${SYNCS} MANGA" ;;
+			a) SYNCS="${SYNCS} ANIME" ;;
+			m) SYNCS="${SYNCS} MOVIES-SERIES" ;;
+			p) SYNCS="${SYNCS} PHOTOS" ;;
+			u) SYNCS="${SYNCS} MUSIC" ;;
+			s) SYNCS="${SYNCS} spare-car-parts.bkp" ;;
+			*) echo "Invalid option" ;;
+		    esac
+		done
+EOF
+	   EOF ;;
     esac
 done
 
