@@ -27,6 +27,9 @@
 ;; remove startup message
 (setq inhibit-startup-message t)
 
+;; disable beeping on laptop
+(setq ring-bell-function #'ignore)
+
 ;; cleaner ~/.emacs.d
 ;; moving these lines runs the risk of re-downloading all packages from scratch
 (setq user-emacs-directory "~/.cache/emacs")
