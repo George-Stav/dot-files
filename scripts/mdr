@@ -9,7 +9,7 @@ chosen="$(echo "$u_chosen" | awk '{print $1}')"
 
 # Use fstab entry if it exists
 uuid="$(lsblk -po NAME,UUID | awk -v name="$chosen" '$0 ~ name {print $2}')"
-[ "$(grep "$uuid" "/etc/fstab")" ] && { udisksctl mount -b "$chosen"; exit 0; }
+# [ "$(grep "$uuid" "/etc/fstab")" ] && { udisksctl mount -b "$chosen"; exit 0; }
 
 dirs=$(find /mnt /media /home/ -maxdepth 3 -type d -empty 2> /dev/null)
 mountpoint=$(echo "$dirs" | fzf --reverse --height=7% --print-query --prompt "Enter mountpoint for $u_chosen > ")

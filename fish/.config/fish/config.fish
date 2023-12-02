@@ -9,6 +9,7 @@ set fish_cursor_insert underscore
 
 set -x LD_LIBRARY_PATH "$LD_LIBRARY_PATH:/usr/lib/"
 set -p PATH ~/.cargo/bin
+set -p PATH ~/Next/google-cloud-sdk/bin
 
 
 # keychain --quiet --eval --agents ssh id_ed25519

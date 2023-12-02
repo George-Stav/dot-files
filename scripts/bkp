@@ -1,5 +1,23 @@
 #!/bin/sh
 
+# PURPOSE
+# Single, multi-functional script that backs up my important data reliably.
+
+# FLOW
+# - Request location of backup
+# - Make 
+
+# EXAMPLE
+# ./bkp /mnt/HDD
+# ./bkp -mg /mnt/HDD # only media+github repos
+
+# TODO:
+# - media (similar to wd-sync)
+# - system state (downloaded packages)
+# - journal entries
+# - help docs
+# - github repos
+
 # refer to the rsync man page for a more detailed description on all the following options
 # archive -> short for -rlptgoD
 rsync --archive \
