@@ -7,7 +7,8 @@
 (tool-bar-mode 0)
 (tooltip-mode 0)
 (column-number-mode 1)
-(show-paren-mode 1) 
+(show-paren-mode 1)
+(electric-pair-mode 0) ;; stop automatically filling pairs ("", (), {}, [], etc.)
 (electric-indent-mode 1) ;; dynamically indent text
 (size-indication-mode 1) ;; show file size in modeline
 (winner-mode 1) ;; enable window-undo/redo
@@ -15,7 +16,7 @@
 ;; (global-visual-line-mode 1)
 
 (setq myrc/theme-light 'doom-solarized-light)
-(setq myrc/theme-dark 'doom-gruvbox)
+(setq myrc/theme-dark 'gruber-darker)
 ;; font
 ;; (defun myrc/font () "Fira Code Retina-18")
 ;; (defun myrc/font () "JetBrains Mono-18")
@@ -60,7 +61,7 @@
 (setq display-buffer-alist '(("\\*compilation"
 			      (display-buffer-reuse-window display-buffer-at-bottom)
 			      (window-height . 13))
-			     ("\\*Help"
+			     ("\\*\\(Help\\|eldoc\\)"
 			      (display-buffer-reuse-window display-buffer-in-direction)
 			      (direction . right))
 			     ;; split documentation windows below *Help* windows
@@ -190,7 +191,7 @@
   (evil-collection-setup-minibuffer t)
   :config
   (evil-collection-init)
-  (define-key evil-motion-state-map (kbd "C-n") 'evil-collection-unimpaired-move-text-down) 
+  (define-key evil-motion-state-map (kbd "C-n") 'evil-collection-unimpaired-move-text-down)
   (define-key evil-motion-state-map (kbd "C-p") 'evil-collection-unimpaired-move-text-up)
   ;; (evil-define-key 'normal evil-motion-state-map (kbd "C-n") 'evil-collection-unimpaired-move-text-down)
   ;; (evil-define-key 'normal evil-motion-state-map (kbd "C-p") 'evil-collection-unimpaired-move-text-up)
@@ -212,12 +213,14 @@
   "tw" '(toggle-word-wrap :which-key "line wrap")
   "tr" '(read-only-mode :which-key "read-only-mode")
   "tt" '(toggle-truncate-lines :which-key "toggle-truncate-lines")
-  "ts" '(tree-sitter-mode :which-key "tree-sitter-mode")
   "tp" '(prettify-symbols-mode :which-key "prettify-symbols-mode")
   "tl" '(display-line-numbers-mode :which-key "display-line-numbers-mode")
   "tc" '(myrc/toggle-compilation-window-kill-on-success :which-key "compilation-window-kill-on-success")
   "ta" '(rainbow-mode :which-key "rainbow-mode")
   "te" '(myrc/toggle-theme :which-key "toggle theme")
+  "tp" '(electric-pair-local-mode :which-key "toggle electric pair")
+  "ts" '(whitespace-mode :which-key "toggle whitespace mode")
+  ;; "ts" '(tree-sitter-mode :which-key "tree-sitter-mode")
 
   ;; HELP
   "h"  '(:ignore t :which-key "help")
@@ -307,11 +310,12 @@
   "ie" '(eshell :which-key "eshell")
   "it" '(term :which-key "term")
 
-  ;; EVAL
+  ;; EVAL & EGLOT
   "e"  '(:ignore t :which-key "eval")
   "eb" '(eval-buffer :which-key "eval-buffer")
   "ee" '(eval-expression :which-key "eval-expression")
   "es" '(eval-last-sexp :which-key "eval-last-sexp")
+  "eg" '(myrc/start-eglot :which-key "start eglot server")
 
   ;; MISC
   "x"  '(evil-buffer-new :which-key "temp buffer")
@@ -319,6 +323,29 @@
   "/"  '(consult-line :which-key "search")
   "qq" '((lambda () (interactive) (myrc/kill-emacs nil)):which-key "save buffers and quit")
   "qQ" '((lambda () (interactive) (myrc/kill-emacs t)):which-key "save buffers and desktop and quit"))
+;; ============================ ;;
+
+
+;; ========= WHITESPACE-MODE ========= ;;
+(use-package whitespace
+  :ensure nil
+  :init (global-whitespace-mode)
+  :config
+  (setq whitespace-line-column 100)
+  (setq whitespace-style
+	'(space-mark tab-mark face tabs trailing spaces indentation big-indent newline lines-tail))
+  (setq whitespace-global-modes
+	'(not shell-mode
+	      help-mode
+	      magit-mode
+	      magit-diff-mode
+	      dired-mode
+	      wdired-mode
+	      ibuffer-mode
+	      occur-mode
+	      org-mode))
+  (setq whitespace-action
+	'(cleanup auto-cleanup)))
 ;; ============================ ;;
 
 
@@ -367,18 +394,10 @@
 
 (use-package company
   :init (global-company-mode)
-  :custom ((company-selection-wrap-around t))
+  :custom ((company-selection-wrap-around t)
+	   (company-idle-delay nil))
   :bind (:map evil-insert-state-map
 	      ("C-<tab>" . company-complete)))
-;; (use-package corfu
-;;   :init (global-corfu-mode)
-;;   :bind (:map corfu-map
-;; 	      ("C-j" . corfu-next)
-;; 	      ("C-k" . corfu-previous)
-;; 	      ("C-f" . corfu-insert))
-;;   :custom
-;;   (corfu-auto t)
-;;   (corfu-cycle t))
 
 (use-package embark
   :bind (("C-," . embark-act)
@@ -526,7 +545,7 @@
 
 (myrc/leader-keys
   "p"  '(:ignore t :which-key "project")
-  "pp" '(project-switch-project "~/dev/rust/genp" :which-key "switch project")
+  "pp" '(project-switch-project :which-key "switch project")
   "pc" '(myrc/project-reset-compilation-path :which-key "reset compilation search path")
   "ps" '(consult-ripgrep :which-key "search project")
   "pr" '(vc-register :which-key "vc-register")
@@ -614,17 +633,30 @@
   :after tree-sitter)
 ;; ============================ ;;
 
-;; (use-package eglot
-;;   :config
-;;   (add-to-list 'eglot-server-programs '(rust-mode . ("rust-analyzer"))))
-;; (add-hook 'rust-mode-hook 'eglot-ensure)
+
+;; ========= LANGUAGE-SERVER (EGLOT, ELDOC) ========= ;;
+(use-package eglot
+  :ensure nil
+  :custom ((eglot-ignored-server-capabilities '(:documentHighlightProvider))
+	   (eglot-extend-to-xref 1)))
+
+(use-package eldoc
+  :ensure nil
+  :custom (eldoc-idle-delay 1000000000)
+  :bind
+  ;; rebinds command pointed to by keybind: 'K'
+  ([remap eldoc-doc-buffer] . eldoc-print-current-symbol-info))
+;; ============================ ;;
+
+
+;; ========= YASNIPPET========= ;;
+(use-package yasnippet
+  :hook ((rust-mode) .yas-minor-mode-on)
+  :custom (yas-snippet-dirs '("~/dotfiles/my-emacs/.emacs.d/snippets")))
+;; ============================ ;;
+
 
 ;; ========= PROGRAMMING-MODES ========= ;;
-(use-package prog-mode
-  :ensure nil
-  :hook ((prog-mode . prettify-symbols-mode)
-	 (prog-mode . electric-pair-mode)))
-
 (use-package rust-mode :hook (rust-mode-hook . (setq indent-tabs-mode nil)))
 (use-package python-mode :commands (python-mode))
 (use-package yaml-mode :commands (yaml-mode))
@@ -679,6 +711,8 @@
 
 
 ;; ========= MISCELLANEOUS ========= ;;
+;; do not add a newline at the end of text-mode files
+(add-hook 'text-mode-hook (lambda () (setq require-final-newline nil)))
 ;; Dynamically shows evil-search-{forward,backward} results on modeline
 (use-package evil-anzu
   :diminish
@@ -713,6 +747,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   '("e27c9668d7eddf75373fa6b07475ae2d6892185f07ebed037eedf783318761d7" default))
  '(package-selected-packages
    '(terraform-mode markdown-mode iedit yaml-mode which-key vertico use-package tree-sitter rust-mode rainbow-mode rainbow-delimiters python-mode orderless no-littering marginalia magit helpful gruber-darker-theme general evil-nerd-commenter evil-collection doom-themes doom-modeline dired-single corfu consult-projectile all-the-icons-dired))
  '(warning-suppress-types '((frameset))))

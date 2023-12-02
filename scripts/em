@@ -26,7 +26,7 @@ purge() {
     for SOCKNAME in $(ps -x | grep "emacs --daemon" | head -n -1 | awk -F'=' '{print $2}'); do
 	if [ "$save" = "state" ]; then
 	    emacsclient -s "$SOCKNAME" -e '(myrc/kill-emacs t)'
-	else 
+	else
 	    emacsclient -s "$SOCKNAME" -e '(myrc/kill-emacs nil)'
 	fi
     done
@@ -36,10 +36,10 @@ purge() {
 new() {
     SOCKNAME="$(echo $EMACS_DAEMONS | sed 's/ /\n/g' | rofi -m -4 -dmenu -p "Workspace")"
     if [ -n "$SOCKNAME" ]; then
-        if [ "$(ps -x | grep "emacs --daemon=$SOCKNAME" | wc -l)" = 1 ]; then
-            emacs --daemon="$SOCKNAME"
-        fi
-        emacsclient -c -socket-name="$SOCKNAME"
+	if [ "$(ps -x | grep "emacs --daemon=$SOCKNAME" | wc -l)" = 1 ]; then
+	    emacs --daemon="$SOCKNAME"
+	fi
+	emacsclient -c -socket-name="$SOCKNAME"
     fi
 }
 
@@ -54,4 +54,3 @@ case "$1" in
     n | new) new ;;
     *) emacsclient -s default -c "$1" ;;
 esac
-    

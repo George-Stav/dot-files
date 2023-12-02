@@ -43,16 +43,16 @@ and `GPG_AGENT' in Emacs' `process-environment' according to
 information retrieved from files created by the keychain script."
   (interactive)
   (let* ((ssh (shell-command-to-string "keychain -q --noask --agents ssh --eval"))
-         (gpg (shell-command-to-string "keychain -q --noask --agents gpg --eval")))
+	 (gpg (shell-command-to-string "keychain -q --noask --agents gpg --eval")))
     (list (and ssh
-               (string-match "SSH_AUTH_SOCK[=\s]\\([^\s;\n]*\\)" ssh)
-               (setenv       "SSH_AUTH_SOCK" (match-string 1 ssh)))
-          (and ssh
-               (string-match "SSH_AGENT_PID[=\s]\\([0-9]*\\)?" ssh)
-               (setenv       "SSH_AGENT_PID" (match-string 1 ssh)))
-          (and gpg
-               (string-match "GPG_AGENT_INFO[=\s]\\([^\s;\n]*\\)" gpg)
-               (setenv       "GPG_AGENT_INFO" (match-string 1 gpg))))))
+	       (string-match "SSH_AUTH_SOCK[=\s]\\([^\s;\n]*\\)" ssh)
+	       (setenv       "SSH_AUTH_SOCK" (match-string 1 ssh)))
+	  (and ssh
+	       (string-match "SSH_AGENT_PID[=\s]\\([0-9]*\\)?" ssh)
+	       (setenv       "SSH_AGENT_PID" (match-string 1 ssh)))
+	  (and gpg
+	       (string-match "GPG_AGENT_INFO[=\s]\\([^\s;\n]*\\)" gpg)
+	       (setenv       "GPG_AGENT_INFO" (match-string 1 gpg))))))
 
 (defun myrc/git-project-finder (dir)
   "Integrate .git project roots."
@@ -69,27 +69,27 @@ current target followed by an ellipsis if there are further
 targets."
   (lambda (&optional keymap targets prefix)
     (if (null keymap)
-        (which-key--hide-popup-ignore-command)
+	(which-key--hide-popup-ignore-command)
       (which-key--show-keymap
        (if (eq (plist-get (car targets) :type) 'embark-become)
-           "Become"
-         (format "Act on %s '%s'%s"
-                 (plist-get (car targets) :type)
-                 (embark--truncate-target (plist-get (car targets) :target))
-                 (if (cdr targets) "…" "")))
+	   "Become"
+	 (format "Act on %s '%s'%s"
+		 (plist-get (car targets) :type)
+		 (embark--truncate-target (plist-get (car targets) :target))
+		 (if (cdr targets) "…" "")))
        (if prefix
-           (pcase (lookup-key keymap prefix 'accept-default)
-             ((and (pred keymapp) km) km)
-             (_ (key-binding prefix 'accept-default)))
-         keymap)
+	   (pcase (lookup-key keymap prefix 'accept-default)
+	     ((and (pred keymapp) km) km)
+	     (_ (key-binding prefix 'accept-default)))
+	 keymap)
        nil nil t (lambda (binding)
-                   (not (string-suffix-p "-argument" (cdr binding))))))))
+		   (not (string-suffix-p "-argument" (cdr binding))))))))
 
 (defun myrc/embark-hide-which-key-indicator (fn &rest args)
   "Hide the which-key indicator immediately when using the completing-read prompter."
   (which-key--hide-popup-ignore-command)
   (let ((embark-indicators
-         (remq #'embark-which-key-indicator embark-indicators)))
+	 (remq #'embark-which-key-indicator embark-indicators)))
       (apply fn args)))
 
 (defun myrc/desktop-save-autoconfirm (orig-fn &rest args)
@@ -184,5 +184,21 @@ Needs to contain a `finished' message, as well as have 0 errors, warnings and in
   "Toggle between a light and dark theme."
   (interactive)
   (if (eq myrc/theme-light (car custom-enabled-themes))
-      (load-theme myrc/theme-dark t)
-    (load-theme myrc/theme-light t)))
+      (progn
+	(load-theme myrc/theme-dark t)
+	(disable-theme myrc/theme-light))
+    (progn
+      (load-theme myrc/theme-light t)
+      (disable-theme myrc/theme-dark))))
+
+(defun myrc/start-eglot ()
+  "Start eglot with my own config"
+  (interactive)
+  (progn
+    (eglot-ensure)
+    (add-hook 'eglot-managed-mode-hook
+	      (lambda ()
+		(progn
+		  (remove-hook
+		   'flymake-diagnostic-functions 'eglot-flymake-backend)
+		  (eglot-inlay-hints-mode -1))))))

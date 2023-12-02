@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: no_cargo_rust_analyzer
+# key: no_cargo
+# --
+{
+    "sysroot_src": "/home/neeto/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library",
+    "crates": [
+	{
+	    "root_module": "main.rs",
+	    "edition": "2021",
+	    "deps": []
+	}
+    ]
+}
