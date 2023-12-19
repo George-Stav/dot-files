@@ -346,6 +346,7 @@
 	      wdired-mode
 	      ibuffer-mode
 	      occur-mode
+	      sql-mode
 	      org-mode))
   (setq whitespace-action
 	'(cleanup auto-cleanup)))
