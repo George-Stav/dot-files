@@ -6,8 +6,8 @@
 #include <unistd.h>
 #include <getopt.h>
 
-#define RED "#FF7373"
-#define ORANGE "#FFA500"
+#define RED "#CB9DDA"
+#define ORANGE "#CB9DDA"
 
 typedef unsigned long long int ulli;
 
@@ -55,14 +55,14 @@ void get_values(char **const ifaces, int num_ifaces, time_t * const s, ulli * co
       int i;
       int iface_found = num_ifaces == 0;
       for (i = 0; i < num_ifaces; i++) {
-        if (strcmp(ifaces[i], ifname) != 0) {
-          iface_found = 1;
-          break;
-        }
+	if (strcmp(ifaces[i], ifname) != 0) {
+	  iface_found = 1;
+	  break;
+	}
       }
 
       if (!iface_found || strcmp(ifname, "lo") == 0)
-        continue;
+	continue;
 
       *received = *received + temp_r;
       *sent = *sent + temp_s;
@@ -79,7 +79,7 @@ void get_values(char **const ifaces, int num_ifaces, time_t * const s, ulli * co
 }
 
 void display(int const unit, int const divisor,
-             double b, int const warning, int const critical)
+	     double b, int const warning, int const critical)
 {
   char fmtstr[7];
 

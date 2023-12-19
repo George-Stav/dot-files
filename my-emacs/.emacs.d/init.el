@@ -343,7 +343,8 @@
 	      wdired-mode
 	      ibuffer-mode
 	      occur-mode
-	      org-mode))
+	      org-mode
+	      sql-mode))
   (setq whitespace-action
 	'(cleanup auto-cleanup)))
 ;; ============================ ;;
@@ -650,9 +651,9 @@
 
 
 ;; ========= YASNIPPET========= ;;
-(use-package yasnippet
-  :hook ((rust-mode) .yas-minor-mode-on)
-  :custom (yas-snippet-dirs '("~/dotfiles/my-emacs/.emacs.d/snippets")))
+;; (use-package yasnippet
+;;   :hook ((rust-mode) .yas-minor-mode-on)
+;;   :custom (yas-snippet-dirs '("~/dotfiles/my-emacs/.emacs.d/snippets")))
 ;; ============================ ;;
 
 
