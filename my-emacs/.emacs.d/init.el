@@ -284,7 +284,7 @@
   "wc" '(delete-window :which "delete-window")
   "k"  '(kill-buffer-and-window :which "kill-buffer-and-window")
   "w C-o" '(delete-other-windows :which "delete-other-windows")
-  "w o" '(delete-other-windows :which "delete-other-windows")
+  "wo" '(delete-other-windows :which "delete-other-windows")
   ;; movement
   "wj" '(evil-window-down :which-key "evil-window-down")
   "wk" '(evil-window-up :which-key "evil-window-up")
