@@ -3,9 +3,8 @@
 # $SCRIPTS/vpn toggle > /dev/null
 state=$($SCRIPTS/vpn gv)
 if [ $(echo $state | grep -E '^\+') ]; then
-    color="#91E78B"
+    color="#CB9DDA"
 else
-    color="#F79494"
+    color="#CCCCCC"
 fi
 echo "<span color=\"$color\">$state</span>"
-    

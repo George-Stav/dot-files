@@ -8,6 +8,9 @@
 # i3 config file (v4)
 #
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
+# class                 border  backgr. text    indicator child_border
+# client.focused          #4c7899 #285577 #ffffff #2e9ef4   #285577
+# client.focused_background		#DFC2E8 #CB9DDA #cccccc #B778CC   #CB9DDA
 
 # set $mod Mod4 # windows
 set $mod Mod1
@@ -101,9 +104,9 @@ bindsym $mod+Shift+Escape layout toggle splith splitv tabbed
 
 # Launcher
 bindsym $mod+Return exec alacritty
-bindsym $mod+m exec --no-startup-id "rofi -m -4 -modi drun -show drun" 
+bindsym $mod+m exec --no-startup-id "rofi -m -4 -modi drun -show drun"
 bindsym $mod+space exec --no-startup-id "rofi -m -4 -show window"
-bindsym $mod+Shift+s exec "flameshot gui" 
+bindsym $mod+Shift+s exec "flameshot gui"
 bindsym $mod+b exec "firefox"
 bindsym $mod+c exec "google-chrome-stable"
 bindsym $mod+a exec "$HOME/.local/bin/run"
@@ -117,7 +120,7 @@ bindsym Shift+XF86AudioLowerVolume exec  "$HOME/.local/bin/change-volume -10%"
 bindsym XF86AudioLowerVolume exec  "$HOME/.local/bin/change-volume -5%"
 bindsym XF86AudioRaiseVolume exec "$HOME/.local/bin/change-volume +5%"
 bindsym Shift+XF86AudioRaiseVolume exec "$HOME/.local/bin/change-volume +10%"
-bindsym XF86AudioMute exec "$HOME/.local/bin/change-volume 0"
+bindsym XF86AudioMute exec "$HOME/.local/bin/change-volume 0 &&"
 bindsym Shift+XF86AudioMute exec "$HOME/.local/bin/mic-toggle && pkill -SIGRTMIN+10 i3blocks"
 bindsym $mod+v exec "$HOME/.local/bin/vpn toggle && pkill -SIGRTMIN+11 i3blocks"
 
@@ -126,6 +129,8 @@ bindsym XF86AudioPlay exec "playerctl play-pause && $HOME/.local/bin/media-notif
 bindsym Shift+XF86AudioPlay exec "playerctl -p spotify play-pause && $HOME/.local/bin/media-notif spotify"
 bindsym XF86AudioNext exec "playerctl next"
 bindsym XF86AudioPrev exec "playerctl previous"
+bindsym Shift+XF86AudioNext exec "pkill -SIGRTMIN+12 i3blocks"
+bindsym Shift+XF86AudioPrev exec "pkill -SIGRTMIN+12 i3blocks"
 
 # Brightness
 bindsym XF86MonBrightnessUp exec "brightnessctl set +5%"
@@ -158,12 +163,14 @@ assign [class="steam"] number 7
 assign [class="discord"] number 7
 # assign [class="Google-chrome"] number 8
 assign [class="Spotify"] number 9
-assign [class="steam_app.*"] number 11 
+assign [class="steam_app.*"] number 11
+assign [class="Risk of Rain 2"] number 11
 assign [title="osu!"] number 11
 assign [class="EXAPUNKS"] number 11
-assign [title="Risk of Rain 2"] number 11
 assign [title="Furi"] number 11
 assign [class="WizardOfLegend.x86_64"] number 11
+assign [class="Minecraft.*"] number 11
+assign [class="Stardew Valley"] number 11
 
 
 bindsym $mod+Ctrl+equal move scratchpad
@@ -171,8 +178,8 @@ bindsym $mod+equal scratchpad show
 
 no_focus [window_role="pop_up"]
 
-for_window [class="firefox"] layout tabbed
-for_window [class="google-chrome"] layout tabbed
+# for_window [class="google-chrome"] layout tabbed
+for_window [window_role="browser"] layout tabbed
 
 for_window [class="Galculator"] floating enable
 for_window [class="genp"] floating enable
@@ -182,26 +189,26 @@ for_window [title=".*QEMU/KVM"] floating enable
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
-        # These bindings trigger as soon as you enter the resize mode
+	# These bindings trigger as soon as you enter the resize mode
 
-        # Pressing left will shrink the window’s width.
-        # Pressing right will grow the window’s width.
-        # Pressing up will shrink the window’s height.
-        # Pressing down will grow the window’s height.
-        bindsym j resize shrink width 10 px or 10 ppt
-        bindsym k resize grow height 10 px or 10 ppt
-        bindsym l resize shrink height 10 px or 10 ppt
-        bindsym semicolon resize grow width 10 px or 10 ppt
+	# Pressing left will shrink the window’s width.
+	# Pressing right will grow the window’s width.
+	# Pressing up will shrink the window’s height.
+	# Pressing down will grow the window’s height.
+	bindsym j resize shrink width 10 px or 10 ppt
+	bindsym k resize grow height 10 px or 10 ppt
+	bindsym l resize shrink height 10 px or 10 ppt
+	bindsym semicolon resize grow width 10 px or 10 ppt
 
-        # same bindings, but for the arrow keys
-        bindsym Left resize shrink width 10 px or 10 ppt
-        bindsym Down resize grow height 10 px or 10 ppt
-        bindsym Up resize shrink height 10 px or 10 ppt
-        bindsym Right resize grow width 10 px or 10 ppt
+	# same bindings, but for the arrow keys
+	bindsym Left resize shrink width 10 px or 10 ppt
+	bindsym Down resize grow height 10 px or 10 ppt
+	bindsym Up resize shrink height 10 px or 10 ppt
+	bindsym Right resize grow width 10 px or 10 ppt
 
-        # back to normal: Enter or Escape
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
+	# back to normal: Enter or Escape
+	bindsym Return mode "default"
+	bindsym Escape mode "default"
 }
 
 # bindsym $mod+r mode "resize"
@@ -209,9 +216,9 @@ mode "resize" {
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-        # status_command i3status --config ~/.config/i3/i3status.conf
+	# status_command i3status --config ~/.config/i3/i3status.conf
 	# output primary
-        status_command i3blocks -c ~/.config/i3/i3blocks.conf
+	status_command i3blocks -c ~/.config/i3/i3blocks.conf
 }
 
 # exec --no-startup-id "$HOME/.local/bin/smg r"
