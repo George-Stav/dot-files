@@ -15,12 +15,12 @@
 (toggle-word-wrap 1)
 ;; (global-visual-line-mode 1)
 
-(setq myrc/theme-light 'doom-solarized-light)
+(setq myrc/theme-light 'doom-acario-light)
 (setq myrc/theme-dark 'gruber-darker)
 ;; font
 ;; (defun myrc/font () "Fira Code Retina-18")
 ;; (defun myrc/font () "JetBrains Mono-18")
-(defun myrc/font () "Iosevka-18")
+(defun myrc/font () "Iosevka-16")
 (add-to-list 'default-frame-alist `(font . ,(myrc/font)))
 (set-face-attribute 'variable-pitch nil :font (myrc/font) :weight 'regular) ;; required for org-mode
 
@@ -642,7 +642,9 @@
 (use-package eglot
   :ensure nil
   :custom ((eglot-ignored-server-capabilities '(:documentHighlightProvider))
-	   (eglot-extend-to-xref 1)))
+	   (eglot-extend-to-xref 1))
+  :config
+  (add-to-list 'eglot-server-programs '((rust-ts-mode rust-mode) . ("rustup" "run" "stable" "rust-analyzer"))))
 
 (use-package eldoc
   :ensure nil
@@ -654,14 +656,17 @@
 
 
 ;; ========= YASNIPPET========= ;;
-(use-package yasnippet
-  :hook ((rust-mode) .yas-minor-mode-on)
-  :custom (yas-snippet-dirs '("~/dotfiles/my-emacs/.emacs.d/snippets")))
+;; (use-package yasnippet
+;;   :hook ((rust-mode) .yas-minor-mode-on)
+;;   :custom (yas-snippet-dirs '("~/dotfiles/my-emacs/.emacs.d/snippets")))
+
 ;; ============================ ;;
 
 
 ;; ========= PROGRAMMING-MODES ========= ;;
-(use-package rust-mode :hook (rust-mode-hook . (setq indent-tabs-mode nil)))
+(use-package rust-mode
+  :hook (rust-mode-hook . (setq indent-tabs-mode nil))
+  :config (add-to-list 'exec-path "~/.cargo/bin"))
 (use-package python-mode :commands (python-mode))
 (use-package yaml-mode :commands (yaml-mode))
 (use-package terraform-mode :commands (terraform-mode))
