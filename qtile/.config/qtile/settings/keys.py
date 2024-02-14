@@ -29,7 +29,7 @@ windows = "mod4"
 @lazy.function
 def mic_toggle(qtile):
     qtile.widgets_map['togglestate'].toggle() # change widget icon
-    qtile.cmd_spawn(f'{scripts_path}/mic-toggle') # toggle mic using amixer and push notification
+    qtile.cmd_spawn(f'{scripts_path}/toggle-mic') # toggle mic using amixer and push notification
 
 @lazy.function
 def play_pause(qtile, spotify=False):
@@ -150,7 +150,7 @@ keys = [
 
     # Emacs
     Key([mod, "shift"], "e", lazy.spawn("emacs")),
-    Key([mod], "e", lazy.spawn(f"{scripts_path}/em n")), 
+    Key([mod], "e", lazy.spawn(f"{scripts_path}/em n")),
     # Key([mod], "d", lazy.spawn(f"{scripts_path}/dict")),
 
     # Terminal

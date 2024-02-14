@@ -67,14 +67,14 @@ set -p PATH ~/.local/bin
 # Add ~/.local/bin to PATH
 if test -d ~/.local/bin
     if not contains -- ~/.local/bin $PATH
-        set -p PATH ~/.local/bin
+	set -p PATH ~/.local/bin
     end
 end
 
 # Add depot_tools to PATH
 if test -d ~/Applications/depot_tools
     if not contains -- ~/Applications/depot_tools $PATH
-        set -p PATH ~/Applications/depot_tools
+	set -p PATH ~/Applications/depot_tools
     end
 end
 
@@ -129,9 +129,9 @@ function copy
     if test "$count" = 2; and test -d "$argv[1]"
 	set from (echo $argv[1] | trim-right /)
 	set to (echo $argv[2])
-        command cp -r $from $to
+	command cp -r $from $to
     else
-        command cp $argv
+	command cp $argv
     end
 end
 

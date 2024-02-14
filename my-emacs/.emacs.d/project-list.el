@@ -1,8 +1,8 @@
 ;;; -*- lisp-data -*-
-(("/home/neeto/shared/marketing-webanalytics/")
+(("/home/neeto/notes/")
  ("/home/neeto/dotfiles/")
- ("/home/neeto/notes/")
  ("/home/neeto/dev/rust/aoc23/")
+ ("/home/neeto/shared/marketing-webanalytics/")
  ("/home/neeto/dev/rust/aoc21/")
  ("/home/neeto/dev/rust/aoc22/")
  ("/home/neeto/dev/spare-car-parts/")

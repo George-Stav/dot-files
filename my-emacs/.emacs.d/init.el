@@ -15,12 +15,12 @@
 (toggle-word-wrap 1)
 ;; (global-visual-line-mode 1)
 
-(setq myrc/theme-light 'doom-solarized-light)
+(setq myrc/theme-light 'doom-opera-light)
 (setq myrc/theme-dark 'gruber-darker)
 ;; font
 ;; (defun myrc/font () "Fira Code Retina-18")
 ;; (defun myrc/font () "JetBrains Mono-18")
-(defun myrc/font () "Iosevka-18")
+(defun myrc/font () "Iosevka-15")
 (add-to-list 'default-frame-alist `(font . ,(myrc/font)))
 (set-face-attribute 'variable-pitch nil :font (myrc/font) :weight 'regular) ;; required for org-mode
 

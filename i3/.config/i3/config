@@ -121,7 +121,7 @@ bindsym XF86AudioLowerVolume exec  "$HOME/.local/bin/change-volume -5% && pkill 
 bindsym XF86AudioRaiseVolume exec "$HOME/.local/bin/change-volume +5% && pkill -SIGRTMIN+13 i3blocks"
 bindsym Shift+XF86AudioRaiseVolume exec "$HOME/.local/bin/change-volume +10% && pkill -SIGRTMIN+13 i3blocks"
 bindsym XF86AudioMute exec "$HOME/.local/bin/change-volume 0 && pkill -SIGRTMIN+13 i3blocks"
-bindsym Shift+XF86AudioMute exec "$HOME/.local/bin/mic-toggle && pkill -SIGRTMIN+10 i3blocks"
+bindsym Shift+XF86AudioMute exec "$HOME/.local/bin/toggle-mic && pkill -SIGRTMIN+10 i3blocks"
 bindsym $mod+v exec "$HOME/.local/bin/vpn toggle && pkill -SIGRTMIN+11 i3blocks"
 
 # Player
@@ -182,6 +182,7 @@ no_focus [window_role="pop_up"]
 for_window [window_role="browser"] layout tabbed
 
 for_window [class="Galculator"] floating enable
+for_window [class="Thunar"] floating enable
 for_window [class="genp"] floating enable
 for_window [class="pentablet"] floating enable
 for_window [class="Pavucontrol"] floating enable
