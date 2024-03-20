@@ -692,16 +692,19 @@
 	      ;; ("<escape>" . iedit--quit)))
 ;; ============================ ;;
 
-(use-package pdf-tools
-  :commands (pdf-view-mode)
-  :custom
-  (pdf-view-display-size 'fit-page)
-  (pdf-view-image-relief 2)
-  (pdf-view-use-scaling t)
-  :config
-  (pdf-tools-install)
-  (pdf-loader-install)
-  (display-line-numbers-mode -1))
+
+;; ========= PDFTOOLS ========= ;;
+;; (use-package pdf-tools
+;;   :commands (pdf-view-mode)
+;;   :custom
+;;   (pdf-view-display-size 'fit-page)
+;;   (pdf-view-image-relief 2)
+;;   (pdf-view-use-scaling t)
+;;   :config
+;;   (pdf-tools-install)
+;;   (pdf-loader-install)
+;;   (display-line-numbers-mode -1))
+;; ============================ ;;
 
 
 ;; ========= DESKTOP ========= ;;

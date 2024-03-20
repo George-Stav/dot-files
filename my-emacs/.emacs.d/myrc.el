@@ -105,7 +105,8 @@ targets."
   "Set frame title and server name."
   (unless (boundp 'server-name)
     (setq server-name "server"))
-  (setq frame-title-format (concat "%b - [" server-name "]")))
+  (setq frame-title-format (concat "%b - [" server-name "]"))
+  (setq global-mode-string (concat "[" server-name "]")))
 
 (defcustom myrc/compilation-window-kill-on-success-var nil
   "Close compilation window on success."

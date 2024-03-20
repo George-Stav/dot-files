@@ -1,9 +1,9 @@
 ;;; -*- lisp-data -*-
-(("~/Next/marketing-webanalytics/")
- ("~/dev/rust/genealogy/")
+(("~/dotfiles/")
  ("~/notes/")
+ ("~/Next/marketing-webanalytics/")
+ ("~/dev/rust/genealogy/")
  ("~/dev/rust/genp/")
- ("~/dotfiles/")
  ("~/dev/rust/scrolling-display/")
  ("~/dev/rust/aoc23/")
  ("~/dev/rust/pandemic_simulation/")
