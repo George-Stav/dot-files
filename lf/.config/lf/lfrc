@@ -9,14 +9,13 @@ set ifs "\n"
 
 cmd open ${{
 	case "$f" in
-		*.org|*.tex) "$VISUAL" "$f" & ;;
 		*.jpg|*.png|*.gif) sxiv "$f" & ;;
 		# TODO: Fix lag that occurs after unpausing mpv
-		*.mkv|*.mp4|*.flac|*.webp|*.avi) mpv --pulse-latency-hacks=yes --no-terminal --sub-files=$(find -maxdepth 2 -regextype posix-extended -regex '.*\.(idx|srt|sub)' -printf '%p:') $fx & ;;
+		*.mkv|*.mp4|*.flac|*.webp|*.avi|*.m2ts) mpv --pulse-latency-hacks=yes --no-terminal --sub-files=$(find -maxdepth 2 -regextype posix-extended -regex '.*\.(idx|srt|sub)' -printf '%p:') $fx & ;;
 		*.mp3|*.wav) mpv --no-terminal $fx & ;;
 		*.csv|*.xls|*.xlsx|*.gnumeric) gnumeric $f & ;;
 		*.pdf|*.cbz) zathura "$f" & ;;
-		*) "$VISUAL" "$f" & ;;
+		*) $VISUAL "$f" & ;;
 	esac
 }}
 

@@ -243,11 +243,12 @@
   "fy" '((lambda () (interactive) (myrc/yank-file-name nil)) :which-key "yank file name")
   "fY" '((lambda () (interactive) (myrc/yank-file-name t)) :which-key "yank file name")
 
-  ;; SUDO
+  ;; SUDO/SSH
   "s"  '(:ignore t :which-key "sudo")
   "s/" '((lambda () (interactive) (find-file (expand-file-name "/sudo::/"))) :which-key "dired sudoedit /")
   "s~" '((lambda () (interactive) (find-file (expand-file-name "/sudo::~"))) :which-key "dired sudoedit ~")
   "s." '((lambda () (interactive) (find-file (expand-file-name (concat "/sudo::" (buffer-file-name))))) :which-key "sudoedit current buffer")
+  "sr" '((lambda () (interactive) (find-file "/ssh:rpi@192.168.0.101|sudo:192.168.0.101:/")) :which-key "dired sudoedit rpi:/")
 
   ;; CONFIG
   "d"  '(:ignore t :which-key "dired & desktop")
@@ -500,7 +501,7 @@
   :bind (([remap org-insert-heading-respect-content] . org-insert-item)
 	 ([remap org-table-copy-down] . org-insert-heading))
   :custom
-  ((org-agenda-files '("~/notes" "~/notes/next")))
+  ((org-agenda-files '("~/notes/next/work-todo.org")))
   :config
   ;; org-ellipsis " ▾"
   (setq org-hide-emphasis-markers t))
@@ -684,16 +685,19 @@
 	      ;; ("<escape>" . iedit--quit)))
 ;; ============================ ;;
 
-(use-package pdf-tools
-  :commands (pdf-view-mode)
-  :custom
-  (pdf-view-display-size 'fit-page)
-  (pdf-view-image-relief 2)
-  (pdf-view-use-scaling t)
-  :config
-  (pdf-tools-install)
-  (pdf-loader-install)
-  (display-line-numbers-mode -1))
+
+;; ========= PDF-TOOLS ========= ;;
+;; (use-package pdf-tools
+;;   :commands (pdf-view-mode)
+;;   :custom
+;;   (pdf-view-display-size 'fit-page)
+;;   (pdf-view-image-relief 2)
+;;   (pdf-view-use-scaling t)
+;;   :config
+;;   (pdf-tools-install)
+;;   (pdf-loader-install)
+;;   (display-line-numbers-mode -1))
+;; ============================ ;;
 
 
 ;; ========= DESKTOP ========= ;;

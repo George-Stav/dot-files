@@ -9,6 +9,7 @@ picom &				# compositor for transparency
 # nm-applet &			# nmcli widget
 flameshot &			# screenshot software
 qbittorrent &
+transmission-daemon &
 dunst &				# notification daemon
 /usr/bin/easystroke &           # mouse gestures on browser
 nitrogen --restore &		# wallpaper

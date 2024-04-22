@@ -38,6 +38,7 @@ abbr emr "emacsclient -e '(kill-emacs)' && emacs --daemon"
 alias paru="paru --bottomup"
 alias doom="$HOME/.emacs.d/bin/doom"
 alias lf="lfrun"
+alias speedtest="curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python -"
 
 
 ### ~~~~~~~~~~~~~~~~~~~~~ ###

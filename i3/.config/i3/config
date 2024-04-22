@@ -110,6 +110,7 @@ bindsym $mod+Shift+s exec "flameshot gui"
 bindsym $mod+b exec "mercury-browser"
 bindsym $mod+c exec "google-chrome-stable"
 bindsym $mod+a exec "$HOME/.local/bin/run"
+bindsym $mod+t exec "$HOME/.local/bin/thunar-goto"
 
 # Emacs
 bindsym $mod+e exec "$HOME/.local/bin/em n"
@@ -187,6 +188,7 @@ for_window [class="genp"] floating enable
 for_window [class="pentablet"] floating enable
 for_window [class="Pavucontrol"] floating enable
 for_window [title=".*QEMU/KVM"] floating enable
+for_window [class="anki"] floating enable
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
