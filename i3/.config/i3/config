@@ -50,11 +50,11 @@ bindsym $mod+j focus down
 bindsym $mod+k focus up
 bindsym $mod+l focus right
 
-# move focused window
-bindsym $mod+Ctrl+h move left
-bindsym $mod+Ctrl+j move down
-bindsym $mod+Ctrl+k move up
-bindsym $mod+Ctrl+l move right
+# move focused window; 100 px is only relevant for floating windows
+bindsym $mod+Ctrl+h move left 100 px
+bindsym $mod+Ctrl+j move down 100 px
+bindsym $mod+Ctrl+k move up 100 px
+bindsym $mod+Ctrl+l move right 100 px
 
 # enter fullscreen mode for the focused container
 bindsym $mod+Shift+f fullscreen toggle
@@ -182,13 +182,42 @@ no_focus [window_role="pop_up"]
 # for_window [class="google-chrome"] layout tabbed
 for_window [window_role="browser"] layout tabbed
 
-for_window [class="Galculator"] floating enable
 for_window [class="Thunar"] floating enable
 for_window [class="genp"] floating enable
 for_window [class="pentablet"] floating enable
 for_window [class="Pavucontrol"] floating enable
 for_window [title=".*QEMU/KVM"] floating enable
 for_window [class="anki"] floating enable
+
+# for_window [class=".*_floating"] floating enable
+for_window [class="Alacritty_floating|Galculator"] floating enable
+for_window [class="Alacritty_floating|Galculator"] move container to output next
+for_window [class="Alacritty_floating|Galculator"] sticky enable
+
+bindsym $mod+Ctrl+Escape mode "no_bindings"
+mode "no_bindings" {
+    # back to normal: Ctrl+Escape
+    bindsym Ctrl+Escape mode "default"
+}
+
+# Not required, just kept for the purpose of example
+# bindsym $mod+p mode "move_float" focus floating
+mode "move_float" {
+    bindsym Left  move left 100 px
+    bindsym Down  move down 100 px
+    bindsym Up    move up 100 px
+    bindsym Right move right 100 px
+
+    bindsym h     move left 100 px
+    bindsym j     move down 100 px
+    bindsym k     move up 100 px
+    bindsym l     move right 100 px
+
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+    bindsym p mode "default"
+}
 
 # resize window (you can also use the mouse for that)
 mode "resize" {

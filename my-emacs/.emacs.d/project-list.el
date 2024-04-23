@@ -1,7 +1,7 @@
 ;;; -*- lisp-data -*-
-(("~/notes/")
+(("~/shared/marketing-webanalytics/")
+ ("~/notes/")
  ("~/dotfiles/")
- ("~/shared/marketing-webanalytics/")
  ("~/Next/marketingdata_ETL/")
  ("/home/neeto/notes/")
  ("/home/neeto/dotfiles/")

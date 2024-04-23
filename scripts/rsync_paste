@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# echo "copy:  ${@:2}"
+# echo "paste: $1"
+printf "[INFO]: rsync -av --ignore-existing --progress -- ${@:2} $1/\n"
+rsync -av --ignore-existing --progress -- "${@:2}" "$1/"
+printf "\nPress Enter to exit..."
+read

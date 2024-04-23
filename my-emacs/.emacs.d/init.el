@@ -594,6 +594,7 @@
   ;; remap "RET" and "-" to use dired-single bindings
   ;; :bind (([remap dired-find-file] . dired-single-buffer)
   ;; 	 ([remap dired-up-directory] . dired-single-up-directory))
+  :config (setq dired-dwim-target t)
   :custom ((dired-listing-switches "-ahl -v --group-directories-first"))) ;; Flags used to run "ls"
 
 ;; (use-package dired-single
