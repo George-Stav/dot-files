@@ -8,19 +8,19 @@
 (tooltip-mode 0)
 (column-number-mode 1)
 (show-paren-mode 1)
-(electric-pair-mode 0) ;; stop automatically filling pairs ("", (), {}, [], etc.)
+(electric-pair-mode 0) ;; stop automatically completing pairs ("", (), {}, [], etc.)
 (electric-indent-mode 1) ;; dynamically indent text
 (size-indication-mode 1) ;; show file size in modeline
 (winner-mode 1) ;; enable window-undo/redo
 (toggle-word-wrap 1)
 ;; (global-visual-line-mode 1)
 
-(setq myrc/theme-light 'doom-acario-light)
+(setq myrc/theme-light 'doom-opera-light)
 (setq myrc/theme-dark 'gruber-darker)
 ;; font
 ;; (defun myrc/font () "Fira Code Retina-18")
 ;; (defun myrc/font () "JetBrains Mono-18")
-(defun myrc/font () "Iosevka-16")
+(defun myrc/font () "Iosevka-15")
 (add-to-list 'default-frame-alist `(font . ,(myrc/font)))
 (set-face-attribute 'variable-pitch nil :font (myrc/font) :weight 'regular) ;; required for org-mode
 
@@ -246,11 +246,12 @@
   "fy" '((lambda () (interactive) (myrc/yank-file-name nil)) :which-key "yank file name")
   "fY" '((lambda () (interactive) (myrc/yank-file-name t)) :which-key "yank file name")
 
-  ;; SUDO
+  ;; SUDO/SSH
   "s"  '(:ignore t :which-key "sudo")
   "s/" '((lambda () (interactive) (find-file (expand-file-name "/sudo::/"))) :which-key "dired sudoedit /")
   "s~" '((lambda () (interactive) (find-file (expand-file-name "/sudo::~"))) :which-key "dired sudoedit ~")
   "s." '((lambda () (interactive) (find-file (expand-file-name (concat "/sudo::" (buffer-file-name))))) :which-key "sudoedit current buffer")
+  "sr" '((lambda () (interactive) (find-file "/ssh:rpi@192.168.0.101|sudo:192.168.0.101:/")) :which-key "dired sudoedit rpi:/")
 
   ;; CONFIG
   "d"  '(:ignore t :which-key "dired & desktop")
@@ -346,8 +347,8 @@
 	      wdired-mode
 	      ibuffer-mode
 	      occur-mode
-	      sql-mode
 	      org-mode
+	      sql-mode
 	      text-mode))
   (setq whitespace-action
 	'(cleanup auto-cleanup)))
@@ -504,7 +505,7 @@
   :bind (([remap org-insert-heading-respect-content] . org-insert-item)
 	 ([remap org-table-copy-down] . org-insert-heading))
   :custom
-  ((org-agenda-files '("~/notes" "~/notes/next")))
+  ((org-agenda-files '("~/notes/next/work-todo.org")))
   :config
   ;; org-ellipsis " ▾"
   (setq org-hide-emphasis-markers t))
@@ -597,6 +598,7 @@
   ;; remap "RET" and "-" to use dired-single bindings
   ;; :bind (([remap dired-find-file] . dired-single-buffer)
   ;; 	 ([remap dired-up-directory] . dired-single-up-directory))
+  :config (setq dired-dwim-target t)
   :custom ((dired-listing-switches "-ahl -v --group-directories-first"))) ;; Flags used to run "ls"
 
 ;; (use-package dired-single
@@ -643,9 +645,7 @@
 (use-package eglot
   :ensure nil
   :custom ((eglot-ignored-server-capabilities '(:documentHighlightProvider))
-	   (eglot-extend-to-xref 1))
-  :config
-  (add-to-list 'eglot-server-programs '((rust-ts-mode rust-mode) . ("rustup" "run" "stable" "rust-analyzer"))))
+	   (eglot-extend-to-xref 1)))
 
 (use-package eldoc
   :ensure nil
@@ -660,14 +660,11 @@
 ;; (use-package yasnippet
 ;;   :hook ((rust-mode) .yas-minor-mode-on)
 ;;   :custom (yas-snippet-dirs '("~/dotfiles/my-emacs/.emacs.d/snippets")))
-
 ;; ============================ ;;
 
 
 ;; ========= PROGRAMMING-MODES ========= ;;
-(use-package rust-mode
-  :hook (rust-mode-hook . (setq indent-tabs-mode nil))
-  :config (add-to-list 'exec-path "~/.cargo/bin"))
+(use-package rust-mode :hook (rust-mode-hook . (setq indent-tabs-mode nil)))
 (use-package python-mode :commands (python-mode))
 (use-package yaml-mode :commands (yaml-mode))
 (use-package terraform-mode :commands (terraform-mode))
@@ -694,7 +691,7 @@
 ;; ============================ ;;
 
 
-;; ========= PDFTOOLS ========= ;;
+;; ========= PDF-TOOLS ========= ;;
 ;; (use-package pdf-tools
 ;;   :commands (pdf-view-mode)
 ;;   :custom
