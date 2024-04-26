@@ -1,0 +1,5 @@
+#/bin/sh
+
+for pid in $(ps -aux | grep -i 'citrix' | awk '{print $2}'); do
+    kill -s 9 $pid
+done

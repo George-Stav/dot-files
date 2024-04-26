@@ -347,7 +347,8 @@
 	      ibuffer-mode
 	      occur-mode
 	      sql-mode
-	      org-mode))
+	      org-mode
+	      text-mode))
   (setq whitespace-action
 	'(cleanup auto-cleanup)))
 ;; ============================ ;;
