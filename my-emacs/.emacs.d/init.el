@@ -199,6 +199,9 @@
   ;; (evil-define-key 'normal evil-motion-state-map (kbd "C-n") 'evil-collection-unimpaired-move-text-down)
   ;; (evil-define-key 'normal evil-motion-state-map (kbd "C-p") 'evil-collection-unimpaired-move-text-up)
   (evil-define-key 'insert vertico-map (kbd "C-k") 'vertico-previous))
+
+(use-package evil-numbers
+  :after evil)
 ;; ============================ ;;
 
 
@@ -760,7 +763,7 @@
  '(custom-safe-themes
    '("e27c9668d7eddf75373fa6b07475ae2d6892185f07ebed037eedf783318761d7" default))
  '(package-selected-packages
-   '(terraform-mode markdown-mode iedit yaml-mode which-key vertico use-package tree-sitter rust-mode rainbow-mode rainbow-delimiters python-mode orderless no-littering marginalia magit helpful gruber-darker-theme general evil-nerd-commenter evil-collection doom-themes doom-modeline dired-single corfu consult-projectile all-the-icons-dired))
+   '(evil-numbers terraform-mode markdown-mode iedit yaml-mode which-key vertico use-package tree-sitter rust-mode rainbow-mode rainbow-delimiters python-mode orderless no-littering marginalia magit helpful gruber-darker-theme general evil-nerd-commenter evil-collection doom-themes doom-modeline dired-single corfu consult-projectile all-the-icons-dired))
  '(warning-suppress-types '((frameset))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
