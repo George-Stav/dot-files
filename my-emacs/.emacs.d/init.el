@@ -16,13 +16,16 @@
 ;; (global-visual-line-mode 1)
 
 (setq myrc/theme-light 'doom-opera-light)
-(setq myrc/theme-dark 'gruber-darker)
+;; (setq myrc/theme-dark 'gruber-darker)
+(setq myrc/theme-dark 'doom-flatwhite)
 ;; font
 ;; (defun myrc/font () "Fira Code Retina-18")
 ;; (defun myrc/font () "JetBrains Mono-18")
 (defun myrc/font () "Iosevka-15")
 (add-to-list 'default-frame-alist `(font . ,(myrc/font)))
 (set-face-attribute 'variable-pitch nil :font (myrc/font) :weight 'regular) ;; required for org-mode
+
+(add-to-list 'exec-path "~/.cargo/bin")
 
 ;; remove startup message
 (setq inhibit-startup-message t)
@@ -336,7 +339,7 @@
 ;; ========= WHITESPACE-MODE ========= ;;
 (use-package whitespace
   :ensure nil
-  :init (global-whitespace-mode)
+  ;; :init (global-whitespace-mode)
   :config
   (setq whitespace-line-column 100)
   (setq whitespace-style

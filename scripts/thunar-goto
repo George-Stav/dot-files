@@ -1,0 +1,4 @@
+#!/bin/sh
+
+DIR="$(find ~ /mnt -maxdepth 3 -type d | rofi -i -sort -m -4 -dmenu -p 'Goto')"
+[ -n "$DIR" ] && thunar $DIR
