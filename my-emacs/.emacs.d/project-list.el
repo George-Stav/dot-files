@@ -1,6 +1,10 @@
 ;;; -*- lisp-data -*-
-(("~/shared/marketing-webanalytics/")
+(("~/Next/marketingdata_platform/")
+ ("~/shared/marketing-webanalytics/")
  ("~/notes/")
+ ("~/dev/rust/genealogy/")
+ ("~/dev/rust/aoc21/")
+ ("~/dev/rust/aoc23/")
  ("~/dotfiles/")
  ("~/Next/marketingdata_ETL/")
  ("/home/neeto/notes/")

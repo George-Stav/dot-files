@@ -2,3 +2,5 @@ __pycache__/
 fish/.config/fish/fish_variables
 my-emacs/.emacs.d/auto-save-list
 my-emacs/.emacs.d/recentf
+vpn/.local/share/vpn/wireguard/**
+vpn/.local/share/vpn/openvpn/**

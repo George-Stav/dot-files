@@ -15,7 +15,7 @@
 (toggle-word-wrap 1)
 ;; (global-visual-line-mode 1)
 
-(setq myrc/theme-light 'doom-opera-light)
+(setq myrc/theme-light 'doom-flatwhite)
 (setq myrc/theme-dark 'gruber-darker)
 ;; font
 ;; (defun myrc/font () "Fira Code Retina-18")
@@ -196,6 +196,9 @@
   ;; (evil-define-key 'normal evil-motion-state-map (kbd "C-n") 'evil-collection-unimpaired-move-text-down)
   ;; (evil-define-key 'normal evil-motion-state-map (kbd "C-p") 'evil-collection-unimpaired-move-text-up)
   (evil-define-key 'insert vertico-map (kbd "C-k") 'vertico-previous))
+
+(use-package evil-numbers
+  :after evil)
 ;; ============================ ;;
 
 
@@ -330,7 +333,7 @@
 ;; ========= WHITESPACE-MODE ========= ;;
 (use-package whitespace
   :ensure nil
-  :init (global-whitespace-mode)
+  ;; :init (global-whitespace-mode)
   :config
   (setq whitespace-line-column 100)
   (setq whitespace-style
