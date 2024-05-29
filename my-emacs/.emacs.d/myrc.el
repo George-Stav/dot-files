@@ -90,7 +90,7 @@ targets."
   (which-key--hide-popup-ignore-command)
   (let ((embark-indicators
 	 (remq #'embark-which-key-indicator embark-indicators)))
-      (apply fn args)))
+    (apply fn args)))
 
 (defun myrc/desktop-save-autoconfirm (orig-fn &rest args)
   "Advice to autoconfirm when saving desktop state."
@@ -104,7 +104,7 @@ targets."
 (defun myrc/frame-title ()
   "Set frame title and server name."
   (unless (boundp 'server-name)
-    (setq server-name "server"))
+    (setq server-name "standalone"))
   (setq frame-title-format (concat "%b - [" server-name "]"))
   (setq global-mode-string (concat "[" server-name "]")))
 
@@ -154,20 +154,40 @@ Needs to contain a `finished' message, as well as have 0 errors, warnings and in
   (find-file "~/notes/journal/again.org")
   (let ((inhibit-message t))
     (when write
-	(org-insert-heading-respect-content)
-	(insert (format-time-string "%A (%d/%m/%y)"
-				    (time-add (current-time) (* 60 60 24)))))))
+      (org-insert-heading-respect-content)
+      (insert (format-time-string "%A (%d/%m/%y)"
+				  (time-add (current-time) (* 60 60 24)))))))
 
 (defun myrc/desktop-save (&optional RELEASE ONLY-IF-CHANGED VERSION)
   "My version of desktop-save that sets DIRNAME automatically."
   (unless (f-exists-p desktop-dirname)
-    (make-directory desktop-dirname t))
-  (desktop-save desktop-dirname RELEASE ONLY-IF-CHANGED VERSION))
+    (make-directory desktop-dirname))
+  (desktop-save desktop-dirname RELEASE ONLY-IF-CHANGED VERSION)
+  (message "%s saved successfully in %s" desktop-base-file-name desktop-dirname))
 
-(defun myrc/kill-emacs (&optional FORCE)
+(defun myrc/desktop-read (&optional DIRNAME CHOOSE)
+  "My version of desktop-read with a little extra logic."
+  (if
+      (and
+       (not CHOOSE)
+       (not DIRNAME))
+      (desktop-read) ;; Neither variable is bound
+    (when ;; One of the variables is bound
+	(and ;; Respect DIRNAME if both are bound
+	 CHOOSE
+	 (not DIRNAME))
+      (setq DIRNAME
+	    (read-directory-name "Desktop save location: " myrc/desktop-save-location))) ;; Only prompt if DIRNAME is empty
+    (when
+	(and ;; Sanity check on DIRNAME
+	 (stringp DIRNAME)
+	 (f-exists-p (concat DIRNAME server-name ".desktop")))
+      (desktop-read DIRNAME))))
+
+(defun myrc/kill-emacs (&optional save-state)
   "Gracefully kill emacs after saving buffers. If FORCE is t, then save desktop state as well."
   (interactive)
-  (if FORCE
+  (if save-state
       (progn
 	(delete-file (desktop-full-file-name))
 	(myrc/desktop-save t)))

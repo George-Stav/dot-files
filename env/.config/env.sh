@@ -7,7 +7,7 @@ export TRASH="$HOME/.local/share/Trash"
 export RPI_IP="192.168.0.101"
 
 #~~~ -{DEFAULT APPLICATIONS}- ~~~#
-export EMACS_DAEMONS="personal work server default"
+export EMACS_DAEMONS="personal work default"
 export BROWSER="mercury-browser"
 export TERMINAL="alacritty"
 export EDITOR="nvim"
