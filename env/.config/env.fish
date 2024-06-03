@@ -6,7 +6,7 @@ set DOTFILES "$HOME/dotfiles"
 set TRASH "$HOME/.local/share/Trash"
 
 #~~~ -{DEFAULT APPLICATIONS}- ~~~#
-set EMACS_DAEMONS "personal work server default"
+set EMACS_DAEMONS "personal work default"
 set BROWSER "mercury-browser"
 set TERMINAL "alacritty"
 set EDITOR "nvim"

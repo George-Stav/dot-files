@@ -1,32 +1,28 @@
 #!/bin/sh
 
 startup() {
-    source "$HOME/.config/env.sh"
     for SOCKNAME in $EMACS_DAEMONS; do
 	emacs --daemon="$SOCKNAME"
-	# doesn't restore frame setup, run it manually
-	# if [ "$1" = "state" ]; then
-	#     emacsclient -s "$SOCKNAME" -e '(desktop-read)'
-	# fi
+	# doesn't restore window setup, but buffers are there
+	if [ "$1" = "state" ]; then
+	    emacsclient -s "$SOCKNAME" -e '(desktop-read)'
+	fi
     done
 }
 
 reboot() {
-    if [ "$1" = "state" ]; then
-	purge "state"
-    else
-	purge
-    fi
-    startup
+    purge "$1"
+    startup "$1"
 }
 
 purge() {
     save="$1"
     set IFS='\n';
-    for SOCKNAME in $(ps -x | grep "emacs --daemon" | head -n -1 | awk -F'=' '{print $2}'); do
+    # for SOCKNAME in $EMACS_DAEMONS; do # purge default daemons (work, personal, default)
+    for SOCKNAME in $(ps -x | grep "emacs --daemon" | head -n -1 | awk -F'=' '{print $2}'); do # purge all daemons
 	if [ "$save" = "state" ]; then
 	    emacsclient -s "$SOCKNAME" -e '(myrc/kill-emacs t)'
-	else 
+	else
 	    emacsclient -s "$SOCKNAME" -e '(myrc/kill-emacs nil)'
 	fi
     done
@@ -36,16 +32,18 @@ purge() {
 new() {
     SOCKNAME="$(echo $EMACS_DAEMONS | sed 's/ /\n/g' | rofi -m -4 -dmenu -p "Workspace")"
     if [ -n "$SOCKNAME" ]; then
-        if [ "$(ps -x | grep "emacs --daemon=$SOCKNAME" | wc -l)" = 1 ]; then
-            emacs --daemon="$SOCKNAME"
-        fi
-        emacsclient -c -socket-name="$SOCKNAME"
+	# if SOCKNAME does not exist, spin up an emacs server under that name
+	if [ "$(ps -x | grep "emacs --daemon=$SOCKNAME" | wc -l)" = 1 ]; then
+	    emacs --daemon="$SOCKNAME"
+	fi
+	emacsclient -c -socket-name="$SOCKNAME"
     fi
 }
 
 # Behaviour changes when ran interactively (i.e. go through systemctl).
 # When $2 is set to "service" the command is considered to be ran in non-interactive mode.
 # When $3 is set to "state" the state of emacs desktops is saved
+source "$HOME/.config/env.sh"
 SERVICE="emacs.service"
 case "$1" in
     s | startup) startup "$2" ;;
@@ -54,4 +52,3 @@ case "$1" in
     n | new) new ;;
     *) emacsclient -s default -c "$1" ;;
 esac
-    

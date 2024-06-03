@@ -15,9 +15,8 @@
 (toggle-word-wrap 1)
 ;; (global-visual-line-mode 1)
 
-(setq myrc/theme-light 'doom-opera-light)
-;; (setq myrc/theme-dark 'gruber-darker)
-(setq myrc/theme-dark 'doom-flatwhite)
+(setq myrc/theme-light 'doom-flatwhite)
+(setq myrc/theme-dark 'gruber-darker)
 ;; font
 ;; (defun myrc/font () "Fira Code Retina-18")
 ;; (defun myrc/font () "JetBrains Mono-18")
@@ -93,6 +92,8 @@
 
 (setq shell-file-name "/bin/bash")
 (setq explicit-shell-file-name "/bin/bash")
+
+(setq myrc/desktop-save-location "~/.cache/emacs/var/desktop/")
 ;; ============================ ;;
 
 
@@ -264,9 +265,10 @@
   "di" '((lambda () (interactive) (find-file (expand-file-name "~/dotfiles/my-emacs/.emacs.d/init.el"))) :which-key "init")
   "dc" '((lambda () (interactive) (find-file (expand-file-name "~/dotfiles/my-emacs/.emacs.d/myrc.el"))) :which-key "myrc")
   "dp" '((lambda () (interactive) (find-file (expand-file-name "~/dotfiles/my-emacs/.emacs.d/project-list.el"))) :which-key "project-list")
-  "ds" '((lambda () (interactive) (myrc/desktop-save nil t)) :which-key "desktop-save")
-  "dl" '((lambda () (interactive (desktop-release-lock))) :which-key "desktop-release-lock")
-  "dr" '(desktop-read :which-key "desktop-read")
+  "ds" '((lambda () (interactive) (myrc/desktop-save t t)) :which-key "desktop-save")
+  "dl" '((lambda () (interactive) (desktop-release-lock) (message "Successfully released %s" desktop-base-lock-name)) :which-key "desktop-release-lock")
+  "dr" '((lambda () (interactive) (myrc/desktop-read)) :which-key "desktop-read")
+  "dR" '((lambda () (interactive) (myrc/desktop-read nil t)) :which-key "desktop-read choose")
   "d-" '(dired-jump :which-key "dired-jump")
   "dd" '(dired-jump :which-key "dired-jump")
   "d." '(dired-jump :which-key "dired-jump")
@@ -331,8 +333,8 @@
   "x"  '(evil-buffer-new :which-key "temp buffer")
   "m"  '(man :which-key "man")
   "/"  '(consult-line :which-key "search")
-  "qq" '((lambda () (interactive) (myrc/kill-emacs nil)):which-key "save buffers and quit")
-  "qQ" '((lambda () (interactive) (myrc/kill-emacs t)):which-key "save buffers and desktop and quit"))
+  "qQ" '((lambda () (interactive) (myrc/kill-emacs nil)):which-key "save buffers and quit")
+  "qq" '((lambda () (interactive) (myrc/kill-emacs t)):which-key "save buffers and desktop and quit"))
 ;; ============================ ;;
 
 
@@ -378,8 +380,8 @@
   :defer t
   :bind (("C-f" . consult-line)
 	 ("C-M-l" . consult-imenu))
-	 ;; :map minibuffer-local-map
-	 ;; ("C-r" . consult-hitory))
+  ;; :map minibuffer-local-map
+  ;; ("C-r" . consult-hitory))
   :custom
   (completion-in-region-function #'consult-completion-in-region)
   (consult)
@@ -465,7 +467,7 @@
   :commands (consult-theme))
 
 ;; wombat
-(load-theme myrc/theme-dark t) ;; t at the end is needed to avoid a warning message
+(load-theme myrc/theme-light t) ;; t at the end is needed to avoid a warning message
 ;; ============================ ;;
 
 
@@ -553,7 +555,10 @@
 (use-package project
   :ensure nil
   :custom ((project-list-file "~/.emacs.d/project-list.el")
-	   (project-switch-commands #'project-dired)))
+	   (project-switch-commands #'((project-find-file "Find File" "f")
+				       (project-dired "Project dired" ?\r) ;; RET
+				       ;; ((lambda (dir) (interactive) (magit-status dir)) "Magit status" "g")))))
+				       (magit-status "Magit status" "g")))))	
 
 (myrc/leader-keys
   "p"  '(:ignore t :which-key "project")
@@ -692,8 +697,8 @@
 	      ("C-l" . iedit-restrict-current-line))
   :config
   (add-hook 'iedit-mode-hook #'iedit-restrict-current-line))
-	      ;; :map evil-normal-state-map ;; needed so that when attempting to enter normal mode from insert mode it doesn't exit altogether
-	      ;; ("<escape>" . iedit--quit)))
+;; :map evil-normal-state-map ;; needed so that when attempting to enter normal mode from insert mode it doesn't exit altogether
+;; ("<escape>" . iedit--quit)))
 ;; ============================ ;;
 
 
@@ -714,15 +719,23 @@
 ;; ========= DESKTOP ========= ;;
 (use-package desktop
   :ensure nil
-  :commands (desktop-save desktop-read desktop-full-file-name)
+  :commands (desktop-release-lock desktop-save desktop-read desktop-full-file-name)
   :custom
   ((desktop-save t)
    (desktop-base-file-name (concat server-name ".desktop"))
-   (desktop-base-lock-name (concat server-name ".lock.desktop"))
-   (desktop-dirname (concat "~/.cache/emacs/var/desktop/" (format-time-string "%Y-%m-%d")))
-   (desktop-path (list desktop-dirname))))
-  ;; ((desktop-base-file-name '(concat (format-time-string "%Y-%m-%d") "_" server-name ".desktop"))
-  ;;  (desktop-base-lock-name '(concat (format-time-string "%Y-%m-%d") "_" server-name ".lock.desktop"))))
+   (desktop-base-lock-name (concat server-name ".desktop.lock"))
+   (desktop-dirname (concat myrc/desktop-save-location (format-time-string "%Y-%m-%d")))
+   (desktop-path (sort
+		  (f-directories myrc/desktop-save-location)
+		  'string>)))
+  :config
+  (add-hook
+   'desktop-after-read-hook
+   (lambda ()
+     (setq desktop-dirname
+	   (concat
+	    myrc/desktop-save-location
+	    (format-time-string "%Y-%m-%d"))))))
 ;; ============================ ;;
 
 
@@ -766,7 +779,7 @@
  '(custom-safe-themes
    '("e27c9668d7eddf75373fa6b07475ae2d6892185f07ebed037eedf783318761d7" default))
  '(package-selected-packages
-   '(evil-numbers terraform-mode markdown-mode iedit yaml-mode which-key vertico use-package tree-sitter rust-mode rainbow-mode rainbow-delimiters python-mode orderless no-littering marginalia magit helpful gruber-darker-theme general evil-nerd-commenter evil-collection doom-themes doom-modeline dired-single corfu consult-projectile all-the-icons-dired))
+   '(terraform-mode markdown-mode iedit yaml-mode which-key vertico use-package tree-sitter rust-mode rainbow-mode rainbow-delimiters python-mode orderless no-littering marginalia magit helpful gruber-darker-theme general evil-nerd-commenter evil-collection doom-themes doom-modeline dired-single corfu consult-projectile all-the-icons-dired))
  '(warning-suppress-types '((frameset))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
