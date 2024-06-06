@@ -1,0 +1,20 @@
+#!/bin/sh
+
+VOCALOID="https://www.youtube.com/playlist?list=PLaHISR4HQ5FId4XrgAukPQNb_Xq7OCY-u"
+DIR="/mnt/HDD/MUSIC/vocaloid_new"
+# -w, --no-overwrites
+#        Do not overwrite files
+# -c, --continue
+#        Force   resume   of  partially  downloaded  files.   By  default,
+#        youtube-dl will resume downloads if possible.
+# -o, --output TEMPLATE
+# 	Output filename template, see the "OUTPUT TEMPLATE" for  all  the
+# 	info
+# -x, --extract-audio
+# 	Convert video files to audio-only files  (requires  ffmpeg/avconv
+# 	and ffprobe/avprobe)
+# --audio-format FORMAT
+# 	Specify  audio  format:  "best",  "aac",  "flac",  "mp3",  "m4a",
+# 	"opus", "vorbis", or "wav"; "best" by default; No effect  without
+# 	-x
+youtube-dl --verbose --cookies "~/Downloads/cookies.txt" -wc -o "$DIR/%(title)s.%(ext)s" --write-description --embed-thumbnail -x --audio-format 'mp3' "$VOCALOID"
