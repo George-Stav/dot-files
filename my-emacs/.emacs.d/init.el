@@ -555,10 +555,8 @@
 (use-package project
   :ensure nil
   :custom ((project-list-file "~/.emacs.d/project-list.el")
-	   (project-switch-commands #'((project-find-file "Find File" "f")
-				       (project-dired "Project dired" ?\r))))) ;; RET
-				       ;; ((lambda () (interactive) (magit-status-setup-buffer)) "Magit status" "g")))))
-				       ;; (magit-status-setup-buffer "Magit status" "g")))))	
+	   (project-switch-commands #'((project-find-file "Find File" f)
+				       (project-dired "Project dired" ?\r)))))	;; RET
 
 (myrc/leader-keys
   "p"  '(:ignore t :which-key "project")

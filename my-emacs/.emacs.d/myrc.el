@@ -176,30 +176,28 @@ Needs to contain a `finished' message, as well as have 0 errors, warnings and in
 	(and ;; Respect DIRNAME if both are bound
 	 CHOOSE
 	 (not DIRNAME))
-      (setq DIRNAME
-	    (read-directory-name "Desktop save location: " myrc/desktop-save-location))) ;; Only prompt if DIRNAME is empty
-    (when
-	(and ;; Sanity check on DIRNAME
-	 (stringp DIRNAME)
-	 (f-exists-p (concat DIRNAME server-name ".desktop")))
-      (desktop-read DIRNAME))))
+      (setq DIRNAME (read-directory-name "Desktop save location: " myrc/desktop-save-location)))) ;; Only prompt if DIRNAME is empty
+  (if 
+      (and ;; Sanity check on DIRNAME
+       (stringp DIRNAME)
+       (f-exists-p (concat DIRNAME server-name ".desktop")))
+      (desktop-read DIRNAME)
+    (desktop-read desktop-dirname)))
 
-(defun myrc/kill-emacs (&optional save-state)
+(defun myrc/kill-emacs (&optional SAVE-STATE)
   "Gracefully kill emacs after saving buffers. If FORCE is t, then save desktop state as well."
   (interactive)
-  (if save-state
-      (progn
-	(delete-file (desktop-full-file-name))
-	(myrc/desktop-save t)))
+  (when SAVE-STATE
+    (myrc/desktop-save t t))
   (let ((current-prefix-arg 4)) ;; simulate call with universal prefix (C-u/SPC-u)
-    (call-interactively 'save-buffers-kill-emacs)))
+    (call-interactively #'save-buffers-kill-emacs)))
 
 (defun myrc/iedit-restrict-region-if-selected ()
   (let ((bounds (car (region-bounds))))
-    (if (use-region-p)
-	(progn
-	  (message "Region is active")
-	  (iedit-restrict-region (car bounds) (cdr bounds))))))
+    (when (use-region-p)
+      (progn
+	(message "Region is active")
+	(iedit-restrict-region (car bounds) (cdr bounds))))))
 
 (defun myrc/toggle-theme ()
   "Toggle between a light and dark theme."
