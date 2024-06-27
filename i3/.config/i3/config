@@ -188,6 +188,7 @@ no_focus [window_role="pop_up"]
 # for_window directives
 
 for_window [window_role="browser"] layout tabbed
+for_window [window_role="Emacs"] layout tabbed
 
 for_window [class="Thunar"] floating enable
 for_window [class="genp"] floating enable

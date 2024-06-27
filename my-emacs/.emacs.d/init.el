@@ -89,6 +89,9 @@
 (setq explicit-shell-file-name "/bin/bash")
 
 (setq myrc/desktop-save-location "~/.cache/emacs/var/desktop/")
+
+;; Force ediff to run in same frame
++(setq ediff-window-setup-function 'ediff-setup-windows-plain)
 ;; ============================ ;;
 
 
@@ -261,9 +264,10 @@
   "dc" '((lambda () (interactive) (find-file (expand-file-name "~/dotfiles/my-emacs/.emacs.d/myrc.el"))) :which-key "myrc")
   "dp" '((lambda () (interactive) (find-file (expand-file-name "~/dotfiles/my-emacs/.emacs.d/project-list.el"))) :which-key "project-list")
   "ds" '((lambda () (interactive) (myrc/desktop-save t t)) :which-key "desktop-save")
-  "dl" '((lambda () (interactive) (desktop-release-lock) (message "Successfully released %s" desktop-base-lock-name)) :which-key "desktop-release-lock")
+  "dl" '((lambda () (interactive) (desktop-release-lock)) :which-key "desktop-release-lock")
   "dr" '((lambda () (interactive) (myrc/desktop-read)) :which-key "desktop-read")
   "dR" '((lambda () (interactive) (myrc/desktop-read nil t)) :which-key "desktop-read choose")
+  "dk" '((lambda () (interactive) (myrc/desktop-delete-dangling-locks)) :whick-key "delete-dangling-locks")
   "d-" '(dired-jump :which-key "dired-jump")
   "dd" '(dired-jump :which-key "dired-jump")
   "d." '(dired-jump :which-key "dired-jump")
@@ -714,6 +718,7 @@
   :commands (desktop-release-lock desktop-save desktop-read desktop-full-file-name)
   :custom
   ((desktop-save t)
+   (desktop-save-buffer t)
    (desktop-base-file-name (concat server-name ".desktop"))
    (desktop-base-lock-name (concat server-name ".desktop.lock"))
    (desktop-dirname (concat myrc/desktop-save-location (format-time-string "%Y-%m-%d")))
