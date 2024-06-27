@@ -147,8 +147,8 @@ bindsym $mod+Ctrl+q exec "i3-nagbar -t warning -m 'You pressed the exit shortcut
 
 bindsym $mod+Ctrl+Shift+s exec "systemctl suspend"
 bindsym $mod+Ctrl+Shift+h exec "systemctl hibernate"
-bindsym $mod+Ctrl+Shift+r exec "$HOME/.local/bin/em p && reboot"
-bindsym $mod+Ctrl+Shift+u exec "$HOME/.local/bin/em p && shutdown now"
+bindsym $mod+Ctrl+Shift+r exec "$HOME/.local/bin/em p state && reboot"
+bindsym $mod+Ctrl+Shift+u exec "$HOME/.local/bin/em p state && shutdown now"
 
 # px for floating | ppt for tiled
 bindsym $mod+Shift+h resize shrink width 100 px or 10 ppt
@@ -181,6 +181,7 @@ no_focus [window_role="pop_up"]
 
 # for_window [class="google-chrome"] layout tabbed
 for_window [window_role="browser"] layout tabbed
+for_window [class="Emacs"] layout tabbed
 
 for_window [class="Galculator"] floating enable
 for_window [class="Thunar"] floating enable

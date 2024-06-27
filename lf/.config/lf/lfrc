@@ -9,22 +9,40 @@ set ifs "\n"
 
 cmd open ${{
 	case "$f" in
-		*.org|*.tex) "$VISUAL" "$f" & ;;
 		*.jpg|*.png|*.gif) sxiv "$f" & ;;
-		*.mkv|*.mp4|*.flac|*.webp) mpv --no-terminal --sub-files=$(find -maxdepth 2 -regextype posix-extended -regex '.*\.(idx|srt|sub)' -printf '%p:') $fx & ;;
+		# TODO: Fix lag that occurs after unpausing mpv
+		*.mkv|*.mp4|*.flac|*.webp|*.avi|*.m2ts) mpv --pulse-latency-hacks=yes --no-terminal --sub-files=$(find -maxdepth 2 -regextype posix-extended -regex '.*\.(idx|srt|sub)' -printf '%p:') $fx & ;;
 		*.mp3|*.wav) mpv --no-terminal $fx & ;;
 		*.csv|*.xls|*.xlsx|*.gnumeric) gnumeric $f & ;;
 		*.pdf|*.cbz) zathura "$f" & ;;
-		*) "$VISUAL" "$f" & ;;
+		*) $VISUAL "$f" & ;;
 	esac
 }}
 
-cmd test ${{
-    # echo "mpv "$(echo $fx | tr '\n' ' ' | sed "s/ /\\ /g")""
-    # echo "echo "$fx" | tr '\n' ' '"
-    # echo mpv --no-terminal --sub-files=$(find \( -name '*.srt' -o -name '*.sub' -o -name '*.idx' \) -printf '%p:') $fx
-    # convert "$f" -resize 300x300 small_cover.png
+cmd test &{{
+	      lf -remote "send $id echo $SCRIPTS"
 }}
+map t test
+
+cmd rsync_paste &{{
+    set -- $(cat ~/.local/share/lf/files)
+    mode="$1"
+    shift
+    [[ -z "$@" || "$mode" == "move" ]] && exit
+    alacritty --class "Alacritty_floating" \
+	      -e $SCRIPTS/rsync_paste "$PWD" "$@"
+    rm ~/.local/share/lf/files
+    lf -remote "send clear"
+}}
+
+cmd move-parent &{{
+    # https://github.com/gokcehan/lf/wiki/Tips#move-updown-in-the-parent-directory
+    dironly="setlocal '$(dirname "$PWD")' dironly"
+    lf -remote "send $id :updir; $dironly true; $1; $dironly false; open"
+}}
+
+map <c-j> move-parent down
+map <c-k> move-parent up
 
 # Archive bindings
 cmd unarchive ${{
@@ -34,7 +52,7 @@ cmd unarchive ${{
 		*.tar.bz2) tar -xjvf "$f" ;;
 		*.tar) tar -xvf "$f" ;;
 		*.rar) unrar x "$f" ;;
-		*) lf -remote "send echo Unsupported format" ;;
+		*) lf -remote "send $id echo Unsupported format" ;;
 	esac
 }}
 
@@ -58,7 +76,7 @@ cmd trash ${{
 }}
 
 cmd fzf_jump ${{
-	res="$(find . -maxdepth 3 | fzf --reverse --header='Jump to location')"
+	res="$(find . -maxdepth 4 | fzf --reverse --header='Jump to location')"
 	if [ -f "$res" ]; then
 		cmd="select"
 	elif [ -d "$res" ]; then
@@ -88,8 +106,8 @@ cmd rename_snake_case ${{
 # Replace spaces with underscores
 cmd rename_underscore ${{
     echo "$fx" | while read l; do
-        new="$(basename "$l" | sed 's/ /_/g')"
-        mv "$l" "$(pwd)/$new"
+	new="$(basename "$l" | sed 's/ /_/g')"
+	mv "$l" "$(pwd)/$new"
     done
 }}
 
@@ -99,7 +117,7 @@ cmd rename_underscore ${{
 cmd size ${{
 	dirs="$PWD"
 	[ -n "$fx" ] && dirs="$(echo $fx | sed -z 's/\n/ /;s/ $//g')"
-	lf -remote "send echo $(dir-size -d "$dirs" -D 0 -c)"
+	lf -remote "send $id echo $(dir-size -d "$dirs" -D 0 -c)"
 }}
 
 cmd sudo_paste ${{
@@ -124,10 +142,10 @@ map w
 map d
 map r
 map y
-map t
 map *
 
-map t test
+# Thunar
+map <c-t> ${{ thunar "$PWD" 2> /dev/null & }}
 
 # Glob-select
 map *c glob-select *.csv
@@ -143,6 +161,7 @@ map rr rename
 map rp rename_snake_case
 map rm rename_snake_pascal
 map r_ rename_underscore
+map rs rsync_paste
 # map rb $vimv $fx
 # map br $emacsclient -c . &
 
@@ -184,5 +203,4 @@ map gw cd /mnt/WD
 map gl cd ~/wallpapers
 map g/ cd /
 map g~ cd ~
-map g. cd ~/.config
 map gd cd ~/Downloads

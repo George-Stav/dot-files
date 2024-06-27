@@ -162,27 +162,34 @@ Needs to contain a `finished' message, as well as have 0 errors, warnings and in
   "My version of desktop-save that sets DIRNAME automatically."
   (unless (f-exists-p desktop-dirname)
     (make-directory desktop-dirname))
-  (desktop-save desktop-dirname RELEASE ONLY-IF-CHANGED VERSION)
-  (message "%s saved successfully in %s" desktop-base-file-name desktop-dirname))
+  (when
+      (desktop-save desktop-dirname RELEASE ONLY-IF-CHANGED VERSION)
+    (message "%s saved successfully in %s" desktop-base-file-name desktop-dirname)))
 
 (defun myrc/desktop-read (&optional DIRNAME CHOOSE)
-  "My version of desktop-read with a little extra logic."
+  "My version of desktop-read with a little extra logic.
+Better programming practice would be to break down this function into a few
+small ones that are easier to understand and debug."
   (if
-      (and
-       (not CHOOSE)
-       (not DIRNAME))
-      (desktop-read) ;; Neither variable is bound
-    (when ;; One of the variables is bound
-	(and ;; Respect DIRNAME if both are bound
-	 CHOOSE
-	 (not DIRNAME))
-      (setq DIRNAME (read-directory-name "Desktop save location: " myrc/desktop-save-location)))) ;; Only prompt if DIRNAME is empty
-  (if 
-      (and ;; Sanity check on DIRNAME
-       (stringp DIRNAME)
-       (f-exists-p (concat DIRNAME server-name ".desktop")))
-      (desktop-read DIRNAME)
-    (desktop-read desktop-dirname)))
+      (or CHOOSE DIRNAME)
+      (when ;; At least one of the variables is bound
+	  (and ;; Respect DIRNAME if both are bound
+	   CHOOSE
+	   (not DIRNAME))
+	(let ((DIRNAME (read-directory-name "Desktop save location: " myrc/desktop-save-location))) ;; Only prompt if DIRNAME is empty
+	  (if
+	      (and ;; Sanity check on DIRNAME
+	       (stringp DIRNAME)
+	       (f-exists-p (concat DIRNAME server-name ".desktop")))
+	      (desktop-read DIRNAME)
+	    (desktop-read desktop-dirname))))
+    (desktop-read))) ;; Neither variable is bound
+
+(defun myrc/desktop-delete-dangling-locks ()
+  "Recursively delete all '.lock$' files in 'myrc/desktop-save-location."
+  (mapc
+   'delete-file
+   (directory-files-recursively myrc/desktop-save-location ".lock$")))
 
 (defun myrc/kill-emacs (&optional SAVE-STATE)
   "Gracefully kill emacs after saving buffers. If FORCE is t, then save desktop state as well."
