@@ -52,6 +52,9 @@ disabled = true
 [c]
 disabled = true
 
+[gcloud]
+disabled = true
+
 # [conda]
 # symbol = " "
 
