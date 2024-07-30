@@ -1,7 +1,8 @@
 ;;; -*- lisp-data -*-
 (("~/dotfiles/")
- ("~/Next/marketing-webanalytics/")
  ("~/notes/")
+ ("~/Next/marketing-webanalytics/")
+ ("~/dev/rust/tkup/")
  ("~/dev/rust/spotiver/")
  ("~/Next/marketingdata_platform/")
  ("~/dev/revzak/")
