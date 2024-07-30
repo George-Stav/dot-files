@@ -66,6 +66,8 @@
 (setq display-buffer-alist '(("\\*compilation"
 			      (display-buffer-reuse-window display-buffer-at-bottom)
 			      (window-height . 13))
+			     ("\\*grep"
+			      (display-buffer-at-bottom))
 			     ("\\*\\(Help\\|eldoc\\)"
 			      (display-buffer-reuse-window display-buffer-in-direction)
 			      (direction . right))
@@ -296,8 +298,8 @@
   ;; kill
   "wc" '(delete-window :which "delete-window")
   "k"  '(kill-buffer-and-window :which "kill-buffer-and-window")
-  "w C-o" '(delete-other-windows :which "delete-other-windows")
   "wo" '(delete-other-windows :which "delete-other-windows")
+  "w C-o" '(delete-other-windows :which "delete-other-windows")
   ;; movement
   "wj" '(evil-window-down :which-key "evil-window-down")
   "wk" '(evil-window-up :which-key "evil-window-up")
@@ -559,8 +561,10 @@
 (use-package project
   :ensure nil
   :custom ((project-list-file "~/.emacs.d/project-list.el")
-	   (project-switch-commands #'((project-find-file "Find File" f)
-				       (project-dired "Project dired" ?\r)))))	;; RET
+	   (project-switch-commands #'((project-find-file "Find File" ? )
+				       (project-find-dir "Find Dir" ?d)
+				       (project-dired "Project dired" ?\r)
+				       (magit-project-status "Magit status" ?g)))))
 
 (myrc/leader-keys
   "p"  '(:ignore t :which-key "project")
@@ -568,7 +572,8 @@
   "pc" '(myrc/project-reset-compilation-path :which-key "reset compilation search path")
   "ps" '(consult-ripgrep :which-key "search project")
   "pr" '(vc-register :which-key "vc-register")
-  "pd" '(project-dired :which-key "project-dired")
+  "pd" '(project-find-dir :which-key "project-find-dir")
+  "pD" '(project-dired :which-key "project-dired")
   "SPC" '(project-find-file :which-key "project-find-file"))
 
 ;; Turn off vc
@@ -680,7 +685,9 @@
 (use-package rust-mode :hook (rust-mode-hook . (setq indent-tabs-mode nil)))
 (use-package python-mode :commands (python-mode))
 (use-package yaml-mode :commands (yaml-mode))
-(use-package terraform-mode :commands (terraform-mode))
+(use-package terraform-mode
+  :commands (terraform-mode)
+  :custom (terraform-format-on-save t))
 ;; ============================ ;;
 
 
@@ -724,7 +731,6 @@
   :commands (desktop-release-lock desktop-save desktop-read desktop-full-file-name)
   :custom
   ((desktop-save t)
-   (desktop-save-buffer t)
    (desktop-base-file-name (concat server-name ".desktop"))
    (desktop-base-lock-name (concat server-name ".desktop.lock"))
    (desktop-dirname (concat myrc/desktop-save-location (format-time-string "%Y-%m-%d")))
@@ -749,6 +755,10 @@
 (use-package evil-anzu
   :diminish
   :init (global-anzu-mode))
+
+(use-package wgrep
+  :commands (wgrep-change-to-wgrep-mode)
+  :custom (wgrep-auto-save-buffer t))
 
 ;; Latex mode stuff
 (use-package tex-mode
@@ -782,7 +792,7 @@
  '(custom-safe-themes
    '("e27c9668d7eddf75373fa6b07475ae2d6892185f07ebed037eedf783318761d7" default))
  '(package-selected-packages
-   '(terraform-mode markdown-mode iedit yaml-mode which-key vertico use-package tree-sitter rust-mode rainbow-mode rainbow-delimiters python-mode orderless no-littering marginalia magit helpful gruber-darker-theme general evil-nerd-commenter evil-collection doom-themes doom-modeline dired-single corfu consult-projectile all-the-icons-dired))
+   '(wgrep terraform-mode markdown-mode iedit yaml-mode which-key vertico use-package tree-sitter rust-mode rainbow-mode rainbow-delimiters python-mode orderless no-littering marginalia magit helpful gruber-darker-theme general evil-nerd-commenter evil-collection doom-themes doom-modeline dired-single corfu consult-projectile all-the-icons-dired))
  '(warning-suppress-types '((frameset))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
