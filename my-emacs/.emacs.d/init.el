@@ -13,6 +13,7 @@
 (size-indication-mode 1) ;; show file size in modeline
 (winner-mode 1) ;; enable window-undo/redo
 (toggle-word-wrap 1)
+;; (global-auto-revert-mode 1)
 ;; (global-visual-line-mode 1)
 
 (setq myrc/theme-light 'doom-flatwhite)
@@ -292,6 +293,7 @@
   "b[" '(previous-buffer :which-key "previous-buffer")
   "bi" '(ibuffer :which-key "ibuffer")
   "br" '(evil-edit :which-key "refresh buffer")
+  "bn" '(rename-buffer :which-key "rename buffer")
 
   ;; WINDOW
   "w"  '(:ignore t :which-key "window")
@@ -419,23 +421,23 @@
   :bind (:map evil-insert-state-map
 	      ("C-<tab>" . company-complete)))
 
-(use-package embark
-  :bind (("C-," . embark-act)
-	 :map minibuffer-local-map
-	 ("C-d" . embark-act)))
+;; (use-package embark
+;;   :bind (("C-," . embark-act)
+;; 	 :map minibuffer-local-map
+;; 	 ("C-d" . embark-act)))
 
-(use-package embark-consult
-  :after (embark consult)
-  :defer t
-  :hook (embark-collect-mode . embark-consult-preview-minor-mode))
+;; (use-package embark-consult
+;;   :after (embark consult)
+;;   :defer t
+;;   :hook (embark-collect-mode . embark-consult-preview-minor-mode))
 
-(setq embark-indicators
-      '(myrc/embark-which-key-indicator
-	embark-highlight-indicator
-	embark-isearch-highlight-indicator))
+;; (setq embark-indicators
+;;       '(myrc/embark-which-key-indicator
+;; 	embark-highlight-indicator
+;; 	embark-isearch-highlight-indicator))
 
-(advice-add #'embark-completing-read-prompter
-	    :around #'myrc/embark-hide-which-key-indicator)
+;; (advice-add #'embark-completing-read-prompter
+;; 	    :around #'myrc/embark-hide-which-key-indicator)
 ;; ============================ ;;
 
 
@@ -448,7 +450,8 @@
 	   (doom-modeline-minor-modes nil)
 	   (doom-modeline-height 12)
 	   (doom-modeline-project-detection 'auto)
-	   (doom-modeline-env-python-executable "python")))
+	   (doom-modeline-env-python-executable "python")
+	   (doom-modeline-buffer-file-name-style 'truncate-from-project)))
 ;; ============================ ;;
 
 
@@ -764,6 +767,10 @@
 (use-package tex-mode
   :hook ((latex-mode . myrc/toggle-compilation-window-kill-on-success))
   :config (setq compile-command (format "pdflatex %s" (buffer-name))))
+  ;; (add-to-list 'tex-compile-commands '((concat
+  ;; 				       "pdflatex %f "
+  ;; 				       (format "&& emacsclient -s %s " server-name)
+  ;; 				       "-e '(with-current-buffer '%f' (myrc/revert-buffer-no-confirm))'") t t)))
 
 ;; turn on manually when needed
 (use-package rainbow-mode
@@ -801,3 +808,4 @@
  ;; If there is more than one, they won't work right.
  '(markdown-code-face ((t nil))))
 (put 'dired-find-alternate-file 'disabled nil)
+(put 'downcase-region 'disabled nil)

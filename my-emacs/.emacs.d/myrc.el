@@ -228,3 +228,13 @@ small ones that are easier to understand and debug."
 		  (remove-hook
 		   'flymake-diagnostic-functions 'eglot-flymake-backend)
 		  (eglot-inlay-hints-mode -1))))))
+
+(defun myrc/revert-buffer-no-confirm ()
+    "Revert buffer without confirmation."
+    (interactive) (revert-buffer t t))
+
+(defun myrc/pdflatex-compile ()
+  "Compile .tex files into a pdf with live preview."
+  (interactive)
+  (compile (format "pdflatex %s" (buffer-name)))
+  (with-current-buffer '(concat (file-name-sans-extension (buffer-name)) ".pdf") (revert-buffer t t)))
