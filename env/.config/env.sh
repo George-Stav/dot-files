@@ -4,7 +4,6 @@
 export SCRIPTS="$HOME/.local/bin"
 export DOTFILES="$HOME/dotfiles"
 export TRASH="$HOME/.local/share/Trash"
-export RPI_IP="192.168.0.101"
 
 #~~~ -{DEFAULT APPLICATIONS}- ~~~#
 export EMACS_DAEMONS="personal work default"

@@ -1,4 +1,6 @@
 #!/bin/sh
 
-DIR="$(find ~ /mnt -maxdepth 3 -type d | rofi -i -sort -m -4 -dmenu -p 'Goto')"
+# -async-pre-read 1 -> By default, rofi launches asynchronously after having read 25 lines of input. This option reduces that to 1 line of input.
+DIR="$(find ~ /mnt -maxdepth 3 -type d | rofi -async-pre-read 1 -i -sort -m -4 -dmenu -p 'Goto')"
+echo "Got: [$DIR]"
 [ -n "$DIR" ] && thunar $DIR

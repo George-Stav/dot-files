@@ -1,11 +1,11 @@
 ;;; -*- lisp-data -*-
 (("~/dotfiles/")
- ("~/Next/marketingdata_platform/")
  ("~/Next/marketing-webanalytics/")
+ ("~/Next/marketingdata_platform/")
  ("~/notes/")
+ ("~/cv/")
  ("~/shared/marketing-webanalytics/")
  ("~/dev/rust/spotiver/")
- ("~/cv/")
  ("~/dev/rust/genealogy/")
  ("~/dev/rust/aoc21/")
  ("~/dev/rust/aoc23/")
