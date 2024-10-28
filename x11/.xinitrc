@@ -5,7 +5,8 @@ xset s off -dpms # turn of [s]creen-saver control and Energy Star (DPMS) feature
 prime-offload &> /dev/null
 eval "$SCRIPTS/xconf reload" &	# reload xrandr configuration
 eval "$SCRIPTS/em startup" &  	# emacs servers
-picom &				# compositor for transparency
+				# compositor for transparency
+picom -b --config ~/.config/picom/$(hostname).conf
 nm-applet &			# nmcli widget
 flameshot &			# screenshot software
 dunst &				# notification daemon
