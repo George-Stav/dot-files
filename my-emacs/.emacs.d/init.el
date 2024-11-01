@@ -16,8 +16,6 @@
 ;; (global-auto-revert-mode 1)
 ;; (global-visual-line-mode 1)
 
-(setq myrc/theme-light 'doom-flatwhite)
-(setq myrc/theme-dark 'gruber-darker)
 ;; font
 ;; (defun myrc/font () "Fira Code Retina-18")
 ;; (defun myrc/font () "JetBrains Mono-18")
@@ -475,8 +473,11 @@
 (use-package gruber-darker-theme
   :commands (consult-theme))
 
+(setq myrc/theme-light 'doom-flatwhite)
+(setq myrc/theme-dark 'wombat)
+
 ;; wombat
-(load-theme myrc/theme-light t) ;; t at the end is needed to avoid a warning message
+(load-theme myrc/theme-dark t) ;; t at the end is needed to avoid a warning message
 ;; ============================ ;;
 
 
