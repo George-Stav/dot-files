@@ -16,9 +16,6 @@
 (toggle-word-wrap 1)
 ;; (global-visual-line-mode 1)
 
-
-(setq myrc/theme-light 'doom-flatwhite)
-(setq myrc/theme-dark 'gruber-darker)
 ;; font
 ;; (defun myrc/font () "Fira Code Retina-18")
 ;; (defun myrc/font () "JetBrains Mono-18")
@@ -89,8 +86,8 @@
 ;; Default behaviour is to ask
 (setq auth-source-save-behavior nil)
 
-(setq shell-file-name "/bin/bash")
-(setq explicit-shell-file-name "/bin/bash")
+;; (setq shell-file-name "/bin/bash")
+;; (setq explicit-shell-file-name "/bin/bash")
 
 (setq myrc/desktop-save-location "~/.cache/emacs/var/desktop/")
 
@@ -468,8 +465,11 @@
 (use-package gruber-darker-theme
   :commands (consult-theme))
 
+(setq myrc/theme-light 'doom-flatwhite)
+(setq myrc/theme-dark 'wombat)
+
 ;; wombat
-(load-theme myrc/theme-light t) ;; t at the end is needed to avoid a warning message
+(load-theme myrc/theme-dark t) ;; t at the end is needed to avoid a warning message
 ;; ============================ ;;
 
 
@@ -657,9 +657,8 @@
 
 ;; ========= LANGUAGE-SERVER (EGLOT, ELDOC) ========= ;;
 (use-package eglot
-  :ensure nil
-  :custom ((eglot-ignored-server-capabilities '(:documentHighlightProvider))
-	   (eglot-extend-to-xref 1)))
+  ;; :ensure nil
+  :custom ((eglot-ignored-server-capabilities '(:documentHighlightProvider))))
 
 (use-package eldoc
   :ensure nil
@@ -684,6 +683,7 @@
 (use-package terraform-mode
   :commands (terraform-mode)
   :custom (terraform-format-on-save t))
+(use-package dart-mode :commands (dart-mode))
 ;; ============================ ;;
 
 

@@ -7,10 +7,19 @@ set TERM "xterm-256color"
 set -x TEXMFCNF "~/.config:"
 set fish_cursor_insert underscore
 
-set -x LD_LIBRARY_PATH "$LD_LIBRARY_PATH:/usr/lib/"
-set -p PATH ~/.cargo/bin
-set -p PATH ~/Next/google-cloud-sdk/bin
+# Messes with android studio and gradle and such
+# set -x LD_LIBRARY_PATH "$LD_LIBRARY_PATH:/usr/lib/"
 
+# ANY MODIFICATIONS TO PATH MOVED TO env.fish AND env.sh
+# set -p PATH ~/.cargo/bin
+# set -p PATH ~/Next/google-cloud-sdk/bin
+
+# FLUTTER
+# set -p PATH ~/Android/Sdk/cmdline-tools/latest/bin
+# set -p PATH ~/Android/Sdk/emulator
+set -x CHROME_EXECUTABLE "google-chrome-stable"
+abbr fltr-licenses "sdkmanager --update && flutter doctor --android-licenses"
+### ~~~ ###
 
 # keychain --quiet --eval --agents ssh id_ed25519
 
@@ -62,21 +71,6 @@ set -U __done_notification_urgency_level low
 # Apply .profile: use this to put fish compatible .profile stuff in
 if test -f ~/.fish_profile
   source ~/.fish_profile
-end
-
-set -p PATH ~/.local/bin
-# Add ~/.local/bin to PATH
-if test -d ~/.local/bin
-    if not contains -- ~/.local/bin $PATH
-	set -p PATH ~/.local/bin
-    end
-end
-
-# Add depot_tools to PATH
-if test -d ~/Applications/depot_tools
-    if not contains -- ~/Applications/depot_tools $PATH
-	set -p PATH ~/Applications/depot_tools
-    end
 end
 
 ## Starship prompt

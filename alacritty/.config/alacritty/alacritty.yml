@@ -47,7 +47,7 @@ font:
 draw_bold_text_with_bright_colors: true
 save_to_clipboard: true
 window.dynamic_title: false
-live_config_reload: true
+general.live_config_reload: true
 
 # CURSOR
 cursor:
@@ -56,7 +56,7 @@ cursor:
   unfocused_hollow: true
 
 # SHELL
-shell:
+terminal.shell:
   program: /usr/bin/fish
   args:
     - --login

@@ -163,7 +163,7 @@ bindsym $mod+Shift+k resize shrink height 100 px or 10 ppt
 bindsym $mod+Shift+l resize grow width 100 px or 10 ppt
 
 # Assign
-assign [class="Virt-manager"] number 5
+assign [class="Virt-manager|jetbrains-studio"] number 5
 assign [class="qBittorrent"] number 6
 assign [class="pentablet"] number 6
 assign [class="steam"] number 7
@@ -196,6 +196,7 @@ for_window [class="pentablet"] floating enable
 for_window [class="Pavucontrol"] floating enable
 for_window [title=".*QEMU/KVM"] floating enable
 for_window [class="anki"] floating enable
+for_window [class="Emulator"] floating enable
 
 # for_window [class=".*_floating"] floating enable
 for_window [class="Alacritty_floating|Galculator"] floating enable
