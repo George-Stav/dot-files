@@ -8,7 +8,7 @@ eval "$SCRIPTS/em startup" &  	# emacs servers
 				# compositor for transparency
 picom -b --config ~/.config/picom/$(hostname).conf
 nm-applet &			# nmcli widget
-flameshot &			# screenshot software
+# flameshot &			# screenshot software - takes up too much memory
 dunst &				# notification daemon
 /usr/bin/easystroke &           # mouse gestures on browser
 nitrogen --restore &		# wallpaper

@@ -2,7 +2,7 @@
 
 source "$HOME/.config/env.fish"
 
-# set -x MANPAGER "nvim -c 'set ft=man' -"
+set -x MANPAGER "bat -l man --style full"
 set TERM "xterm-256color"
 set -x TEXMFCNF "~/.config:"
 set fish_cursor_insert underscore
@@ -44,9 +44,6 @@ alias lf="lfrun"
 ### ~~~~~~~~~~~~~~~~~~~~~ ###
 set fish_greeting
 set VIRTUAL_ENV_DISABLE_PROMPT "1"
-
-# ORIGINAL MANPAGER:
-set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
 
 ## Export variable need for qt-theme
 if type "qtile" >> /dev/null 2>&1
