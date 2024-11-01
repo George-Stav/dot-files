@@ -1,5 +1,6 @@
 ;; ========= STANDARD SETUP ========= ;;
 (load "~/.emacs.d/myrc.el")
+(setq custom-file "~/.emacs.custom.el")
 
 ;; clean
 (menu-bar-mode 0)
@@ -23,8 +24,6 @@
 (add-to-list 'default-frame-alist `(font . ,(myrc/font)))
 (set-face-attribute 'variable-pitch nil :font (myrc/font) :weight 'regular) ;; required for org-mode
 
-(add-to-list 'exec-path "~/.cargo/bin")
-
 ;; remove startup message
 (setq inhibit-startup-message t)
 
@@ -45,9 +44,9 @@
 (set-fringe-mode '(0 . 0))
 
 ;; line numbers
-(setq display-line-numbers-type 'relative)
 (global-display-line-numbers-mode t)
 
+(setq display-line-numbers-type 'relative)
 ;; Relocate backup files (e.g. ./foo~) to a dedicated directory
 (setq backup-directory-alist '(("." . "~/.cache/emacs/backups")))
 
@@ -91,8 +90,8 @@
 ;; Default behaviour is to ask
 (setq auth-source-save-behavior nil)
 
-(setq shell-file-name "/bin/bash")
-(setq explicit-shell-file-name "/bin/bash")
+;; (setq shell-file-name "/bin/bash")
+;; (setq explicit-shell-file-name "/bin/bash")
 
 (setq myrc/desktop-save-location "~/.cache/emacs/var/desktop/")
 
@@ -262,7 +261,7 @@
   "s/" '((lambda () (interactive) (find-file (expand-file-name "/sudo::/"))) :which-key "dired sudoedit /")
   "s~" '((lambda () (interactive) (find-file (expand-file-name "/sudo::~"))) :which-key "dired sudoedit ~")
   "s." '((lambda () (interactive) (find-file (expand-file-name (concat "/sudo::" (buffer-file-name))))) :which-key "sudoedit current buffer")
-  "sr" '((lambda () (interactive) (find-file "/ssh:rpi@192.168.0.101|sudo:192.168.0.101:/")) :which-key "dired sudoedit rpi:/")
+  "sr" '((lambda () (interactive) (find-file "/ssh:rpi@rpi#9753:/home/rpi")) :which-key "dired edit rpi:/home")
 
   ;; CONFIG
   "d"  '(:ignore t :which-key "dired & desktop")
@@ -665,9 +664,8 @@
 
 ;; ========= LANGUAGE-SERVER (EGLOT, ELDOC) ========= ;;
 (use-package eglot
-  :ensure nil
-  :custom ((eglot-ignored-server-capabilities '(:documentHighlightProvider))
-	   (eglot-extend-to-xref 1)))
+  ;; :ensure nil
+  :custom ((eglot-ignored-server-capabilities '(:documentHighlightProvider))))
 
 (use-package eldoc
   :ensure nil
@@ -792,21 +790,5 @@
 (add-hook 'emacs-startup-hook #'myrc/frame-title)
 (add-hook 'emacs-startup-hook #'myrc/display-startup-time)
 ;; ============================ ;;
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   '("e27c9668d7eddf75373fa6b07475ae2d6892185f07ebed037eedf783318761d7" default))
- '(package-selected-packages
-   '(wgrep terraform-mode markdown-mode iedit yaml-mode which-key vertico use-package tree-sitter rust-mode rainbow-mode rainbow-delimiters python-mode orderless no-littering marginalia magit helpful gruber-darker-theme general evil-nerd-commenter evil-collection doom-themes doom-modeline dired-single corfu consult-projectile all-the-icons-dired))
- '(warning-suppress-types '((frameset))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(markdown-code-face ((t nil))))
-(put 'dired-find-alternate-file 'disabled nil)
-(put 'downcase-region 'disabled nil)
+
+(load "~/.emacs.custom.el")

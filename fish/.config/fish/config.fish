@@ -8,8 +8,8 @@ set -x TEXMFCNF "~/.config:"
 set fish_cursor_insert underscore
 
 set -x LD_LIBRARY_PATH "$LD_LIBRARY_PATH:/usr/lib/"
-set -p PATH ~/.cargo/bin
-set -p PATH ~/Next/google-cloud-sdk/bin
+# set -p PATH ~/.cargo/bin
+# set -p PATH ~/Next/google-cloud-sdk/bin
 
 
 # keychain --quiet --eval --agents ssh id_ed25519
@@ -62,21 +62,6 @@ set -U __done_notification_urgency_level low
 # Apply .profile: use this to put fish compatible .profile stuff in
 if test -f ~/.fish_profile
   source ~/.fish_profile
-end
-
-set -p PATH ~/.local/bin
-# Add ~/.local/bin to PATH
-if test -d ~/.local/bin
-    if not contains -- ~/.local/bin $PATH
-        set -p PATH ~/.local/bin
-    end
-end
-
-# Add depot_tools to PATH
-if test -d ~/Applications/depot_tools
-    if not contains -- ~/Applications/depot_tools $PATH
-        set -p PATH ~/Applications/depot_tools
-    end
 end
 
 ## Starship prompt
