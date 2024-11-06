@@ -1,9 +1,9 @@
 ;;; -*- lisp-data -*-
-(("~/Next/marketing-webanalytics/")
+(("~/dotfiles/")
+ ("~/Next/marketing-webanalytics/")
  ("~/dev/flutter/basics/")
  ("~/dev/rust/spotiver/")
  ("~/dev/flutter/basics")
- ("~/dotfiles/")
  ("~/notes/")
  ("~/dev/cinemap/crux/shared/")
  ("~/Next/marketingdata_platform/")

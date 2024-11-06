@@ -9,7 +9,7 @@
 (tooltip-mode 0)
 (column-number-mode 1)
 (show-paren-mode 1)
-(electric-pair-mode 0) ;; stop automatically filling pairs ("", (), {}, [], etc.)
+(electric-pair-mode 0) ;; stop automatically completing pairs ("", (), {}, [], etc.)
 (electric-indent-mode 1) ;; dynamically indent text
 (size-indication-mode 1) ;; show file size in modeline
 (winner-mode 1) ;; enable window-undo/redo
@@ -286,14 +286,15 @@
   "b[" '(previous-buffer :which-key "previous-buffer")
   "bi" '(ibuffer :which-key "ibuffer")
   "br" '(evil-edit :which-key "refresh buffer")
+  "bn" '(rename-buffer :which-key "rename buffer")
 
   ;; WINDOW
   "w"  '(:ignore t :which-key "window")
   ;; kill
   "wc" '(delete-window :which "delete-window")
   "k"  '(kill-buffer-and-window :which "kill-buffer-and-window")
+  "wo" '(delete-other-windows :which "delete-other-windows")
   "w C-o" '(delete-other-windows :which "delete-other-windows")
-  "w o" '(delete-other-windows :which "delete-other-windows")
   ;; movement
   "wj" '(evil-window-down :which-key "evil-window-down")
   "wk" '(evil-window-up :which-key "evil-window-up")
@@ -356,7 +357,8 @@
 	      ibuffer-mode
 	      occur-mode
 	      org-mode
-	      sql-mode))
+	      sql-mode
+	      text-mode))
   (setq whitespace-action
 	'(cleanup auto-cleanup)))
 ;; ============================ ;;
@@ -412,23 +414,23 @@
   :bind (:map evil-insert-state-map
 	      ("C-<tab>" . company-complete)))
 
-(use-package embark
-  :bind (("C-," . embark-act)
-	 :map minibuffer-local-map
-	 ("C-d" . embark-act)))
+;; (use-package embark
+;;   :bind (("C-," . embark-act)
+;; 	 :map minibuffer-local-map
+;; 	 ("C-d" . embark-act)))
 
-(use-package embark-consult
-  :after (embark consult)
-  :defer t
-  :hook (embark-collect-mode . embark-consult-preview-minor-mode))
+;; (use-package embark-consult
+;;   :after (embark consult)
+;;   :defer t
+;;   :hook (embark-collect-mode . embark-consult-preview-minor-mode))
 
-(setq embark-indicators
-      '(myrc/embark-which-key-indicator
-	embark-highlight-indicator
-	embark-isearch-highlight-indicator))
+;; (setq embark-indicators
+;;       '(myrc/embark-which-key-indicator
+;; 	embark-highlight-indicator
+;; 	embark-isearch-highlight-indicator))
 
-(advice-add #'embark-completing-read-prompter
-	    :around #'myrc/embark-hide-which-key-indicator)
+;; (advice-add #'embark-completing-read-prompter
+;; 	    :around #'myrc/embark-hide-which-key-indicator)
 ;; ============================ ;;
 
 
@@ -441,7 +443,8 @@
 	   (doom-modeline-minor-modes nil)
 	   (doom-modeline-height 12)
 	   (doom-modeline-project-detection 'auto)
-	   (doom-modeline-env-python-executable "python")))
+	   (doom-modeline-env-python-executable "python")
+	   (doom-modeline-buffer-file-name-style 'truncate-from-project)))
 ;; ============================ ;;
 
 
