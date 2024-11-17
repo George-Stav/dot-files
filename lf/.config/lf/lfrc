@@ -8,134 +8,136 @@ set ignorecase true
 set ifs "\n"
 
 cmd open ${{
-	case "$f" in
-		*.jpg|*.png|*.gif) sxiv $fx & ;;
-		# TODO: Fix lag that occurs after unpausing mpv
-		*.mkv|*.mp4|*.flac|*.webp|*.avi|*.m2ts) mpv --pulse-latency-hacks=yes --no-terminal --sub-files=$(find -maxdepth 2 -regextype posix-extended -regex '.*\.(idx|srt|sub)' -printf '%p:') $fx & ;;
-		*.mp3|*.wav) mpv --no-terminal $fx & ;;
-		*.csv|*.xls|*.xlsx|*.gnumeric) gnumeric $f & ;;
-		*.pdf|*.cbz) zathura "$f" & ;;
-		*) $VISUAL "$f" & ;;
-	esac
-}}
+	      case "$f" in
+		  *.jpg|*.png|*.gif) sxiv $fx & ;;
+		  *.mkv|*.mp4|*.flac|*.webp|*.avi|*.m2ts) mpv --pulse-latency-hacks=yes --no-terminal --sub-files=$(find -maxdepth 2 -regextype posix-extended -regex '.*\.(idx|srt|sub)' -printf '%p:') $fx & ;;
+		  *.mp3|*.wav) mpv --no-terminal $fx & ;;
+		  *.csv|*.xls|*.xlsx|*.gnumeric) gnumeric $f & ;;
+		  *.pdf|*.cbz) zathura "$f" & ;;
+		  *) $VISUAL "$f" & ;;
+	      esac
+	  }}
 
 cmd test &{{
 	      lf -remote "send $id echo $SCRIPTS"
-}}
-map t test
+	  }}
 
 cmd rsync_paste &{{
-    set -- $(cat ~/.local/share/lf/files)
-    mode="$1"
-    shift
-    [[ -z "$@" || "$mode" == "move" ]] && exit
-    alacritty --class "Alacritty_floating" \
-	      -e $SCRIPTS/rsync_paste "$PWD" "$@"
-    rm ~/.local/share/lf/files
-    lf -remote "send clear"
-}}
+		     set -- $(cat ~/.local/share/lf/files)
+		     mode="$1"
+		     shift
+		     [[ -z "$@" || "$mode" == "move" ]] && exit
+		     alacritty --class "Alacritty_floating" \
+			       -e $SCRIPTS/rsync_paste "$PWD" "$@"
+		     rm ~/.local/share/lf/files
+		     lf -remote "send clear"
+		 }}
 
 cmd move-parent &{{
-    # https://github.com/gokcehan/lf/wiki/Tips#move-updown-in-the-parent-directory
-    dironly="setlocal '$(dirname "$PWD")' dironly"
-    lf -remote "send $id :updir; $dironly true; $1; $dironly false; open"
-}}
-
+		     # https://github.com/gokcehan/lf/wiki/Tips#move-updown-in-the-parent-directory
+		     dironly="setlocal '$(dirname "$PWD")' dironly"
+		     lf -remote "send $id :updir; $dironly true; $1; $dironly false; open"
+		 }}
 map <c-j> move-parent down
 map <c-k> move-parent up
 
 # Archive bindings
 cmd unarchive ${{
-	case "$f" in
-		*.zip) unzip "$f" ;;
-		*.tar.gz) tar -xzvf "$f" ;;
-		*.tar.bz2) tar -xjvf "$f" ;;
-		*.tar) tar -xvf "$f" ;;
-		*.rar) unrar x "$f" ;;
-		*) lf -remote "send $id echo Unsupported format" ;;
-	esac
-}}
+		   case "$f" in
+		       *.zip) unzip "$f" ;;
+		       *.tar.gz) tar -xzvf "$f" ;;
+		       *.tar.bz2) tar -xjvf "$f" ;;
+		       *.tar) tar -xvf "$f" ;;
+		       *.rar) unrar x "$f" ;;
+		       *) lf -remote "send $id echo Unsupported format" ;;
+		   esac
+	       }}
+map au unarchive
 
 # taken from Brodie
 # github.com/BrodieRobertson/dotfiles
 cmd trash_restore %trash-restore
 cmd trash_clear %trash-empty
 cmd trash ${{
-	files=$(printf "$fx" | tr '\n' ';')
-	while [ "$files" ]; do
-		f=${files%%;*}
-
-		trash-put "$(basename "$f")"
-
-		if [ "$files" = "$f" ]; then
-			files=''
-		else
-			files="${files#*;}"
-		fi
-	done
-}}
+	       files=$(printf "$fx" | tr '\n' ';')
+	       while [ "$files" ]; do
+		   f=${files%%;*}
+		   trash-put "$(basename "$f")"
+		   if [ "$files" = "$f" ]; then
+		       files=''
+		   else
+		       files="${files#*;}"
+		   fi
+	       done
+	   }}
+map dd trash
+map dc trash_clear
+map dr trash_restore
 
 cmd fzf_jump ${{
-	res="$(find . -maxdepth 4 | fzf --reverse --header='Jump to location')"
-	if [ -f "$res" ]; then
-		cmd="select"
-	elif [ -d "$res" ]; then
-		cmd="cd"
-	fi
-	lf -remote "send $id $cmd \"$res\""
-}}
+		  res="$(find . -maxdepth 4 | fzf --reverse --header='Jump to location')"
+		  if [ -f "$res" ]; then
+		      cmd="select"
+		  elif [ -d "$res" ]; then
+		      cmd="cd"
+		  fi
+		  lf -remote "send $id $cmd \"$res\""
+	      }}
+map J fzf_jump
 
 # Capitalise beginning of a word
 # Replace spaces with underscores
 cmd rename_snake_pascal ${{
-	echo "$fx" | while read l; do
-		new="$(basename "$l" | sed 's/\(^[a-z]\| [a-z]\)/\U&/g ; s/ /_/g')"
-		mv "$l" "$(pwd)/$new"
-	done
-}}
+			     echo "$fx" | while read l; do
+				 new="$(basename "$l" | sed 's/\(^[a-z]\| [a-z]\)/\U&/g ; s/ /_/g')"
+				 mv "$l" "$(pwd)/$new"
+			     done
+			 }}
 
 # Lowercase everything
 # Replace spaces with underscores
 cmd rename_snake_case ${{
-	echo "$fx" | while read l; do
-		new="$(basename "$l" | sed 's/[A-Z]/\L&/g ; s/ /_/g')"
-		mv "$l" "$(pwd)/$new"
-	done
-}}
+			   echo "$fx" | while read l; do
+			       new="$(basename "$l" | sed 's/[A-Z]/\L&/g ; s/ /_/g')"
+			       mv "$l" "$(pwd)/$new"
+			   done
+		       }}
 
 # Replace spaces with underscores
 cmd rename_underscore ${{
-    echo "$fx" | while read l; do
-	new="$(basename "$l" | sed 's/ /_/g')"
-	mv "$l" "$(pwd)/$new"
-    done
-}}
+			   echo "$fx" | while read l; do
+			       new="$(basename "$l" | sed 's/ /_/g')"
+			       mv "$l" "$(pwd)/$new"
+			   done
+		       }}
 
 # Get size of file/dir
 # By default returns size of file/dir that has the cursor over it
 # Works with multiple file selections
 cmd size ${{
-	dirs="$PWD"
-	[ -n "$fx" ] && dirs="$(echo $fx | sed -z 's/\n/ /;s/ $//g')"
-	lf -remote "send $id echo $(dir-size -d "$dirs" -D 0 -c)"
-}}
+	      dirs="$PWD"
+	      [ -n "$fx" ] && dirs="$(echo $fx | sed -z 's/\n/ /;s/ $//g')"
+	      lf -remote "send $id echo $(dir-size -d "$dirs" -D 0 -c)"
+	  }}
+map S size
 
 cmd sudo_paste ${{
-	load=$(cat ~/.local/share/lf/files)
-	mode=$(echo "$load" | sed -n '1p')
-	list=$(echo "$load" | sed '1d')
-	if [ $mode = 'copy' ]; then
-		sudo cp -R $list .
-	elif [ $mode = 'move' ]; then
-		sudo mv $list .
-	fi
-	rm ~/.local/share/lf/files
-	lf -remote 'send clear'
-}}
+		    load=$(cat ~/.local/share/lf/files)
+		    mode=$(echo "$load" | sed -n '1p')
+		    list=$(echo "$load" | sed '1d')
+		    if [ $mode = 'copy' ]; then
+			sudo cp -R $list .
+		    elif [ $mode = 'move' ]; then
+			sudo mv $list .
+		    fi
+		    rm ~/.local/share/lf/files
+		    lf -remote 'send clear'
+		}}
+map rp rsync_paste
 
 cmd copy_path ${{
-	echo "$fx" | xclip -r -selection clipboard
-}}
+		   echo "$fx" | xclip -r -selection clipboard
+	       }}
 
 # Un-map
 map w
@@ -144,8 +146,9 @@ map r
 map y
 map *
 
-# Thunar
+# Weird ones
 map <c-t> ${{ thunar "$PWD" 2> /dev/null & }}
+map T &{{ alacritty }}
 
 # Glob-select
 map *c glob-select *.csv
@@ -154,27 +157,22 @@ map *m glob-select *.mkv
 map *4 glob-select *.mp4
 map *j glob-select *.jpg
 map *p glob-select *.png
-# map * read -p "hey>" | glob-select
 
 # Rename
 map rr rename
-map rp rename_snake_case
+map rs rename_snake_case
 map rm rename_snake_pascal
 map r_ rename_underscore
-map rs rsync_paste
-# map rb $vimv $fx
-# map br $emacsclient -c . &
 
 # Backup
 map bb $cp -r $f $f.bkp
 
-# Trash
-map dd trash
-map dr trash_restore
-map dc trash_clear
+# Dired
+map - updir
+map t invert
+map U unselect
 
 # Other
-map - updir
 map . set hidden!
 map p paste
 map sp sudo_paste
@@ -185,10 +183,7 @@ map D delete
 map dD delete
 map sD $sudo rm -r "$f"
 map <enter> open
-map au unarchive
 map e $$VISUAL "$f" &
-map J fzf_jump
-map S size
 
 # Shortcuts
 map gc cd ~/.config
