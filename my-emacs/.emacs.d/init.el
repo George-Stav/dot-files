@@ -334,8 +334,8 @@
   "x"  '(evil-buffer-new :which-key "temp buffer")
   "m"  '(man :which-key "man")
   "/"  '(consult-line :which-key "search")
-  "qQ" '((lambda () (interactive) (myrc/kill-emacs nil)):which-key "save buffers and quit")
-  "qq" '((lambda () (interactive) (myrc/kill-emacs t)):which-key "save buffers and desktop and quit"))
+  "qQ" '((lambda () (interactive) (myrc/kill-emacs nil nil)):which-key "save buffers and quit")
+  "qq" '((lambda () (interactive) (myrc/kill-emacs t t)):which-key "save buffers and desktop and quit"))
 ;; ============================ ;;
 
 
@@ -615,8 +615,9 @@
   ;; remap "RET" and "-" to use dired-single bindings
   ;; :bind (([remap dired-find-file] . dired-single-buffer)
   ;; 	 ([remap dired-up-directory] . dired-single-up-directory))
-  :config (setq dired-dwim-target t)
-  :custom ((dired-listing-switches "-ahl -v --group-directories-first"))) ;; Flags used to run "ls"
+  :custom ((dired-listing-switches "-ahl -v --group-directories-first")
+	   (dired-recursive-copies 'always)) ;; Flags used to run "ls"
+  :config (setq dired-dwim-target t))
 
 ;; (use-package dired-single
 ;;   :after dired)
@@ -661,7 +662,14 @@
 ;; ========= LANGUAGE-SERVER (EGLOT, ELDOC) ========= ;;
 (use-package eglot
   ;; :ensure nil
-  :custom ((eglot-ignored-server-capabilities '(:documentHighlightProvider))))
+  :custom ((eglot-ignored-server-capabilities '(:documentHighlightProvider
+						:inlayHintProvider))))
+
+(add-hook 'eglot-managed-mode-hook
+	  (lambda ()
+	    (progn
+	      (setq eldoc-documentation-strategy 'eldoc-documentation-compose-eagerly)
+	      (flymake-mode-off))))
 
 (use-package eldoc
   :ensure nil
@@ -682,6 +690,8 @@
 ;; ========= PROGRAMMING-MODES ========= ;;
 (use-package rust-mode :hook (rust-mode-hook . (setq indent-tabs-mode nil)))
 (use-package python-mode :commands (python-mode))
+  ;; :config
+  ;; ((setq eglot-workspace-configuration (:pylsp (:plugins (:jedi_signature_help))))
 (use-package yaml-mode :commands (yaml-mode))
 (use-package terraform-mode
   :commands (terraform-mode)
@@ -730,12 +740,14 @@
   :commands (desktop-release-lock desktop-save desktop-read desktop-full-file-name)
   :custom
   ((desktop-save t)
+   ;; (desktop-save-mode 1) ;; may be cleaner to use this instead of custom solution
    (desktop-base-file-name (concat server-name ".desktop"))
    (desktop-base-lock-name (concat server-name ".desktop.lock"))
    (desktop-dirname (concat myrc/desktop-save-location (format-time-string "%Y-%m-%d")))
    (desktop-path (sort
 		  (f-directories myrc/desktop-save-location)
-		  'string>)))
+		  'string>))
+   (desktop-load-locked-desktop 'check-pid))
   :config
   (add-hook
    'desktop-after-read-hook
@@ -785,3 +797,4 @@
 ;; ============================ ;;
 
 (load-file custom-file)
+(put 'downcase-region 'disabled nil)
