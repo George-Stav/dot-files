@@ -129,7 +129,14 @@ bindsym XF86AudioRaiseVolume exec "$HOME/.local/bin/change-volume +5% && pkill -
 bindsym Shift+XF86AudioRaiseVolume exec "$HOME/.local/bin/change-volume +10% && pkill -SIGRTMIN+13 i3blocks"
 bindsym XF86AudioMute exec "$HOME/.local/bin/change-volume 0 && pkill -SIGRTMIN+13 i3blocks"
 bindsym Shift+XF86AudioMute exec "$HOME/.local/bin/toggle-mic && pkill -SIGRTMIN+10 i3blocks"
-bindsym $mod+v exec "$HOME/.local/bin/vpn toggle && pkill -SIGRTMIN+11 i3blocks"
+
+# Duplicates of the above for Blackwidow keyboard
+bindsym Shift+F2 exec  "$HOME/.local/bin/change-volume -10% && pkill -SIGRTMIN+13 i3blocks"
+bindsym F2 exec  "$HOME/.local/bin/change-volume -5% && pkill -SIGRTMIN+13 i3blocks"
+bindsym F3 exec "$HOME/.local/bin/change-volume +5% && pkill -SIGRTMIN+13 i3blocks"
+bindsym Shift+F3 exec "$HOME/.local/bin/change-volume +10% && pkill -SIGRTMIN+13 i3blocks"
+bindsym F1 exec "$HOME/.local/bin/change-volume 0 && pkill -SIGRTMIN+13 i3blocks"
+bindsym Shift+F1 exec "$HOME/.local/bin/toggle-mic && pkill -SIGRTMIN+10 i3blocks"
 
 # Player
 bindsym XF86AudioPlay exec "playerctl play-pause && $HOME/.local/bin/media-notif"
@@ -139,11 +146,21 @@ bindsym XF86AudioPrev exec "playerctl previous"
 bindsym Shift+XF86AudioNext exec "pkill -SIGRTMIN+12 i3blocks"
 bindsym Shift+XF86AudioPrev exec "pkill -SIGRTMIN+12 i3blocks"
 
-# Brightness
-bindsym XF86MonBrightnessUp exec "brightnessctl set +5%"
-bindsym XF86MonBrightnessDown exec "brightnessctl set 5%-"
+# Duplicates of the above for Blackwidow keyboard
+bindsym F6 exec "playerctl play-pause && $HOME/.local/bin/media-notif"
+bindsym Shift+F6 exec "playerctl -p spotify play-pause && $HOME/.local/bin/media-notif spotify"
+bindsym F5 exec "playerctl next"
+bindsym F7 exec "playerctl previous"
+bindsym Shift+F5 exec "pkill -SIGRTMIN+12 i3blocks"
+bindsym Shift+F7 exec "pkill -SIGRTMIN+12 i3blocks"
 
+# Brightness
+bindsym XF86MonBrightnessDown exec "brightnessctl set 5%-"
+bindsym XF86MonBrightnessUp exec "brightnessctl set +5%"
+
+# Scripts
 bindsym $mod+Ctrl+space exec "$HOME/.local/bin/cycle-kb-layout"
+bindsym $mod+v exec "$HOME/.local/bin/vpn toggle && pkill -SIGRTMIN+11 i3blocks"
 
 # reload the configuration file
 bindsym $mod+Ctrl+c reload
@@ -197,6 +214,7 @@ for_window [class="Pavucontrol"] floating enable
 for_window [title=".*QEMU/KVM"] floating enable
 for_window [class="anki"] floating enable
 for_window [class="Emulator"] floating enable
+for_window [class="pavucontrol"] floating enable
 
 # for_window [class=".*_floating"] floating enable
 for_window [class="Alacritty_floating|Galculator"] floating enable
