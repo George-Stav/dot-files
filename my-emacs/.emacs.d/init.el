@@ -57,7 +57,10 @@
 (setq help-window-select t)
 
 ;; set specific splits for Compilation (horizontal) and Help (vertical) windows
-(setq display-buffer-alist '(("\\*compilation"
+(setq display-buffer-alist '(("\\*Man 1"
+			      (display-buffer-reuse-window display-buffer-in-direction)
+			      (direction . right))
+			     ("\\*compilation"
 			      (display-buffer-reuse-window display-buffer-at-bottom)
 			      (window-height . 13))
 			     ("\\*grep"
@@ -306,6 +309,7 @@
   "wS" '(evil/window-split-and-follow :which-key "split and follow [H]")
   "wv" '(evil-window-vsplit :which-key "split window [V]")
   "wV" '(evil/window-vsplit-and-follow :which-key "split and follow [V]")
+  "ww" '((lambda () (interactive) (myrc/toggle-window-split)) :which-key "toggle window split")
   ;; adjust size
   "w-" '(evil-window-decrease-height 10 :which-key "decrease window height")
   "w=" '(evil-window-increase-height 10 :which-key "increase window height")
@@ -761,7 +765,7 @@
 
 ;; ========= MISCELLANEOUS ========= ;;
 ;; do not add a newline at the end of text-mode files
-(add-hook 'text-mode-hook (lambda () (setq require-final-newline nil)))
+;; (add-hook 'text-mode-hook (lambda () (setq require-final-newline nil)))
 ;; Dynamically shows evil-search-{forward,backward} results on modeline
 (use-package evil-anzu
   :diminish

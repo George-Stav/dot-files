@@ -256,3 +256,24 @@ small ones that are easier to understand and debug."
 	    ;; Kill temp buffer and open new file so that desktop-save can save and reopen it
 	    (kill-buffer buf)
 	    (find-file temp-file)))))))
+
+(defun myrc/toggle-window-split ()
+  "Toggle window split between horizontal and vertical for two windows."
+  (interactive)
+  (if (= (count-windows) 2)
+      (let* ((windows (window-list))
+	     (win1 (nth 0 windows))
+	     (win2 (nth 1 windows))
+	     (buf1 (window-buffer win1))
+	     (buf2 (window-buffer win2))
+	     (split-vertically (window-combined-p)))
+	(delete-other-windows)
+	(if split-vertically
+	    (progn
+	      (split-window-horizontally)
+	      (set-window-buffer (next-window) buf2))
+	  (progn
+	    (split-window-vertically)
+	    (set-window-buffer (next-window) buf2)))
+	(set-window-buffer (selected-window) buf1))
+    (message "There must be exactly two windows to toggle split orientation.")))
