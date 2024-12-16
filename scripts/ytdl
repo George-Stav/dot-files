@@ -1,20 +1,262 @@
-#!/bin/sh
+#!/bin/bash
 
-VOCALOID="https://www.youtube.com/playlist?list=PLaHISR4HQ5FId4XrgAukPQNb_Xq7OCY-u"
-DIR="/mnt/HDD/MUSIC/vocaloid_new"
-# -w, --no-overwrites
-#        Do not overwrite files
-# -c, --continue
-#        Force   resume   of  partially  downloaded  files.   By  default,
-#        youtube-dl will resume downloads if possible.
-# -o, --output TEMPLATE
-# 	Output filename template, see the "OUTPUT TEMPLATE" for  all  the
-# 	info
-# -x, --extract-audio
-# 	Convert video files to audio-only files  (requires  ffmpeg/avconv
-# 	and ffprobe/avprobe)
-# --audio-format FORMAT
-# 	Specify  audio  format:  "best",  "aac",  "flac",  "mp3",  "m4a",
-# 	"opus", "vorbis", or "wav"; "best" by default; No effect  without
-# 	-x
-youtube-dl --verbose --cookies "~/Downloads/cookies.txt" -wc -o "$DIR/%(title)s.%(ext)s" --write-description --embed-thumbnail -x --audio-format 'mp3' "$VOCALOID"
+_error() {
+    printf "[ERROR]: %s. Exiting on function call [%s].\n" "$1" "$2"
+    exit 1
+}
+
+_remove_blanks() {
+    parent=$1
+
+    find "$parent" -type d -name '* *' | while read dir; do
+	snake_case="$(echo $dir | sed 's/ /_/g')"
+	mv -v "$dir" "$snake_case"
+    done
+
+    find "$parent" -type f -name '* *' | while read file; do
+	snake_case="$(echo $file | sed 's/ /_/g')"
+	mv -v "$file" "$snake_case"
+    done
+}
+
+_write_tracklist() {
+    dest=$1
+    # Copy descriptions to .tracklist files
+    # Need to be manually formatted: song-name<>start_ts-end_ts<>artist
+    find "$dest" -type f -name '*.description' | while read f; do
+	tracklist="$(dirname $f)/$(basename $f .description).tracklist"
+	[[ -e "$tracklist" ]] && continue
+	cp -v "$f" "$tracklist"
+    done
+}
+
+_check_dest_dir() {
+    func_call=$1
+    link=$2
+    dest=$3
+    [[ ! ("$dest" =~ ^/mnt/HDD/MUSIC* ||
+	      "$dest" =~ ^/mnt/HDD/MOVIES-SERIES*) ]] && \
+		  printf "[ERROR]: Destination directory [%s] is not valid. Exiting on function call [%s] with link [%s].\n" $dest "$func_call" $link && exit 1
+}
+
+_check_link() {
+    func_call=$1
+    link=$2
+    [[ ! ("$link" =~ ^https://www.youtube.com/watch\?v=.{11}$ ||
+	      "$link" =~ ^https://www.youtube.com/playlist\?list=.{34}$) ]] && \
+		  printf "[ERROR]: Link [%s] is not valid. Exiting on function call [%s].\n" $link "$func_call" && exit 1
+}
+
+_check_tracklist() {
+    tracklist=$1
+
+    # Does the first line match 00:00-{combination of numbers and columns}($DELIM OR EoL)
+    [[ ! $(head -n 1 "$tracklist" | grep -E "00:00-[0-9:]{5,8}($DELIM|$)") ]] && \
+	printf "[WARNING]: Tracklist file [$tracklist] is malformed.\n Possibly due to wrong timestamp format. Skipping...\n" && return 0
+
+    [[ $(grep '^' "$tracklist" | wc -l) != $(wc -l "$tracklist" | awk '{print $1}') ]] && \
+	printf "[WARNING]: Tracklist file [$tracklist] is malformed, missing trailing newline character. Skipping...\n" && return 0
+}
+
+_json_prettify() {
+    dir=$1
+
+    find "$dir" -type f -name '*.info.json' | while read f; do
+	echo "[INFO]: JSON Prettify -> $f"
+	filename="$(echo $f | sed 's/\.info//')"
+	python -m json.tool "$f" > "$filename"
+	rm "$f"
+    done
+}
+
+_albums() {
+    link=$1
+    dest=$2
+    archive="$dest/archive.txt"
+
+    _check_link "albums" $link
+    _check_dest_dir "albums" $link $dest
+
+    yt-dlp --verbose --no-overwrites --continue \
+	   --download-archive $archive \
+	   -P "$dest" \
+	   -o "infojson:%(title)s/%(id)s.%(ext)s" \
+	   -o "description:%(title)s/%(id)s.%(ext)s" \
+	   -o "%(title)s/%(title)s.%(ext)s" \
+	   --write-description \
+	   --write-info-json \
+	   --no-write-playlist-metafiles \
+	   --trim-filenames 200 \
+	   --embed-thumbnail \
+	   -x --audio-format "$EXT" \
+	   --audio-quality 320K \
+	   "$link"
+
+    _remove_blanks "$dest"
+    _json_prettify "$dest"
+    _write_tracklist "$dest"
+}
+
+_songs() {
+    link=$1
+    dest=$2
+    archive="$dest/archive.txt"
+
+    _check_link "songs" $link
+    _check_dest_dir "songs" $link $dest
+
+    mkdir -vp $dest/info
+
+    yt-dlp --verbose --no-overwrites --continue \
+	   --download-archive $archive \
+	   -P "$dest" \
+	   -o "description:info/%(title)s$DELIM%(id)s.%(ext)s" \
+	   -o "infojson:info/%(id)s.%(ext)s" \
+	   -o "%(title)s.%(ext)s" \
+	   --write-description \
+	   --write-info-json \
+	   --no-write-playlist-metafiles \
+	   --trim-filenames 82 \
+	   --embed-thumbnail \
+	   -x --audio-format "$EXT" \
+	   --audio-quality 320K \
+	   "$link"
+
+    _remove_blanks "$dest"
+    _json_prettify "$dest/info"
+}
+
+_videos() {
+    link=$1
+    dest=$2
+    archive="$dest/archive.txt"
+
+    _check_link "videos" $link
+    _check_dest_dir "videos" $link $dest
+
+    mkdir -vp $dest/info
+
+    yt-dlp --verbose --no-overwrites --continue \
+	   --download-archive $archive \
+	   -P "$dest" \
+	   -o "description:info/%(title)s$DELIM%(id)s.%(ext)s" \
+	   -o "infojson:info/%(id)s.%(ext)s" \
+	   -o "%(title)s.%(ext)s" \
+	   --prefer-free-formats \
+	   --write-description \
+	   --write-info-json \
+	   --no-write-playlist-metafiles \
+	   --trim-filenames 200 \
+	   --embed-thumbnail \
+	   -f "bestvideo[height>=1080][ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best" \
+	   "$link"
+
+    _remove_blanks "$dest"
+    _json_prettify "$dest/info"
+}
+
+bulk_dl() {
+    pl_file=$1
+
+    if [[ ! -e "$pl_file" ]]; then
+	_error "Playlist file [$pl_file] doesn't exist" "bulk_dl"
+    elif [[ $(grep '^' "$pl_file" | wc -l) != $(wc -l "$pl_file" | awk '{print $1}') ]]; then
+	_error "Playlist file [$pl_file] is malformed, missing trailing newline character" "bulk_dl"
+    fi
+
+    # for l in $(cat $pl_file); do
+    while read -r line; do
+	# skip commented lines (#,/,\s)
+	[[ $line =~ ^[#/\s] ]] && continue
+	path="$(echo $line | awk -F'<>' '{print $1}')"
+	link="$(echo $line | awk -F'<>' '{printf "https://www.youtube.com/playlist?list=%s", $2}')"
+	type="$(echo $line | awk -F'<>' '{print $3}')"
+
+	# case "$type" in
+	#     albums) albums $link $BACKUP_LOCATION/$path ;;
+	#     songs) songs $link $BACKUP_LOCATION/$path ;;
+	#     videos) videos $link $BACKUP_LOCATION/$path ;;
+	#     *) printf "[INFO]: Can't recognise playlist type [%s], skipping..." $type
+	# esac 
+	# THE FOLLOWING PIECE OF CODE IS UNSAFE AND MAY LEAD TO UNDEFINED BEHAVIOUR:
+	# $type should only be one of: albums|songs|videos
+	# Since there's functions corresponding to those exact names (with a preceding underscore)
+	# and all of them take the same parameters you can use the following type of
+	# 'polymorphism'.
+	# Unless _$type is wrapped in quotes it will lead to unintended calls of the corresponding function names
+	case "$type" in
+	    albums|songs|videos) _$type $link $BACKUP_LOCATION/$path ;;
+	    *) printf "[INFO]: Can't recognise playlist type [%s]. Skipping on function call [%s].\n" "$type" "$FUNCNAME" ;;
+	esac
+    done < $pl_file
+}
+
+bulk_albums_split() {
+    origin_dir=$1
+    dry=$2
+
+    i=1
+    num_albums="$(find "$origin_dir" -type f -name '*.tracklist' | wc -l)"
+    find "$origin_dir" -type f -name '*.tracklist' -exec dirname {} \; | while read dir; do
+	tracklist="$(find "$dir" -maxdepth 1 -type f -name '*.tracklist')"
+	source="$(find "$dir" -maxdepth 1 -type f -name "*.$EXT")"
+	num_sources="$(find "$dir" -maxdepth 1 -type f -name "*.$EXT" | wc -l)"
+
+	[[ $num_sources -gt 1 ]] && printf "[WARNING]: More than one source in dir [$dir]. Skipping...\n" && continue
+
+	# if tracklist is malformed then skip
+	_check_tracklist $tracklist && continue
+
+	# if 2nd argument is "dry" then skip processing step
+	[[ "$dry" == "dry" ]] && continue
+	
+	printf "[PROGRESS]: ($i/$num_albums) -> [$dir]\n"
+	$SCRIPTS/album-split "$dir" "$source" "$tracklist" "$DELIM" "$EXT"
+
+	i=$((i+1))
+    done
+
+    printf "[INFO]: Done splitting all available albums."
+}
+
+# ~~~ NOTES ~~~
+# - jsoninfo & description for all
+# - tracklist only for definite album playlists
+# - automate album-split by iterating over all tracklist-mp3 pair; include tracklist file checks (e.g. if first line doesn't contain "<>00:00-[0-9]{2}:[0-9]{2}" skip)
+
+# timestamp fix:
+# "<>1:12-4:48<>" -> "<>01:12-04:48"
+# %s/\([>\-]\{1\}\)\([0-9]\{1\}:\)/\10\2/g
+
+# VIM macros to clean BMP tracklist files:
+# 0. search for "Tracklist:" before starting
+# 1. store at register 'f' (without preceding space): dndd}dGo99:59:59gg fY[ kpF/D;d0xf-Dx0"ayEdd
+# 2. store at register 'd' (without preceding space): j$ByEk$a-pBhxi<>A<>"ap0dWj
+# 3. type the following where {num} is the number of tracks: @f{num}@dD
+
+# VIM macros to format other tracklist files:
+# Use if format matches the below (with '99:59:59' on the final line)
+# {ts} {artist} - {song}
+# e.g. {ts} -> 09:17
+# 1. store at register 'i' (without preceding space): dW$a<>pr-j0yEk$pa<>0dt-$px0xxj
+# 2. store at register 'u' (without preceding space): dW$a<>pr-j0yEk$pj0
+# -. 'i' is used when {artist} is present and 'u' when it's not
+# 3. repeat for total number of lines -1
+# 4. leave last line empty
+
+# TODO: backup integration
+
+# CONSIDER DEPENDENCIES WHEN CHANGING THE DELIM:
+# - vim macros for tracklist formatting/cleaning
+# - album-split
+# - PL_FILE
+# - output of yt-dlp commands
+DELIM="<>"
+EXT="mp3"
+BACKUP_LOCATION="/mnt/HDD"
+PL_FILE="$HOME/.local/share/ytdl/playlists"
+
+# bulk_dl $PL_FILE
+# bulk_albums_split $BACKUP_LOCATION/MUSIC/YT
+
+

@@ -28,7 +28,6 @@ abbr warp-disable "warp disconnect && sudo systemctl disable --now warp-svc.serv
 abbr comp-suspend "qdbus org.kde.KWin /Compositor suspend"
 abbr comp-resume "qdbus org.kde.KWin /Compositor resume"
 abbr ec "emacsclient -c"
-abbr yt "youtube-dl"
 abbr alac-theme "alacritty-colorscheme -c $HOME/.config/alacritty/alacritty.yml -C $HOME/.config/alacritty/themes"
 abbr battery "echo (cat /sys/class/power_supply/BAT1/capacity)%"
 abbr source-fish "source $HOME/.config/fish/config.fish"
