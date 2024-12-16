@@ -13,7 +13,9 @@ choose() {
 
 random() {
     if [ -z "$1" ]; then
-	find "$CONF/$PROTOCOL/" -exec basename {} .conf ';' | shuf -n 1
+	find "$CONF/$PROTOCOL/" \
+	     -name '*.conf' \
+	     -exec basename {} .conf ';' | shuf -n 1
     else
 	find "$CONF/$PROTOCOL/" \( \
              -name "*mullvad-$1[0-9]*.conf" -o \
@@ -90,7 +92,17 @@ connect() {
 
 new_connect() {
     if [ -z "$1" ]; then
-	country="$(choose < "$CONF/country_codes")"
+	# eliminates need to manually maintain the country_codes file
+	# instead, all country_codes are included but only the ones that show up in the
+	# protocol are presented to the user
+	allowed_country_codes="$(find "$CONF/$PROTOCOL" \
+		-name '*.conf' \
+		-exec basename {} .conf ';' \
+		| awk -F'-' '{print $1}' \
+		| uniq | tr '\n' '|' \
+		| sed -e 's/|$//g')"
+	country="$(grep -Pi "^($allowed_country_codes)" $CONF/country_codes | choose)"
+
 	[ -z "$country" ] && printf "%s\n" "No country selected, exiting..." && exit 0
 	new_conn=$(get_country "$country" | get_rand)
     else
@@ -181,7 +193,7 @@ docs() {
 ###~@~@~@ [MAIN] @~@~@~###
 
 CONF="$HOME/.local/share/vpn"
-PROTOCOL="wireguard/wg_ads_trackers_20240516"
+PROTOCOL="wireguard/wg_ads_trackers_20241125"
 # use custom script `colours` to find more colours
 ACCENT="$(tput setaf 12)"
 GREEN="$(tput setaf 10)"
@@ -206,7 +218,7 @@ case "$1" in
     gc | get-country) echo "$(active_conn | get_country)" ;;
     gv | get-vpn) get_vpn ;;
     p | purge) purge ;;
-    t |toggle) toggle ;;
+    t | toggle) toggle ;;
     tet) tet ;;
     *) docs ;;
 esac
