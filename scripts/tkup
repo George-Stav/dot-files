@@ -3,4 +3,19 @@
 # tkup
 # (t)otal bac(kup)
 
-echo "Hello World!"
+# Backup to rpi
+# ~~~~~~~~~~~~~
+# h: human readable
+# r: recursive
+# v: verbose
+# z: compress during transfer
+# i: itemize changes
+# P: --partial --progress
+# e: specify remote shell to use
+# delete: delete extraneous files from dest dirs
+rsync -hrvziP \
+      -e 'ssh -p 9753' \
+      --delete \
+      --dry-run \
+      /mnt/HDD/MUSIC/ \
+      rpi@rpi:/mnt/maxtor/MUSIC/

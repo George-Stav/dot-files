@@ -55,5 +55,5 @@ case "$1" in
     p | purge  ) purge "$2" ;;
     r | reboot ) reboot "$2" ;;
     n | new) new ;;
-    *) emacsclient -s default -c "$1" ;;
+    *) emacsclient -s default -r "$1" ;;
 esac

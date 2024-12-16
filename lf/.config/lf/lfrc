@@ -19,8 +19,9 @@ cmd open ${{
 	  }}
 
 cmd test &{{
-	      lf -remote "send $id echo $SCRIPTS"
+	      lf -remote "send $id echo $f"
 	  }}
+map <c-w> test
 
 cmd rsync_paste &{{
 		     set -- $(cat ~/.local/share/lf/files)
@@ -118,6 +119,11 @@ cmd size ${{
 	      lf -remote "send $id echo $(du -bd 0 $fx | awk '{s+=$1} END {print s}' | numfmt --to iec)"
 	  }}
 map S size
+
+# cmd mkdir ${{
+# 	       lf -remote "send $id read"
+# 	   }}
+# map + mkdir
 
 cmd sudo_paste ${{
 		    load=$(cat ~/.local/share/lf/files)

@@ -106,7 +106,7 @@ bindsym $mod+Shift+period workspace next_on_output
 
 # Layouts
 bindsym $mod+Escape layout toggle tabbed splitv splith
-bindsym $mod+Shift+Escape layout toggle splith splitv tabbed
+bindsym $mod+Shift+Escape layout toggle splith splitv tabbed 
 
 # Launcher
 bindsym $mod+Return exec alacritty
@@ -212,6 +212,7 @@ for_window [class="genp"] floating enable
 for_window [class="pentablet"] floating enable
 for_window [class="Pavucontrol"] floating enable
 for_window [title=".*QEMU/KVM"] floating enable
+for_window [title="Steam Settings"] floating enable
 for_window [class="anki"] floating enable
 for_window [class="Emulator"] floating enable
 for_window [class="pavucontrol"] floating enable
@@ -221,8 +222,8 @@ for_window [class="Alacritty_floating|Galculator"] floating enable
 for_window [class="Alacritty_floating|Galculator"] move container to output next
 for_window [class="Alacritty_floating|Galculator"] sticky enable
 
-bindsym $mod+Ctrl+Escape mode "no_bindings"
-mode "no_bindings" {
+bindsym $mod+Ctrl+Escape mode "no_bindings (exit: Ctrl+Esc)"
+mode "no_bindings (exit: Ctrl+Esc)" {
     # back to normal: Ctrl+Escape
     bindsym Ctrl+Escape mode "default"
 }
