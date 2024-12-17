@@ -1,22 +1,19 @@
 #!/bin/sh
 
+# This script works as a wrapper to the 'du' utility
+# Most of everything done by it can be instead achieved by using 'du' directly
+# Some QoL features include:
+# - sort results based on size
+
 # Defaults
 DIR="$1"
 DEPTH="1"
-COMBINE="0"
-while getopts ":d:D:c" o; do
-	case "$o" in
-		d) DIR="$(echo "$OPTARG" | sed -z 's/\n/ /;s/ $//')" ;;
-		D) DEPTH="$OPTARG" ;;
-		c) COMBINE="1" ;;
-		*) echo "Invalid usage of dir-size" ;;
-	esac
+while getopts ":D:d:" o; do
+    case "$o" in
+	D) DEPTH="$OPTARG" ;;
+	d) DIR="$OPTARG" ;;
+	*) echo "Invalid usage of $(basename $0)" && exit 1 ;;
+    esac
 done
 
-res="$(du -bd "$DEPTH" $DIR 2> /dev/null | sort -n)"
-
-if [ "$COMBINE" = 0 -o "$(echo "$res" | wc -l)" = 1 ]; then
-	echo "$res" | numfmt --to iec
-else
-	echo "$res" | awk '{s+=$1} END {print s}' | numfmt --to iec
-fi
+du -abd "$DEPTH" $DIR 2> /dev/null | sort -n | numfmt --to iec
