@@ -26,7 +26,7 @@
 
 ;; remove startup message
 (setq inhibit-startup-message t)
-
+ 
 ;; disable beeping on laptop
 (setq ring-bell-function #'ignore)
 
@@ -61,7 +61,10 @@
 (setq help-window-select t)
 
 ;; set specific splits for Compilation (horizontal) and Help (vertical) windows
-(setq display-buffer-alist '(("\\*compilation"
+(setq display-buffer-alist '(("\\*Man 1"
+			      (display-buffer-reuse-window display-buffer-in-direction)
+			      (direction . right))
+			     ("\\*compilation"
 			      (display-buffer-reuse-window display-buffer-at-bottom)
 			      (window-height . 13))
 			     ("\\*grep"
@@ -310,6 +313,7 @@
   "wS" '(evil/window-split-and-follow :which-key "split and follow [H]")
   "wv" '(evil-window-vsplit :which-key "split window [V]")
   "wV" '(evil/window-vsplit-and-follow :which-key "split and follow [V]")
+  "ww" '((lambda () (interactive) (myrc/toggle-window-split)) :which-key "toggle window split")
   ;; adjust size
   "w-" '(evil-window-decrease-height 10 :which-key "decrease window height")
   "w=" '(evil-window-increase-height 10 :which-key "increase window height")
@@ -338,8 +342,8 @@
   "x"  '(evil-buffer-new :which-key "temp buffer")
   "m"  '(man :which-key "man")
   "/"  '(consult-line :which-key "search")
-  "qQ" '((lambda () (interactive) (myrc/kill-emacs nil)):which-key "save buffers and quit")
-  "qq" '((lambda () (interactive) (myrc/kill-emacs t)):which-key "save buffers and desktop and quit"))
+  "qQ" '((lambda () (interactive) (myrc/kill-emacs nil nil)):which-key "save buffers and quit")
+  "qq" '((lambda () (interactive) (myrc/kill-emacs t t)):which-key "save buffers and desktop and quit"))
 ;; ============================ ;;
 
 
@@ -619,8 +623,9 @@
   ;; remap "RET" and "-" to use dired-single bindings
   ;; :bind (([remap dired-find-file] . dired-single-buffer)
   ;; 	 ([remap dired-up-directory] . dired-single-up-directory))
-  :config (setq dired-dwim-target t)
-  :custom ((dired-listing-switches "-ahl -v --group-directories-first"))) ;; Flags used to run "ls"
+  :custom ((dired-listing-switches "-ahl -v --group-directories-first")
+	   (dired-recursive-copies 'always)) ;; Flags used to run "ls"
+  :config (setq dired-dwim-target t))
 
 ;; (use-package dired-single
 ;;   :after dired)
@@ -665,7 +670,14 @@
 ;; ========= LANGUAGE-SERVER (EGLOT, ELDOC) ========= ;;
 (use-package eglot
   ;; :ensure nil
-  :custom ((eglot-ignored-server-capabilities '(:documentHighlightProvider))))
+  :custom ((eglot-ignored-server-capabilities '(:documentHighlightProvider
+						:inlayHintProvider))))
+
+(add-hook 'eglot-managed-mode-hook
+	  (lambda ()
+	    (progn
+	      (setq eldoc-documentation-strategy 'eldoc-documentation-compose-eagerly)
+	      (flymake-mode-off))))
 
 (use-package eldoc
   :ensure nil
@@ -686,10 +698,13 @@
 ;; ========= PROGRAMMING-MODES ========= ;;
 (use-package rust-mode :hook (rust-mode-hook . (setq indent-tabs-mode nil)))
 (use-package python-mode :commands (python-mode))
+  ;; :config
+  ;; ((setq eglot-workspace-configuration (:pylsp (:plugins (:jedi_signature_help))))
 (use-package yaml-mode :commands (yaml-mode))
 (use-package terraform-mode
   :commands (terraform-mode)
   :custom (terraform-format-on-save t))
+(use-package dart-mode :commands (dart-mode))
 ;; ============================ ;;
 
 
@@ -733,12 +748,14 @@
   :commands (desktop-release-lock desktop-save desktop-read desktop-full-file-name)
   :custom
   ((desktop-save t)
+   ;; (desktop-save-mode 1) ;; may be cleaner to use this instead of custom solution
    (desktop-base-file-name (concat server-name ".desktop"))
    (desktop-base-lock-name (concat server-name ".desktop.lock"))
    (desktop-dirname (concat myrc/desktop-save-location (format-time-string "%Y-%m-%d")))
    (desktop-path (sort
 		  (f-directories myrc/desktop-save-location)
-		  'string>)))
+		  'string>))
+   (desktop-load-locked-desktop 'check-pid))
   :config
   (add-hook
    'desktop-after-read-hook
@@ -752,7 +769,7 @@
 
 ;; ========= MISCELLANEOUS ========= ;;
 ;; do not add a newline at the end of text-mode files
-(add-hook 'text-mode-hook (lambda () (setq require-final-newline nil)))
+;; (add-hook 'text-mode-hook (lambda () (setq require-final-newline nil)))
 ;; Dynamically shows evil-search-{forward,backward} results on modeline
 (use-package evil-anzu
   :diminish
@@ -766,10 +783,6 @@
 (use-package tex-mode
   :hook ((latex-mode . myrc/toggle-compilation-window-kill-on-success))
   :config (setq compile-command (format "pdflatex %s" (buffer-name))))
-  ;; (add-to-list 'tex-compile-commands '((concat
-  ;; 				       "pdflatex %f "
-  ;; 				       (format "&& emacsclient -s %s " server-name)
-  ;; 				       "-e '(with-current-buffer '%f' (myrc/revert-buffer-no-confirm))'") t t)))
 
 ;; turn on manually when needed
 (use-package rainbow-mode
@@ -791,4 +804,5 @@
 (add-hook 'emacs-startup-hook #'myrc/display-startup-time)
 ;; ============================ ;;
 
-(load "~/.emacs.custom.el")
+(load-file custom-file)
+(put 'downcase-region 'disabled nil)

@@ -21,9 +21,9 @@ purge() {
     # for SOCKNAME in $EMACS_DAEMONS; do # purge default daemons (work, personal, default)
     for SOCKNAME in $(ps -x | grep "emacs --daemon" | head -n -1 | awk -F'=' '{print $2}'); do # purge all daemons
 	if [ "$save" = "state" ]; then
-	    emacsclient -s "$SOCKNAME" -e '(myrc/kill-emacs t)'
+	    emacsclient -s "$SOCKNAME" -e '(myrc/kill-emacs t nil)'
 	else
-	    emacsclient -s "$SOCKNAME" -e '(myrc/kill-emacs nil)'
+	    emacsclient -s "$SOCKNAME" -e '(myrc/kill-emacs nil nil)'
 	fi
     done
     unset IFS;
@@ -55,5 +55,5 @@ case "$1" in
     p | purge  ) purge "$2" ;;
     r | reboot ) reboot "$2" ;;
     n | new) new ;;
-    *) emacsclient -s default -c "$1" ;;
+    *) emacsclient -s default -r "$1" ;;
 esac

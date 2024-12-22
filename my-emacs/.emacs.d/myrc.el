@@ -142,12 +142,6 @@ Needs to contain a `finished' message, as well as have 0 errors, warnings and in
     (kill-new filename)
     (message filename)))
 
-(defun myrc/today (format)
-  "Place today's date in the given format in kill ring."
-  (let ((today (format-time-string format)))
-    (kill-new today)
-    (message today)))
-
 (defun myrc/journal (&optional write)
   "Open journal and add a new heading for tomorrow's date"
   (interactive)
@@ -160,8 +154,14 @@ Needs to contain a `finished' message, as well as have 0 errors, warnings and in
 
 (defun myrc/desktop-save (&optional RELEASE ONLY-IF-CHANGED VERSION)
   "My version of desktop-save that sets DIRNAME automatically."
+  ;; Create dir if it doesn't exist
   (unless (f-exists-p desktop-dirname)
     (make-directory desktop-dirname))
+  ;; Delete existing .desktop file if it exists
+  (when (f-exists-p (desktop-full-file-name))
+    (delete-file (desktop-full-file-name)))
+  ;; Save temp buffers
+  (myrc/save-temp-buffers)
   (when
       (desktop-save desktop-dirname RELEASE ONLY-IF-CHANGED VERSION)
     (message "%s saved successfully in %s" desktop-base-file-name desktop-dirname)))
@@ -191,12 +191,13 @@ small ones that are easier to understand and debug."
    'delete-file
    (directory-files-recursively myrc/desktop-save-location ".lock$")))
 
-(defun myrc/kill-emacs (&optional SAVE-STATE)
+(defun myrc/kill-emacs (&optional SAVE-STATE CONFIRM-KILL-PROCESSES)
   "Gracefully kill emacs after saving buffers. If FORCE is t, then save desktop state as well."
   (interactive)
   (when SAVE-STATE
     (myrc/desktop-save t t))
-  (let ((current-prefix-arg 4)) ;; simulate call with universal prefix (C-u/SPC-u)
+  (let ((current-prefix-arg 4) ;; simulate call with universal prefix (C-u/SPC-u)
+	(confirm-kill-processes CONFIRM-KILL-PROCESSES))
     (call-interactively #'save-buffers-kill-emacs)))
 
 (defun myrc/iedit-restrict-region-if-selected ()
@@ -229,12 +230,50 @@ small ones that are easier to understand and debug."
 		   'flymake-diagnostic-functions 'eglot-flymake-backend)
 		  (eglot-inlay-hints-mode -1))))))
 
-(defun myrc/revert-buffer-no-confirm ()
-    "Revert buffer without confirmation."
-    (interactive) (revert-buffer t t))
+(defun myrc/save-temp-buffers ()
+  "Save all modified buffers not visiting a file to predefined paths without prompting."
+  (let ((temp-dir (expand-file-name
+		   (concat
+		    "~/.emacs.d/temp-buffers/"
+		    (format-time-string "%Y-%m-%d")
+		    "/" server-name "/"))))
+    ;; Ensure the directory exists
+    (unless (file-directory-p temp-dir)
+      (make-directory temp-dir t))  ;; Iterate over all buffers
+    (dolist (buf (buffer-list))
+      (with-current-buffer buf
+	;; Check if the buffer is modified and not visiting a file
+	(when (and (not buffer-file-name)
+		   (buffer-modified-p)
+		   (string-prefix-p "*new*" (buffer-name)))
+	  ;; Define a unique file name for each buffer
+	  (let ((temp-file (expand-file-name (buffer-name) temp-dir)))
+	    ;; Save buffer contents to the file without prompting
+	    (write-region (point-min) (point-max) temp-file)
+	    ;; Mark the buffer as not modified
+	    (set-buffer-modified-p nil)
+	    (message "Saved buffer '%s' to '%s'" (buffer-name) temp-file)
+	    ;; Kill temp buffer and open new file so that desktop-save can save and reopen it
+	    (kill-buffer buf)
+	    (find-file temp-file)))))))
 
-(defun myrc/pdflatex-compile ()
-  "Compile .tex files into a pdf with live preview."
+(defun myrc/toggle-window-split ()
+  "Toggle window split between horizontal and vertical for two windows."
   (interactive)
-  (compile (format "pdflatex %s" (buffer-name)))
-  (with-current-buffer '(concat (file-name-sans-extension (buffer-name)) ".pdf") (revert-buffer t t)))
+  (if (= (count-windows) 2)
+      (let* ((windows (window-list))
+	     (win1 (nth 0 windows))
+	     (win2 (nth 1 windows))
+	     (buf1 (window-buffer win1))
+	     (buf2 (window-buffer win2))
+	     (split-vertically (window-combined-p)))
+	(delete-other-windows)
+	(if split-vertically
+	    (progn
+	      (split-window-horizontally)
+	      (set-window-buffer (next-window) buf2))
+	  (progn
+	    (split-window-vertically)
+	    (set-window-buffer (next-window) buf2)))
+	(set-window-buffer (selected-window) buf1))
+    (message "There must be exactly two windows to toggle split orientation.")))
