@@ -80,7 +80,8 @@ vi_mode_style = "Block"
 TERM = "xterm-256color"
 
 [font]
-size = 12
+size = 9.5
+# size = 12
 
 [font.bold]
 family = "Jetbrains Mono"

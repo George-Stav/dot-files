@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/sh
 
 setxkbmap -option caps:escape
 xset s off -dpms # turn of [s]creen-saver control and Energy Star (DPMS) features
@@ -11,7 +11,7 @@ nm-applet &			# nmcli widget
 # flameshot &			# screenshot software - takes up too much memory
 dunst &				# notification daemon
 /usr/bin/easystroke &           # mouse gestures on browser
-# nitrogen --restore &		# wallpaper
+nitrogen --restore &		# wallpaper
 # qtile start
 i3 
 eval "$SCRIPTS/em purge"

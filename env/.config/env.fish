@@ -10,6 +10,6 @@ set -xa PATH "$HOME/.local/bin:$HOME/.cargo/bin:$HOME/Next/google-cloud-sdk/bin:
 set EMACS_DAEMONS "personal work default"
 set BROWSER "mercury-browser"
 set TERMINAL "alacritty"
-set EDITOR "nvim"
+set EDITOR "vim"
 set FONT_NAME "Jetbrains Mono"
 set VISUAL "$SCRIPTS/em"

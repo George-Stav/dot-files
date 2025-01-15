@@ -10,6 +10,6 @@ export PATH="$PATH:$HOME/.local/bin:$HOME/.cargo/bin:$HOME/Next/google-cloud-sdk
 export EMACS_DAEMONS="personal work default"
 export BROWSER="mercury-browser"
 export TERMINAL="alacritty"
-export EDITOR="nvim"
+export EDITOR="vim"
 export FONT_NAME="Jetbrains Mono"
 export VISUAL="$SCRIPTS/em"

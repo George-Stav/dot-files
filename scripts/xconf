@@ -134,6 +134,6 @@ case "$1" in
     a | ammend) ammend ;;
     r | reload) _run "$(head -n 1 $CONF)" ;;
     b | browse) _run "$(cat "$CONF" | _choose_preview)" ;;
-    e | edit) "$EDITOR" "$CONF" ;;
+    e | edit) "$VISUAL" tty "$CONF" ;;
     *) docs ;;
 esac

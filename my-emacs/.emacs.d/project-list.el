@@ -2,6 +2,7 @@
 (("~/dotfiles/")
  ("~/Next/marketing-webanalytics/")
  ("~/notes/")
+ ("~/dev/rvu-pairing-interview/")
  ("~/Next/marketingdata_platform/")
  ("~/dev/rust/tkup/")
  ("~/cv/")
